@@ -22,10 +22,8 @@ def segmentfa(*argv):
         fa_line = fa_list.readline()
         while fa_line != '':
             if len(fa_line) != 0:
-                for i in range(len(fa_line)):
-                    if fa_line[-i - 1] == '.':
-                        charname.append(fa_line[:i])
-                        break
+                (shotname, extension) = os.path.splitext(fa_line)
+                charname.append(shotname)
             fa_line = fa_list.readline()
         fa_list.close()
     else:
@@ -36,6 +34,7 @@ def segmentfa(*argv):
             fa_file = os.path.join(workpath, i)
             if extension == '.fa' and os.path.getsize(fa_file)/1048576 >= limit:
                 charname.append(shotname)
+                fa_list.write(str(i) + '\n')
         fa_list.close()
 
     files_number = []
