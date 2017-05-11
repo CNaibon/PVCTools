@@ -25,7 +25,7 @@ def submit(*argv):
         if argv[i] == '-T':
             tools = argv[i + 1]
 
-    file_list = open(workpath + '/bamlist', 'w')
+    file_list = open(workpath + '/bamlist', 'r')
     file_line = file_list.readline()
     while file_line != '':
         if len(file_line) != 0:
@@ -34,7 +34,7 @@ def submit(*argv):
         file_line = file_list.readline()
     file_list.close()
 
-    file_list = open(workpath + '/falist', 'w')
+    file_list = open(workpath + '/falist', 'r')
     file_line = file_list.readline()
     while file_line != '':
         if len(file_line) != 0:

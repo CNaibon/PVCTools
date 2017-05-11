@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$USER_HOME$/PycharmProjects/PCVTools_Overwrite/.idea/PCVTools_Overwrite.iml" filepath="$USER_HOME$/PycharmProjects/PCVTools_Overwrite/.idea/PCVTools_Overwrite.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/PCVTools_Overwrite.iml" filepath="$PROJECT_DIR$/.idea/PCVTools_Overwrite.iml" />
     </modules>
   </component>
 </project>

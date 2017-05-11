@@ -44,7 +44,7 @@ def segmentbam(*argv):
 
     samtoolspath = ''
     workpath = ''
-    charname = []
+    chrname = []
     samplename = []
 
     for i in argv:
@@ -65,66 +65,66 @@ def segmentbam(*argv):
     while file_line != '':
         if len(file_line) != 0:
             (shotname, extension) = os.path.splitext(file_line)
-            charname.append(shotname)
+            chrname.append(shotname)
         file_line = file_list.readline()
     file_list.close()
 
     file_number = []
 
-    for i in range(len(charname)):
+    for i in range(len(chrname)):
         for j in range(len(samplename)):
-            if os.path.exists("%s/sample/%s/%s_%s.bam" % (workpath, samplename[j], samplename[j], charname[i])):
-                os.remove("%s/sample/%s/%s_%s.bam" % (workpath, samplename[j], samplename[j], charname[i]))
+            if os.path.exists("%s/sample/%s/%s_%s.bam" % (workpath, samplename[j], samplename[j], chrname[i])):
+                os.remove("%s/sample/%s/%s_%s.bam" % (workpath, samplename[j], samplename[j], chrname[i]))
 
-            os.mkdir("%s/sample/%s/%s_%s_TemporarySort" % (samtoolspath, samplename[j], samplename[j], charname[i]))
+            os.mkdir("%s/sample/%s/%s_%s_TemporarySort" % (samtoolspath, samplename[j], samplename[j], chrname[i]))
             os.system("%s sort -T %s/sample/%s/%s_%s_TemporarySort %s/sample/%s/%s_%s.bam \
-            > %s/sample/%s/%s_%s_sorted.bam " % (samtoolspath, workpath, samplename[j], samplename[j], charname[i],
-                                                 workpath, samplename[j], samplename[j], charname[i],
-                                                 workpath, samplename[j], samplename[j], charname[i],))
+            > %s/sample/%s/%s_%s_sorted.bam " % (samtoolspath, workpath, samplename[j], samplename[j], chrname[i],
+                                                 workpath, samplename[j], samplename[j], chrname[i],
+                                                 workpath, samplename[j], samplename[j], chrname[i],))
             os.system("%s index %s/sample/%s/%s_%s_sorted.bam" % (samtoolspath, workpath, samplename[j], samplename[j],
-                                                                  charname[i]))
-            shutil.rmtree("%s/sample/%s/%s_%s_TemporarySort" % (workpath, samplename[j], samplename[j], charname[i]))
+                                                                  chrname[i]))
+            shutil.rmtree("%s/sample/%s/%s_%s_TemporarySort" % (workpath, samplename[j], samplename[j], chrname[i]))
 
-    for i in range(len(charname)):
+    for i in range(len(chrname)):
 
         chrcount = [0, ]
-        maxlen_perline = int(os.popen("wc -L %s/fa/%s.fa" % (workpath, charname[i])).read())
+        maxlen_perline = int(os.popen("wc -L %s/fa/%s.fa" % (workpath, chrname[i])).read())
 
-        file_number[i] = int(os.popen("ls -l %s/fa/%s |grep \"^-\"|wc -l" % (workpath, charname[i])).read())
+        file_number[i] = int(os.popen("ls -l %s/fa/%s |grep \"^-\"|wc -l" % (workpath, chrname[i])).read())
 
         for j in range(file_number[i]):
             chrcount.append(maxlen_perline * (int(os.popen("wc -l %s/fa/%s/%s_%d.fa" %
-                                                           (workpath, charname[i], charname[i], j)).read()) - 1))
+                                                           (workpath, chrname[i], chrname[i], j)).read()) - 1))
 
         for j in range(len(samplename)):
-            if not os.path.exists("%s/sample/%s/%s_%s.bam" % (workpath, samplename[j], samplename[j], charname[i])):
+            if not os.path.exists("%s/sample/%s/%s_%s.bam" % (workpath, samplename[j], samplename[j], chrname[i])):
                 continue
-            if os.path.exists("%s/sample/%s/%s_%s" % (workpath, samplename[j], samplename[j], charname[i])):
-                shutil.rmtree("%s/sample/%s/%s_%s" % (workpath, samplename[j], samplename[j], charname[i]))
-            os.mkdir("%s/sample/%s/%s_%s" % (workpath, samplename[j], samplename[j], charname[i]))
+            if os.path.exists("%s/sample/%s/%s_%s" % (workpath, samplename[j], samplename[j], chrname[i])):
+                shutil.rmtree("%s/sample/%s/%s_%s" % (workpath, samplename[j], samplename[j], chrname[i]))
+            os.mkdir("%s/sample/%s/%s_%s" % (workpath, samplename[j], samplename[j], chrname[i]))
             for k in range(file_number[i]):
                 os.system("%s view -bh %s/sample/%s/%s_%s_sorted.bam %s:%ld-%ld > %s/sample/%s/%s_%s/%s_%s_%d.bam" % (
-                    samtoolspath, workpath, samplename[j], samplename[j], charname[i], charname[i], chrcount[k] + 1,
-                    chrcount[k + 1], workpath, samplename[j], samplename[j], charname[i],
-                    samplename[j], charname[i], k))
+                    samtoolspath, workpath, samplename[j], samplename[j], chrname[i], chrname[i], chrcount[k] + 1,
+                    chrcount[k + 1], workpath, samplename[j], samplename[j], chrname[i],
+                    samplename[j], chrname[i], k))
 
                 os.system("%s view -h %s/sample/%s/%s_%s/%s_%s_%d.bam > %s/sample/%s/%s_%s/%s_%s_%d.sam" % (
-                    samtoolspath, workpath, samplename[j], samplename[j], charname[i], samplename[j], charname[i], k,
-                    workpath, samplename[j], samplename[j], charname[i],
-                    samplename[j], charname[i], k))
+                    samtoolspath, workpath, samplename[j], samplename[j], chrname[i], samplename[j], chrname[i], k,
+                    workpath, samplename[j], samplename[j], chrname[i],
+                    samplename[j], chrname[i], k))
                 os.remove("%s/sample/%s/%s_%s/%s_%s_%d.bam" % (workpath, samplename[j], samplename[j],
-                                                               charname[i], samplename[j], charname[i], k))
+                                                               chrname[i], samplename[j], chrname[i], k))
                 if k > 0 :
                     file_sam = "%s/sample/%s/%s_%s/%s_%s_%d.sam" % (workpath, samplename[j], samplename[j],
-                                                                    charname[i], samplename[j], charname[i], k)
+                                                                    chrname[i], samplename[j], chrname[i], k)
                     sam_address_modify(file_sam, chrcount[k])
 
                 os.system("%s view -b %s/sample/%s/%s_%s/%s_%s_%d.sam > %s/sample/%s/%s_%s/%s_%s_%d.bam" % (
-                    samtoolspath, workpath, samplename[j], samplename[j], charname[i], samplename[j], charname[i], k,
-                    workpath, samplename[j], samplename[j], charname[i],
-                    samplename[j], charname[i], k))
+                    samtoolspath, workpath, samplename[j], samplename[j], chrname[i], samplename[j], chrname[i], k,
+                    workpath, samplename[j], samplename[j], chrname[i],
+                    samplename[j], chrname[i], k))
                 os.remove("%s/sample/%s/%s_%s/%s_%s_%d.sam" % (workpath, samplename[j], samplename[j],
-                                                               charname[i], samplename[j], charname[i], k))
+                                                               chrname[i], samplename[j], chrname[i], k))
 
-            os.system("%s/sample/%s/%s_%s_sorted.bam" % (workpath, samplename[j], samplename[j], charname[i]))
-            os.system("%s/sample/%s/%s_%s_sorted.bam.bai" % (workpath, samplename[j], samplename[j], charname[i]))
+            os.system("%s/sample/%s/%s_%s_sorted.bam" % (workpath, samplename[j], samplename[j], chrname[i]))
+            os.system("%s/sample/%s/%s_%s_sorted.bam.bai" % (workpath, samplename[j], samplename[j], chrname[i]))
