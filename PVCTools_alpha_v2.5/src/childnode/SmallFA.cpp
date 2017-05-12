@@ -168,41 +168,41 @@ int SmallFA(int argc, char *argv[])
                 snprintf(Command, sizeof(Command), "%s/sample/%s/%s_%s.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
                 fputs(Command, fp_sh);
             }
-            snprintf(Command, sizeof(Command), "| %s call -vmO v -o %s/vcf/Final_Result/%s.var.flt.vcf ", PATH_BCFTOOLS, PathWork, ChrName[i].c_str());
+            snprintf(Command, sizeof(Command), "| %s call -vmO v -o %s/vcf/Final_Result/%s.var.flt.vcf", PATH_BCFTOOLS, PathWork, ChrName[i].c_str());
             fputs(Command, fp_sh);
         }
         else if (Tool == "gatk")
         {
             snprintf(Command, sizeof(Command), "java -jar %s -T HaplotypeCaller ", PATH_GATK);
             fputs(Command, fp_sh);
-            snprintf(Command, sizeof(Command), "-R %s/fa/%s/%s.fa -nct 1 ", PathWork, ChrName[i].c_str(), ChrName[i].c_str());
+            snprintf(Command, sizeof(Command), "-R %s/fa/%s.fa -nct 1 ", PathWork, ChrName[i].c_str());
             fputs(Command, fp_sh);
             for (int n = 0; n < (int)SampleName.size(); n++)
             {
-                snprintf(Command, sizeof(Command), "touch %s/sample/%s/%s_%s/%s_%s.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+                snprintf(Command, sizeof(Command), "touch %s/sample/%s/%s_%s.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
                 system(Command);
 
-                snprintf(Command, sizeof(Command), "-I %s/sample/%s/%s_%s/%s_%s.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+                snprintf(Command, sizeof(Command), "-I %s/sample/%s/%s_%s.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
                 fputs(Command, fp_sh);
             }
-            snprintf(Command, sizeof(Command), "-o %s/vcf/Final_Result/%s.vcf ", PathWork, ChrName[i].c_str());
+            snprintf(Command, sizeof(Command), "-o %s/vcf/Final_Result/%s.vcf", PathWork, ChrName[i].c_str());
             fputs(Command, fp_sh);
         }
         else if (Tool == "freebayes")
         {
             snprintf(Command, sizeof(Command), "/usr/bin/time -f \"%E\" %s --strict-vcf ", PATH_FREEBAYES);
             fputs(Command, fp_sh);
-            snprintf(Command, sizeof(Command), "-f %s/fa/%s/%s.fa ", PathWork, ChrName[i].c_str(), ChrName[i].c_str());
+            snprintf(Command, sizeof(Command), "-f %s/fa/%s.fa ", PathWork, ChrName[i].c_str());
             fputs(Command, fp_sh);
             for (int n = 0; n < (int)SampleName.size(); n++)
             {
-                snprintf(Command, sizeof(Command), "touch %s/sample/%s/%s_%s/%s_%s.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+                snprintf(Command, sizeof(Command), "touch %s/sample/%s/%s_%s.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
                 system(Command);
 
-                snprintf(Command, sizeof(Command), "-b %s/sample/%s/%s_%s/%s_%s.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+                snprintf(Command, sizeof(Command), "-b %s/sample/%s/%s_%s.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
                 fputs(Command, fp_sh);
             }
-            snprintf(Command, sizeof(Command), "-v %s/vcf/Final_Result/%s.vcf ", PathWork, ChrName[i].c_str());
+            snprintf(Command, sizeof(Command), "-v %s/vcf/Final_Result/%s.vcf", PathWork, ChrName[i].c_str());
             fputs(Command, fp_sh);
         }
         fclose(fp_sh);

@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
         std::cout << " StitchVCF            - Stitching the calculated VCF file." << std::endl;
         std::cout << " SmallFA              - Calculate the small chromosome FA files." << std::endl;
         std::cout << " GetVCF               - 整合运行步骤." << std::endl;
-        std::cout << " Enviroment           - Setting environment variable." << std::endl;
+        std::cout << " Environment          - Setting environment variable." << std::endl;
         std::cout << std::endl;
     }
     else if (argc == 2)
