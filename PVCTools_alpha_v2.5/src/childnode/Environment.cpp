@@ -99,6 +99,7 @@ int GetToolsPath(char *path, const char *order)
                     {
                         path[strlen(path)-1] = '\0';
                     }
+                    fclose(fp);
                     return 0;
                 }
             }
