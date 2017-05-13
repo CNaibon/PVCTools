@@ -190,7 +190,7 @@ int SmallFA(int argc, char *argv[])
         }
         else if (Tool == "freebayes")
         {
-            snprintf(Command, sizeof(Command), "/usr/bin/time -f \"%E\" %s --strict-vcf ", PATH_FREEBAYES);
+            snprintf(Command, sizeof(Command), "/usr/bin/time -f \"%%E\" %s --strict-vcf ", PATH_FREEBAYES);
             fputs(Command, fp_sh);
             snprintf(Command, sizeof(Command), "-f %s/fa/%s.fa ", PathWork, ChrName[i].c_str());
             fputs(Command, fp_sh);

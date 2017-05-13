@@ -138,6 +138,10 @@ int SegmentFA(int argc,char *argv[])
         long FASize = atol(Buffer);
         //Calculate the size of each post split.
         long fa_split_piece_size = FASize / SplitNumber;
+        if (fa_split_piece_size == 0)
+        {
+            fa_split_piece_size = 1;
+        }
 
         //Already exists before the chromosome processing data is deleted from the original data to prepare to write new data.
         snprintf(ShellCommand, sizeof(ShellCommand), "%s/fa/%s", PathWork, ChrName[i].c_str());

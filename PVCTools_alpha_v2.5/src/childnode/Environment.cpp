@@ -94,8 +94,7 @@ int GetToolsPath(char *path, const char *order)
                 if (count == 2)
                 {
                     snprintf(path, strlen(Buffer) +  1, "%s", &Buffer[i+1]);
-                    fclose(fp);
-                    if (path[strlen(path)-1] == '\n')
+                    if (path[strlen(path)-1] == '\n' || path[strlen(path)-1] == '\r')
                     {
                         path[strlen(path)-1] = '\0';
                     }
