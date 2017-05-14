@@ -1,5 +1,6 @@
 import os
 import shutil
+import Environment
 
 
 def modify(buffer,addresses_number):
@@ -42,7 +43,7 @@ def sam_address_modify(file_name, address_count):
 
 def segmentbam(*argv):
 
-    samtoolspath = ''
+    samtoolspath = Environment.gettoolspath('samtools')
     workpath = ''
     chrname = []
     samplename = []
