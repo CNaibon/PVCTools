@@ -1,10 +1,12 @@
 import os
+import Environment
+
 
 def splitbam(*argv):
     samplename = []
     workpath = ''
     bampath = []
-    bamutilpath = ''
+    bamutilpath = Environment.gettoolspath('bamUtil')
     importbam = 0
 
     for i in argv:

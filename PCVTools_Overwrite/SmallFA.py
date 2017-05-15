@@ -1,11 +1,12 @@
 import os
+import Environment
 
 
 def smallfa(*argv):
-    samtools_path = ''
-    bcftools_path = ''
-    gatk_path = ''
-    freebayes_path = ''
+    samtools_path = Environment.gettoolspath('samtools')
+    bcftools_path = Environment.gettoolspath('bcftools')
+    gatk_path = Environment.gettoolspath('gatk')
+    freebayes_path = Environment.gettoolspath('freebayes')
 
     workpath = ''
     queue = ''
