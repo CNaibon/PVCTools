@@ -106,6 +106,8 @@ int StitchVCF(int argc,char *argv[])
         if (cmd == "-w")
         {
             snprintf(PathWork, sizeof(PathWork), "%s", argv[i + 1]);
+            if (PathWork[strlen(PathWork) - 1] == '/')
+                PathWork[strlen(PathWork) - 1] == '\0';
         }
         if (cmd == "-n")
         {

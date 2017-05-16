@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
         std::cout << " Submit               - Submit and calculate VCF results." << std::endl;
         std::cout << " StitchVCF            - Stitching the calculated VCF file." << std::endl;
         std::cout << " SmallFA              - Calculate the small chromosome FA files." << std::endl;
-        std::cout << " GetVCF               - 整合运行步骤." << std::endl;
+        std::cout << " GetVCF               - Integration 'SplitFA' 'SegmentFA' 'SplitBAM' 'SegmentBAM' and 'Submit' steps." << std::endl;
         std::cout << " Environment          - Setting environment variable." << std::endl;
         std::cout << std::endl;
     }
@@ -219,21 +219,22 @@ int main(int argc, char *argv[])
             }
             char CurrentPath[CMD_NUM];
             //Get the current directory.
-            int Count;
-            Count = readlink("/proc/self/exe", CurrentPath, CMD_NUM);
-            if (Count < 0 || Count >= CMD_NUM)
-            {
-                printf("Failed\n");
-                return(EXIT_FAILURE);
-            }
-            for (int i = Count; i >= 0; --i)
-            {
-                if (CurrentPath[i] == '/')
-                {
-                    CurrentPath[i] = '\0';
-                    break;
-                }
-            }
+            getcwd(CurrentPath, sizeof(CurrentPath));
+//            int Count;
+//            Count = readlink("/proc/self/exe", CurrentPath, CMD_NUM);
+//            if (Count < 0 || Count >= CMD_NUM)
+//            {
+//                printf("Failed\n");
+//                return(EXIT_FAILURE);
+//            }
+//            for (int i = Count; i >= 0; --i)
+//            {
+//                if (CurrentPath[i] == '/')
+//                {
+//                    CurrentPath[i] = '\0';
+//                    break;
+//                }
+//            }
             FILE *fp_sh;
             sprintf(ShellCommand, "%s/run.sh", CurrentPath);
             if ((fp_sh = fopen(ShellCommand, "w")) == NULL)
