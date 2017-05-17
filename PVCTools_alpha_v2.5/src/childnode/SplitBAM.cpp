@@ -35,10 +35,14 @@ int SplitBAM(int argc,char *argv[])
         if (cmd == "-w")
         {
             snprintf(PathWork, sizeof(PathWork), "%s", argv[i + 1]);
+            if (PathWork[strlen(PathWork) - 1] == '/')
+                PathWork[strlen(PathWork) - 1] == '\0';
         }
         if (cmd == "-bam")
         {
             snprintf(PathBAM, sizeof(PathBAM), "%s", argv[i + 1]);
+            if (PathBAM[strlen(PathBAM) - 1] == '/')
+                PathBAM[strlen(PathBAM) - 1] == '\0';
         }
         if (cmd == "-I")
         {
@@ -64,8 +68,7 @@ int SplitBAM(int argc,char *argv[])
             exit(-1);
         DIR *dir;
         struct dirent *ptr;
-        snprintf(BAMFile, sizeof(ShellCommand), "%s", PathBAM);
-        dir = opendir(BAMFile);
+        dir = opendir(PathBAM);
         while ((ptr = readdir(dir)) != NULL)
         {
             if (ptr->d_type == 4) continue;

@@ -6,8 +6,13 @@
 
 int PrintEvmt()
 {
+    char CurrentPath[CMD_NUM];
+    getcwd(CurrentPath, sizeof(CurrentPath));
+    char Config[CMD_NUM];
+    snprintf(Config, sizeof(Config), "%s/config", CurrentPath);
+
     FILE *fp;
-    if ((fp = fopen("config", "r")) == NULL)
+    if ((fp = fopen(Config, "r")) == NULL)
         exit(-1);
     char *Buffer = NULL;
     size_t Len = FILE_LINE;
@@ -23,16 +28,23 @@ int PrintEvmt()
 
 int SetToolsPath(const char *order, const char *path)
 {
+    char CurrentPath[CMD_NUM];
+    getcwd(CurrentPath, sizeof(CurrentPath));
+    char Config[CMD_NUM];
+    char Config_tmp[CMD_NUM];
+    snprintf(Config, sizeof(Config), "%s/config", CurrentPath);
+    snprintf(Config_tmp, sizeof(Config_tmp), "%s/config_tmp", CurrentPath);
+
     FILE *fp_f, *fp_t;
-    if ((fp_f = fopen("config", "r")) == NULL)
+    if ((fp_f = fopen(Config, "r")) == NULL)
         exit(-1);
-    if ((fp_t = fopen("config_tmp", "w")) == NULL)
+    if ((fp_t = fopen(Config_tmp, "w")) == NULL)
         exit(-1);
     std::string cmd = order;
     std::transform(cmd.begin() + 1, cmd.end(), cmd.begin(), toupper);
     cmd.at(cmd.size() - 1) = '\0';
     char Command[CMD_NUM];
-    snprintf(Command, CMD_NUM, "<PATH_%s>\t=\t", cmd.c_str());
+    snprintf(Command, sizeof(Command), "<PATH_%s>\t=\t", cmd.c_str());
     char *Buffer = NULL;
     size_t Len = FILE_LINE;
     while (!feof(fp_f))
@@ -50,7 +62,7 @@ int SetToolsPath(const char *order, const char *path)
                 if (count == 2)
                 {
                     strncat(Command, path, strlen(path));
-                    snprintf(Buffer, strlen(Command) + 2, "%s\n", Command);
+                    snprintf(Buffer, sizeof(Buffer), "%s\n", Command);
                     break;
                 }
             }
@@ -59,15 +71,28 @@ int SetToolsPath(const char *order, const char *path)
     }
     fclose(fp_f);
     fclose(fp_t);
-    remove("config");
-    rename("config_tmp", "config");
+    remove(Config);
+    rename(Config_tmp, Config);
     return 0;
 }
 
 int GetToolsPath(char *path, const char *order)
 {
+    char CurrentPath[CMD_NUM];
+    getcwd(CurrentPath, sizeof(CurrentPath));
+    for(int i = strlen(CurrentPath) - 1; i >= 0; i--)
+    {
+        if(CurrentPath[i] == '/')
+        {
+            CurrentPath[i] = '\0';
+            break;
+        }
+    }
+    char Config[CMD_NUM];
+    snprintf(Config, sizeof(Config), "%s/config", CurrentPath);
+
     FILE *fp;
-    if ((fp = fopen("config", "r")) == NULL)
+    if ((fp = fopen(Config, "r")) == NULL)
     {
         printf("config打开失败\n");
         exit(-1);
@@ -76,7 +101,7 @@ int GetToolsPath(char *path, const char *order)
     std::transform(cmd.begin() + 1, cmd.end(), cmd.begin(), toupper);
     cmd.at(cmd.size() - 1) = '\0';
     char Command[CMD_NUM];
-    snprintf(Command, CMD_NUM, "<PATH_%s>\t=\t", cmd.c_str());
+    snprintf(Command, sizeof(Command), "<PATH_%s>\t=\t", cmd.c_str());
     char *Buffer = NULL;
     size_t Len = FILE_LINE;
     while (!feof(fp))
@@ -93,7 +118,7 @@ int GetToolsPath(char *path, const char *order)
                 }
                 if (count == 2)
                 {
-                    snprintf(path, strlen(Buffer) +  1, "%s", &Buffer[i+1]);
+                    snprintf(path, sizeof(path), "%s", &Buffer[i+1]);
                     if (path[strlen(path)-1] == '\n' || path[strlen(path)-1] == '\r')
                     {
                         path[strlen(path)-1] = '\0';

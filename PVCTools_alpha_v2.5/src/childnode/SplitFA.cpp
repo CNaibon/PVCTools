@@ -78,10 +78,14 @@ int SplitFA(int argc,char *argv[])
         if (cmd == "-w")
         {
             snprintf(PathWork, sizeof(PathWork), "%s", argv[i + 1]);
+            if (PathWork[strlen(PathWork) - 1] == '/')
+                PathWork[strlen(PathWork) - 1] == '\0';
         }
         if (cmd == "-fa")
         {
             snprintf(PathFA, sizeof(PathFA), "%s", argv[i + 1]);
+            if (PathFA[strlen(PathFA) - 1] == '/')
+                PathFA[strlen(PathFA) - 1] == '\0';
         }
     }
 
