@@ -65,6 +65,8 @@ int VCF_Link(char *tarfile, char *formfile, const char *ChrName, long add_count)
         if(feof(fp_frm))
         {
             printf("There is no need to stitch the content!");
+            fclose(fp_frm);
+            fclose(fp_tag);
             return 0;
         }
         if(Buffer[0] != '#') break;
