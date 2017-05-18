@@ -46,7 +46,7 @@ int Submit(int argc, char *argv[])
         {
             snprintf(PathWork, sizeof(PathWork), "%s", argv[i + 1]);
             if (PathWork[strlen(PathWork) - 1] == '/')
-                PathWork[strlen(PathWork) - 1] == '\0';
+                PathWork[strlen(PathWork) - 1] = '\0';
         }
         if (cmd == "-q")
         {
@@ -219,7 +219,9 @@ int Submit(int argc, char *argv[])
             }
             else if (Tool == "freebayes")
             {
-                snprintf(Command, sizeof(Command), "/usr/bin/time -f \"%%E\" %s --strict-vcf ", PATH_FREEBAYES);
+                snprintf(Command, sizeof(Command), "/usr/bin/time -f \"%%E\" ");
+                fputs(Command, fp_sh);
+                snprintf(Command, sizeof(Command), "%s --strict-vcf ", PATH_FREEBAYES);
                 fputs(Command, fp_sh);
                 snprintf(Command, sizeof(Command), "-f %s/fa/%s/%s_%d.fa ", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), k);
                 fputs(Command, fp_sh);

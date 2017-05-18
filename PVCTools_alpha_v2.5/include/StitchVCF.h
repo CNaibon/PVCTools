@@ -8,9 +8,9 @@
 #include "main.h"
 #include "Environment.h"
 
-int VCF_Link(char *tarfile, char *formfile, const char *ChrName, long add_count);
+void VCF_Modify(char *buffer, long addresses_number);
 
-void VCF_Modify(char *buffer, const char *chrname, int chrname_len, long addresses_number);
+int VCF_Link(char *tarfile, char *formfile, long add_count);
 
 int StitchVCF(int argc,char *argv[]);
 

@@ -12,7 +12,7 @@
 
 using namespace std;
 
-void VCF_Modify(char *buffer, const char *chrname, int chrname_len, long addresses_number)
+void VCF_Modify(char *buffer, long addresses_number)
 {
     int count = 0;
     for (int i = 0; i < (int)strlen(buffer); i++)
@@ -45,7 +45,7 @@ void VCF_Modify(char *buffer, const char *chrname, int chrname_len, long address
     }
 }
 
-int VCF_Link(char *tarfile, char *formfile, const char *ChrName, long add_count)
+int VCF_Link(char *tarfile, char *formfile, long add_count)
 {
     FILE *fp_tag, *fp_frm;
     if((fp_tag=fopen(tarfile,"a+"))==NULL)
@@ -72,14 +72,20 @@ int VCF_Link(char *tarfile, char *formfile, const char *ChrName, long add_count)
         if(Buffer[0] != '#') break;
     }
 
+    VCF_Modify(Buffer,add_count);
+    fputs(Buffer,fp_tag);
     //Write the cache, modify the address, write the stitching file.
-    while (1)
+    while (getline(&Buffer, &Len, fp_frm) != -1)
     {
         //Restore the address in VCF.
-        VCF_Modify(Buffer,ChrName,(int)strlen(ChrName),add_count);
+        VCF_Modify(Buffer,add_count);
         fputs(Buffer,fp_tag);
-        getline(&Buffer, &Len,fp_frm);
-        if(feof(fp_frm)) break;
+//        free(Buffer);
+//        Buffer = NULL;
+    }
+    if (Buffer)
+    {
+        free(Buffer);
     }
 
     fclose(fp_frm);
@@ -109,7 +115,7 @@ int StitchVCF(int argc,char *argv[])
         {
             snprintf(PathWork, sizeof(PathWork), "%s", argv[i + 1]);
             if (PathWork[strlen(PathWork) - 1] == '/')
-                PathWork[strlen(PathWork) - 1] == '\0';
+                PathWork[strlen(PathWork) - 1] = '\0';
         }
         if (cmd == "-n")
         {
@@ -205,7 +211,6 @@ int StitchVCF(int argc,char *argv[])
     system(ShellCommand);
 
     printf("VCF results stitching ...\n");
-#pragma omp parallel for
     for (int i = 0; i < (int)ChrName.size(); i++)
     {
         char Command[CMD_NUM];
@@ -222,7 +227,9 @@ int StitchVCF(int argc,char *argv[])
         for (int n = 1; n < FileNumber[i]; n++)
         {
             snprintf(Command, sizeof(Command), "%s/vcf/%s/%s_%d.var.flt.vcf", PathWork, ChrName[i].c_str(),ChrName[i].c_str(),n);
-            VCF_Link(VCF_File, Command, ChrName[i].c_str(), ReadCount[i][n]);
+            printf("%s start!\n", Command);
+            VCF_Link(VCF_File, Command, ReadCount[i][n]);
+            printf("%s finished!\n", Command);
         }
     }
     printf("VCF results stitching done.\n");

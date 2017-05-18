@@ -104,6 +104,9 @@
 		<Unit filename="/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/include/SplitFA.h">
 			<Option target="PVCTools_alpha_v2_5"/>
 		</Unit>
+		<Unit filename="/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/include/StitchVCF.cpp">
+			<Option target="PVCTools_alpha_v2_5"/>
+		</Unit>
 		<Unit filename="/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/include/StitchVCF.h">
 			<Option target="PVCTools_alpha_v2_5"/>
 		</Unit>
@@ -114,6 +117,9 @@
 			<Option target="PVCTools_alpha_v2_5"/>
 		</Unit>
 		<Unit filename="/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/include/main.h">
+			<Option target="PVCTools_alpha_v2_5"/>
+		</Unit>
+		<Unit filename="/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/include/stichvcftext.cpp">
 			<Option target="PVCTools_alpha_v2_5"/>
 		</Unit>
 		<Unit filename="/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/Environment.cpp">

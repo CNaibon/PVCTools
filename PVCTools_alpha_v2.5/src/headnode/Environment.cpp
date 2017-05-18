@@ -62,7 +62,7 @@ int SetToolsPath(const char *order, const char *path)
                 if (count == 2)
                 {
                     strncat(Command, path, strlen(path));
-                    snprintf(Buffer, sizeof(Buffer), "%s\n", Command);
+                    snprintf(Buffer, FILE_LINE, "%s\n", Command);
                     break;
                 }
             }
@@ -118,7 +118,7 @@ int GetToolsPath(char *path, const char *order)
                 }
                 if (count == 2)
                 {
-                    snprintf(path, sizeof(path), "%s", &Buffer[i+1]);
+                    snprintf(path, CMD_NUM, "%s", &Buffer[i+1]);
                     if (path[strlen(path)-1] == '\n' || path[strlen(path)-1] == '\r')
                     {
                         path[strlen(path)-1] = '\0';
