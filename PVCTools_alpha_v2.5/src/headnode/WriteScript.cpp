@@ -176,7 +176,7 @@ int main(int argc, char *argv[])
             std::cout << "\t\t-bamUtil         : Setting bamUtil path." << std::endl;
             std::cout << std::endl;
 
-            PrintEvmt();
+            PrintEvmt(argv[0]);
         }
         else
         {
@@ -219,7 +219,7 @@ int main(int argc, char *argv[])
             }
             char CurrentPath[CMD_NUM];
             //Get the current directory.
-            getcwd(CurrentPath, sizeof(CurrentPath));
+//            getcwd(CurrentPath, sizeof(CurrentPath));
 //            int Count;
 //            Count = readlink("/proc/self/exe", CurrentPath, CMD_NUM);
 //            if (Count < 0 || Count >= CMD_NUM)
@@ -235,6 +235,23 @@ int main(int argc, char *argv[])
 //                    break;
 //                }
 //            }
+            snprintf(CurrentPath, sizeof(CurrentPath), "%s", argv[0]);
+            int Count = 0;
+            for (int j = int(strlen(CurrentPath)) - 1; j > 0; j--)
+            {
+                if (CurrentPath[j] == '/')
+                {
+                    Count ++;
+                    if (Count == 2)
+                    {
+                        CurrentPath[j] = '\0';
+                    }
+                }
+            }
+            if (Count < 2)
+            {
+                snprintf(CurrentPath, sizeof(CurrentPath), ".");
+            }
             FILE *fp_sh;
             sprintf(ShellCommand, "%s/run.sh", CurrentPath);
             if ((fp_sh = fopen(ShellCommand, "w")) == NULL)
@@ -270,7 +287,7 @@ int main(int argc, char *argv[])
         }
         else if(cmd == "Environment")
         {
-            SetEvmt(argc - 2, argv + 2);
+            SetEvmt(argc, argv);
         }
         else
         {

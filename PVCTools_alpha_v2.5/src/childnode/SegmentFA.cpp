@@ -56,21 +56,16 @@ int SegmentFA(int argc,char *argv[])
         //Import FA list. If you need to customize the list, you should modify [falist], fill in the need to split the fa files.
         snprintf(ShellCommand, sizeof(ShellCommand), "%s/falist", PathWork);
         ifstream fp_fa;
+        string strbuff;
         fp_fa.open(ShellCommand,ios::in);
         getline(fp_fa, Buffer);
         while (!fp_fa.eof())
         {
             if (Buffer.size() != 0)
             {
-                for (int i = (int)Buffer.size() - 1; i > 0; i--)
-                {
-                    if (Buffer[i] == '.')
-                    {
-                        Buffer[i] = '\0';
-                        break;
-                    }
-                }
-                ChrName.push_back(Buffer.c_str());
+                int i = Buffer.rfind('.');
+                strbuff = Buffer.substr(0,i);
+                ChrName.push_back(strbuff.c_str());
             }
             getline(fp_fa, Buffer);
         }

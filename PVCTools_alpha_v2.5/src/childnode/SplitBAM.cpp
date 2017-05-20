@@ -22,7 +22,7 @@ int SplitBAM(int argc,char *argv[])
     vector<string> SampleName;
 
     char PATH_BAMUTIL[CMD_NUM];
-    GetToolsPath(PATH_BAMUTIL, "-bamUtil");
+    GetToolsPath(argv[0], PATH_BAMUTIL, "-bamUtil");
 
     char ShellCommand[CMD_NUM];
     char PathWork[CMD_NUM];
@@ -89,6 +89,7 @@ int SplitBAM(int argc,char *argv[])
 
     ifstream fp_bam;
     string Buffer;
+    string strbuff;
     snprintf(ShellCommand, sizeof(ShellCommand), "%s/bamlist", PathWork);
     fp_bam.open(ShellCommand,ios::in);
     getline(fp_bam, Buffer);
@@ -96,16 +97,10 @@ int SplitBAM(int argc,char *argv[])
     {
         if (Buffer.size() != 0)
         {
-            for (int i = (int)Buffer.size() - 1; i > 0; i--)
-            {
-                if (Buffer[i] == '.')
-                {
-                    Buffer[i] = '\0';
-                    break;
-                }
-            }
-            SampleName.push_back(Buffer.c_str());
-            snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/sample/%s", PathWork, Buffer.c_str());
+            int i = Buffer.rfind('.');
+            strbuff = Buffer.substr(0,i);
+            SampleName.push_back(strbuff.c_str());
+            snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/sample/%s", PathWork, strbuff.c_str());
             system(ShellCommand);
         }
         getline(fp_bam, Buffer);

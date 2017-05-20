@@ -19,13 +19,13 @@ int Submit(int argc, char *argv[])
     printf("start time = %ld\n", StartTime);
 
     char PATH_SAMTOOLS[CMD_NUM];
-    GetToolsPath(PATH_SAMTOOLS, "-samtools");
+    GetToolsPath(argv[0], PATH_SAMTOOLS, "-samtools");
     char PATH_BCFTOOLS[CMD_NUM];
-    GetToolsPath(PATH_BCFTOOLS, "-bcftools");
+    GetToolsPath(argv[0], PATH_BCFTOOLS, "-bcftools");
     char PATH_GATK[CMD_NUM];
-    GetToolsPath(PATH_GATK, "-gatk");
+    GetToolsPath(argv[0], PATH_GATK, "-gatk");
     char PATH_FREEBAYES[CMD_NUM];
-    GetToolsPath(PATH_FREEBAYES, "-freebayes");
+    GetToolsPath(argv[0], PATH_FREEBAYES, "-freebayes");
 
     vector<string> ChrName;
     vector<string> SampleName;
@@ -66,6 +66,7 @@ int Submit(int argc, char *argv[])
         }
     }
 
+    string strbuff;
     //Import BAM list, if you need to customize the list, you should modify the [bamlist], fill in the need to split the BAM file.
     ifstream fp_bam;
     snprintf(ShellCommand, sizeof(ShellCommand), "%s/bamlist", PathWork);
@@ -75,15 +76,9 @@ int Submit(int argc, char *argv[])
     {
         if (Buffer.size() != 0)
         {
-            for (int i = (int)Buffer.size() - 1; i > 0; i--)
-            {
-                if (Buffer[i] == '.')
-                {
-                    Buffer[i] = '\0';
-                    break;
-                }
-            }
-            SampleName.push_back(Buffer.c_str());
+            int i = Buffer.rfind('.');
+            strbuff = Buffer.substr(0,i);
+            SampleName.push_back(strbuff.c_str());
         }
         getline(fp_bam, Buffer);
     }
@@ -98,15 +93,9 @@ int Submit(int argc, char *argv[])
     {
         if (Buffer.size() != 0)
         {
-            for (int i = (int)Buffer.size() - 1; i > 0; i--)
-            {
-                if (Buffer[i] == '.')
-                {
-                    Buffer[i] = '\0';
-                    break;
-                }
-            }
-            ChrName.push_back(Buffer.c_str());
+            int i = Buffer.rfind('.');
+            strbuff = Buffer.substr(0,i);
+            ChrName.push_back(strbuff.c_str());
         }
         getline(fp_fa, Buffer);
     }

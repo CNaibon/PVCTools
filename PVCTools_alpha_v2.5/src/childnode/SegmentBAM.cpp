@@ -36,7 +36,7 @@ void Modify(string &buffer, long addresses_number)
             //Modify the starting address.
             long Num_New = Num_Old - addresses_number;
             snprintf(Number_New, sizeof(Number_New), "%ld", Num_New);
-            snprintf(Front, (size_t)(i + 2), "%s", buffer);
+            snprintf(Front, (size_t)(i + 2), "%s", buffer.c_str());
             snprintf(Rear, sizeof(Rear), "%s", &buffer[i + 1 + Length_Old]);
             strncat(Front, Number_New, sizeof(Front) - strlen(Front));
             strncat(Front, Rear, sizeof(Front) - strlen(Front));
@@ -81,7 +81,7 @@ int SegmentBAM(int argc, char *argv[])
     printf("start time = %ld\n", StartTime);
 
     char PATH_SAMTOOLS[CMD_NUM];
-    GetToolsPath(PATH_SAMTOOLS, "-samtools");
+    GetToolsPath(argv[0], PATH_SAMTOOLS, "-samtools");
 
     vector<string> ChrName;
     vector<string> SampleName;
@@ -107,8 +107,8 @@ int SegmentBAM(int argc, char *argv[])
             SplitNumber = atoi(argv[i + 1]);
         }
     }
-    
-    
+
+    string strbuff;
     //Import BAM list, if you need to customize the list, you should modify the [bamlist], fill in the need to split the BAM file
     ifstream fp_bam;
     snprintf(ShellCommand, sizeof(ShellCommand), "%s/bamlist", PathWork);
@@ -118,15 +118,9 @@ int SegmentBAM(int argc, char *argv[])
     {
         if (Buffer.size() != 0)
         {
-            for (int i = (int)Buffer.size() - 1; i > 0; i--)
-            {
-                if (Buffer[i] == '.')
-                {
-                    Buffer[i] = '\0';
-                    break;
-                }
-            }
-            SampleName.push_back(Buffer.c_str());
+            int i = Buffer.rfind('.');
+            strbuff = Buffer.substr(0,i);
+            SampleName.push_back(strbuff.c_str());
         }
         getline(fp_bam, Buffer);
     }
@@ -141,15 +135,9 @@ int SegmentBAM(int argc, char *argv[])
     {
         if (Buffer.size() != 0)
         {
-            for (int i = (int)Buffer.size() - 1; i > 0; i--)
-            {
-                if (Buffer[i] == '.')
-                {
-                    Buffer[i] = '\0';
-                    break;
-                }
-            }
-            ChrName.push_back(Buffer.c_str());
+            int i = Buffer.rfind('.');
+            strbuff = Buffer.substr(0,i);
+            ChrName.push_back(strbuff.c_str());
         }
         getline(fp_fa, Buffer);
     }

@@ -15,40 +15,40 @@ int main(int argc, char *argv[])
     std::string cmd = argv[1];
     if (cmd == "SplitFA" )
     {
-        SplitFA(argc - 1, argv + 1);
+        SplitFA(argc, argv);
     }
     else if (cmd == "SegmentFA")
     {
-        SegmentFA(argc - 1, argv + 1);
+        SegmentFA(argc, argv);
     }
     else if (cmd == "SplitBAM")
     {
-        SplitBAM(argc - 1, argv + 1);
+        SplitBAM(argc, argv);
     }
     else if (cmd == "SegmentBAM")
     {
-        SegmentBAM(argc - 1, argv + 1);
+        SegmentBAM(argc, argv);
     }
     else if (cmd == "Submit")
     {
-        Submit(argc - 1, argv + 1);
+        Submit(argc, argv);
     }
     else if (cmd == "StitchVCF")
     {
-        StitchVCF(argc - 1, argv + 1);
+        StitchVCF(argc, argv);
     }
     else if (cmd == "SmallFA")
     {
-        SmallFA(argc - 1, argv + 1);
+        SmallFA(argc, argv);
     }
     else if (cmd == "GetVCF")
     {
-        SplitFA(argc - 1, argv + 1);
-        SegmentFA(argc - 1, argv + 1);
-        SplitBAM(argc - 1, argv + 1);
-        SegmentBAM(argc - 1, argv + 1);
-        Submit(argc - 1, argv + 1);
-        SmallFA(argc - 1, argv + 1);
+        SplitFA(argc, argv);
+        SegmentFA(argc, argv);
+        SplitBAM(argc, argv);
+        SegmentBAM(argc, argv);
+        Submit(argc, argv);
+        SmallFA(argc, argv);
     }
     else
     {

@@ -44,11 +44,11 @@ void Fa_Chr(char *workpath,char *fa_path)
 
         ofstream fp_tmp;
         fp_tmp.open(FileName, ios::out);
-        fp_tmp<<Line;
+        fp_tmp<<Line<<std::endl;
         getline(fp,Line);
-        while (Line[0] != ">" && fp.eof() != 0)
+        while (!fp.eof() && Line.at(0) != '>')
         {
-            fp_tmp<<Line;
+            fp_tmp<<Line<<std::endl;
             getline(fp,Line);
         }
         fp_tmp.close();

@@ -4,13 +4,29 @@
 
 #include "Environment.h"
 
-int PrintEvmt()
+int PrintEvmt(const char *dir)
 {
     char CurrentPath[CMD_NUM];
-    getcwd(CurrentPath, sizeof(CurrentPath));
+    snprintf(CurrentPath, sizeof(CurrentPath), "%s", dir);
+    int Count = 0;
+    for (int j = int(strlen(CurrentPath)) - 1; j > 0; j--)
+    {
+        if (CurrentPath[j] == '/')
+        {
+            Count ++;
+            if (Count == 2)
+            {
+                CurrentPath[j] = '\0';
+                break;
+            }
+        }
+    }
+    if (Count < 2)
+    {
+        snprintf(CurrentPath, sizeof(CurrentPath), ".");
+    }
     char Config[CMD_NUM];
     snprintf(Config, sizeof(Config), "%s/config", CurrentPath);
-
     FILE *fp;
     if ((fp = fopen(Config, "r")) == NULL)
         exit(-1);
@@ -26,10 +42,27 @@ int PrintEvmt()
     return 0;
 }
 
-int SetToolsPath(const char *order, const char *path)
+int SetToolsPath(const char *dir, const char *order, const char *path)
 {
     char CurrentPath[CMD_NUM];
-    getcwd(CurrentPath, sizeof(CurrentPath));
+    snprintf(CurrentPath, sizeof(CurrentPath), "%s", dir);
+    int Count = 0;
+    for (int j = int(strlen(CurrentPath)) - 1; j > 0; j--)
+    {
+        if (CurrentPath[j] == '/')
+        {
+            Count ++;
+            if (Count == 2)
+            {
+                CurrentPath[j] = '\0';
+                break;
+            }
+        }
+    }
+    if (Count < 2)
+    {
+        snprintf(CurrentPath, sizeof(CurrentPath), ".");
+    }
     char Config[CMD_NUM];
     char Config_tmp[CMD_NUM];
     snprintf(Config, sizeof(Config), "%s/config", CurrentPath);
@@ -76,17 +109,26 @@ int SetToolsPath(const char *order, const char *path)
     return 0;
 }
 
-int GetToolsPath(char *path, const char *order)
+int GetToolsPath(const char *dir, char *path, const char *order)
 {
     char CurrentPath[CMD_NUM];
-    getcwd(CurrentPath, sizeof(CurrentPath));
-    for(int i = strlen(CurrentPath) - 1; i >= 0; i--)
+    snprintf(CurrentPath, sizeof(CurrentPath), "%s", dir);
+    int Count = 0;
+    for (int j = int(strlen(CurrentPath)) - 1; j > 0; j--)
     {
-        if(CurrentPath[i] == '/')
+        if (CurrentPath[j] == '/')
         {
-            CurrentPath[i] = '\0';
-            break;
+            Count ++;
+            if (Count == 3)
+            {
+                CurrentPath[j] = '\0';
+                break;
+            }
         }
+    }
+    if (Count < 2)
+    {
+        snprintf(CurrentPath, sizeof(CurrentPath), "..");
     }
     char Config[CMD_NUM];
     snprintf(Config, sizeof(Config), "%s/config", CurrentPath);
@@ -140,11 +182,11 @@ int SetEvmt(int argc, char *argv[])
         std::string cmd = argv[i];
         if (cmd[0] == '-')
         {
-            SetToolsPath(argv[i] ,argv[i+1]);
+            SetToolsPath(argv[0], argv[i] ,argv[i+1]);
         }
 
     }
     printf("Now, the environment variable is :\n");
-    PrintEvmt();
+    PrintEvmt(argv[0]);
     return 0;
 }

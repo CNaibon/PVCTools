@@ -60,7 +60,7 @@ int VCF_Link(char *tarfile, char *formfile, long add_count)
             outfile.close();
             return 0;
         }
-        if(buff[0] != '#') break;
+        if(buff.at(0) != '#') break;
     }
     VCF_Modify(buff,add_count);
     outfile<<buff;
@@ -89,8 +89,7 @@ int StitchVCF(int argc,char *argv[])
     vector<string> ChrName;
     //Command string.
     char ShellCommand[CMD_NUM];
-    char *Buffer = NULL;
-    size_t Len = 0;
+    string Buffer;
 
     char PathWork[CMD_NUM];
     int SplitNumber;
@@ -110,34 +109,23 @@ int StitchVCF(int argc,char *argv[])
         }
     }
 
+    string strbuff;
     //Import FA list, if you need to customize the list, you should modify the [falist], fill in the need to split the FA file.
     snprintf(ShellCommand, sizeof(ShellCommand), "%s/falist", PathWork);
-    FILE *fp_fa;
-    if ((fp_fa = fopen(ShellCommand, "r")) == NULL)
-        exit(-1);
-    getline(&Buffer, &Len,fp_fa);
-    while (!feof(fp_fa))
+    ifstream fp_fa;
+    fp_fa.open(ShellCommand,ios::in);
+    getline(fp_fa, Buffer);
+    while (!fp_fa.eof())
     {
-        if (strlen(Buffer) != 0)
+        if (Buffer.size() != 0)
         {
-            for (int i = (int)strlen(Buffer) - 1; i > 0; i--)
-            {
-                if (Buffer[i] == '.')
-                {
-                    Buffer[i] = '\0';
-                    break;
-                }
-            }
-            ChrName.push_back(Buffer);
+            int i = Buffer.rfind('.');
+            strbuff = Buffer.substr(0,i);
+            ChrName.push_back(strbuff.c_str());
         }
-        getline(&Buffer, &Len,fp_fa);
+        getline(fp_fa, Buffer);
     }
-    fclose(fp_fa);
-    if (Buffer)
-    {
-        free(Buffer);
-        Buffer = NULL;
-    }
+    fp_fa.close();
 
 //    omp_set_nested(1);
 
@@ -149,8 +137,7 @@ int StitchVCF(int argc,char *argv[])
     for (int i = 0; i < (int)ChrName.size(); ++i)
     {
         char Command[CMD_NUM];
-        char *VCFBuffer = NULL;
-        size_t VCFLen = 0;
+        string VCFBuffer;
 
         ReadCount[i][0] = 0;
 
@@ -160,23 +147,21 @@ int StitchVCF(int argc,char *argv[])
         snprintf(Command, sizeof(Command), "ls -l %s/fa/%s |grep \"^-\"|wc -l > %s_tmp", PathWork, ChrName[i].c_str(), ChrName[i].c_str());
         system(Command);
         snprintf(Command, sizeof(Command), "%s_tmp", ChrName[i].c_str());
-        FILE *fp_chr;
-        if ((fp_chr = fopen(Command, "r")) == NULL)
-            exit(-1);
-        getline(&VCFBuffer, &VCFLen, fp_chr);
-        FileNumber[i] = atoi(VCFBuffer) / 2;
-        fclose(fp_chr);
+        ifstream fp_chr;
+        fp_chr.open(Command,ios::in);
+        getline(fp_chr, VCFBuffer);
+        FileNumber[i] = atoi(VCFBuffer.c_str()) / 2;
+        fp_chr.close();
 
         //Get the length of each line in the FA files.
         snprintf(Command, sizeof(Command), "wc -L %s/fa/%s.fa > %s_tmp", PathWork, ChrName[i].c_str(),
                  ChrName[i].c_str());
         system(Command);
         snprintf(Command, sizeof(Command), "%s_tmp", ChrName[i].c_str());
-        if ((fp_chr = fopen(Command, "r")) == NULL)
-            exit(-1);
-        getline(&VCFBuffer, &VCFLen, fp_chr);
-        int Maxlen_PreLine = atoi(VCFBuffer);
-        fclose(fp_chr);
+        fp_chr.open(Command,ios::in);
+        getline(fp_chr, VCFBuffer);
+        int Maxlen_PreLine = atoi(VCFBuffer.c_str());
+        fp_chr.close();
 
         for (int j = 0; j < FileNumber[i]; j++)
         {
@@ -185,22 +170,16 @@ int StitchVCF(int argc,char *argv[])
                      ChrName[i].c_str(), j, ChrName[i].c_str());
             system(Command);
             snprintf(Command, sizeof(Command), "%s_tmp", ChrName[i].c_str());
-            if ((fp_chr = fopen(Command, "r")) == NULL)
-                exit(-1);
-            getline(&VCFBuffer, &VCFLen, fp_chr);
-            fclose(fp_chr);
+            fp_chr.open(Command,ios::in);
+            getline(fp_chr, VCFBuffer);
+            fp_chr.close();
 
             //Record the number of all reads so far.
-            ReadCount[i][j + 1] = ReadCount[i][j] + (atol(VCFBuffer) - 1) * Maxlen_PreLine;
+            ReadCount[i][j + 1] = ReadCount[i][j] + (atol(VCFBuffer.c_str()) - 1) * Maxlen_PreLine;
 
         }
         snprintf(Command, sizeof(Command), "%s_tmp", ChrName[i].c_str());
         remove(Command);
-        if (VCFBuffer)
-        {
-            free(VCFBuffer);
-            VCFBuffer = NULL;
-        }
     }
     printf("VCF results are completed.\n");
 
