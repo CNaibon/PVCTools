@@ -30,8 +30,7 @@ int SmallFA(int argc, char *argv[])
     vector<string> SampleName;
     //Command string.
     char ShellCommand[CMD_NUM];
-    char *Buffer = NULL;
-    size_t Len = FILE_LINE;
+    string Buffer;
 
     char PathWork[CMD_NUM];
     char Queue[CMD_NUM] = "normal";
@@ -68,16 +67,16 @@ int SmallFA(int argc, char *argv[])
     system(ShellCommand);
 
     //Import BAM list, if you need to customize the list, you should modify the [bamlist], fill in the need to split the BAM file
-    FILE *fp_bam;
+
+    ifstream fp_bam;
     snprintf(ShellCommand, sizeof(ShellCommand), "%s/bamlist", PathWork);
-    if ((fp_bam = fopen(ShellCommand, "r")) == NULL)
-        exit(-1);
-    getline(&Buffer, &Len, fp_bam);
-    while (!feof(fp_bam))
+    fp_bam.open(ShellCommand,ios::in);
+    getline(fp_bam, Buffer);
+    while (!fp_bam.eof())
     {
-        if (strlen(Buffer) != 0)
+        if (Buffer.size() != 0)
         {
-            for (int i = (int)strlen(Buffer) - 1; i > 0; i--)
+            for (int i = (int)Buffer.size() - 1; i > 0; i--)
             {
                 if (Buffer[i] == '.')
                 {
@@ -85,23 +84,22 @@ int SmallFA(int argc, char *argv[])
                     break;
                 }
             }
-            SampleName.push_back(Buffer);
+            SampleName.push_back(Buffer.c_str());
         }
-        getline(&Buffer, &Len, fp_bam);
+        getline(fp_bam, Buffer);
     }
-    fclose(fp_bam);
+    fp_bam.close();
 
     //Import FA list, if you need to customize the list, you should modify the [falist], fill in the need to split the FA file
     snprintf(ShellCommand, sizeof(ShellCommand), "%s/smalllist", PathWork);
-    FILE *fp_fa;
-    if ((fp_fa = fopen(ShellCommand, "r")) == NULL)
-        exit(-1);
-    getline(&Buffer, &Len, fp_fa);
-    while (!feof(fp_fa))
+    ifstream fp_small;
+    fp_small.open(ShellCommand,ios::in);
+    getline(fp_small, Buffer);
+    while (!fp_small.eof())
     {
-        if (strlen(Buffer) != 0)
+        if (Buffer.size() != 0)
         {
-            for (int i = (int)strlen(Buffer) - 1; i > 0; i--)
+            for (int i = (int)Buffer.size() - 1; i > 0; i--)
             {
                 if (Buffer[i] == '.')
                 {
@@ -109,11 +107,11 @@ int SmallFA(int argc, char *argv[])
                     break;
                 }
             }
-            ChrName.push_back(Buffer);
+            ChrName.push_back(Buffer.c_str());
         }
-        getline(&Buffer, &Len, fp_fa);
+        getline(fp_small, Buffer);
     }
-    fclose(fp_fa);
+    fp_small.close();
 
     //Create the relevant directory.
     snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/out", PathWork);
@@ -192,7 +190,9 @@ int SmallFA(int argc, char *argv[])
         }
         else if (Tool == "freebayes")
         {
-            snprintf(Command, sizeof(Command), "/usr/bin/time -f \"%%E\" %s --strict-vcf ", PATH_FREEBAYES);
+            snprintf(Command, sizeof(Command), "/usr/bin/time -f \"%%E\" ");
+            fputs(Command, fp_sh);
+            snprintf(Command, sizeof(Command), "%s --strict-vcf ", PATH_FREEBAYES);
             fputs(Command, fp_sh);
             snprintf(Command, sizeof(Command), "-f %s/fa/%s.fa ", PathWork, ChrName[i].c_str());
             fputs(Command, fp_sh);

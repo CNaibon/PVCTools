@@ -123,60 +123,6 @@ PVCTools_alpha_v2_5/fast:
 	$(MAKE) -f CMakeFiles/PVCTools_alpha_v2_5.dir/build.make CMakeFiles/PVCTools_alpha_v2_5.dir/build
 .PHONY : PVCTools_alpha_v2_5/fast
 
-include/StitchVCF.o: include/StitchVCF.cpp.o
-
-.PHONY : include/StitchVCF.o
-
-# target to build an object file
-include/StitchVCF.cpp.o:
-	$(MAKE) -f CMakeFiles/PVCTools_alpha_v2_5.dir/build.make CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.o
-.PHONY : include/StitchVCF.cpp.o
-
-include/StitchVCF.i: include/StitchVCF.cpp.i
-
-.PHONY : include/StitchVCF.i
-
-# target to preprocess a source file
-include/StitchVCF.cpp.i:
-	$(MAKE) -f CMakeFiles/PVCTools_alpha_v2_5.dir/build.make CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.i
-.PHONY : include/StitchVCF.cpp.i
-
-include/StitchVCF.s: include/StitchVCF.cpp.s
-
-.PHONY : include/StitchVCF.s
-
-# target to generate assembly for a file
-include/StitchVCF.cpp.s:
-	$(MAKE) -f CMakeFiles/PVCTools_alpha_v2_5.dir/build.make CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.s
-.PHONY : include/StitchVCF.cpp.s
-
-include/stichvcftext.o: include/stichvcftext.cpp.o
-
-.PHONY : include/stichvcftext.o
-
-# target to build an object file
-include/stichvcftext.cpp.o:
-	$(MAKE) -f CMakeFiles/PVCTools_alpha_v2_5.dir/build.make CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.o
-.PHONY : include/stichvcftext.cpp.o
-
-include/stichvcftext.i: include/stichvcftext.cpp.i
-
-.PHONY : include/stichvcftext.i
-
-# target to preprocess a source file
-include/stichvcftext.cpp.i:
-	$(MAKE) -f CMakeFiles/PVCTools_alpha_v2_5.dir/build.make CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.i
-.PHONY : include/stichvcftext.cpp.i
-
-include/stichvcftext.s: include/stichvcftext.cpp.s
-
-.PHONY : include/stichvcftext.s
-
-# target to generate assembly for a file
-include/stichvcftext.cpp.s:
-	$(MAKE) -f CMakeFiles/PVCTools_alpha_v2_5.dir/build.make CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.s
-.PHONY : include/stichvcftext.cpp.s
-
 src/childnode/Environment.o: src/childnode/Environment.cpp.o
 
 .PHONY : src/childnode/Environment.o
@@ -483,12 +429,6 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... PVCTools_alpha_v2_5"
-	@echo "... include/StitchVCF.o"
-	@echo "... include/StitchVCF.i"
-	@echo "... include/StitchVCF.s"
-	@echo "... include/stichvcftext.o"
-	@echo "... include/stichvcftext.i"
-	@echo "... include/stichvcftext.s"
 	@echo "... src/childnode/Environment.o"
 	@echo "... src/childnode/Environment.i"
 	@echo "... src/childnode/Environment.s"

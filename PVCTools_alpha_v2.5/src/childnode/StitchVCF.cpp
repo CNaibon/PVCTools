@@ -12,10 +12,10 @@
 
 using namespace std;
 
-void VCF_Modify(char *buffer, long addresses_number)
+void VCF_Modify(string &buffer, long addresses_number)
 {
     int count = 0;
-    for (int i = 0; i < (int)strlen(buffer); i++)
+    for (int i = 0; i < (int)buffer.size(); i++)
     {
         if (buffer[i] == '\t')
         {
@@ -32,64 +32,51 @@ void VCF_Modify(char *buffer, long addresses_number)
             //Modify the starting address.
             long Num_New = Num_Old + addresses_number;
             snprintf(Number_New, sizeof(Number_New), "%ld", Num_New);
-            snprintf(Front, (size_t)(i + 2), "%s", buffer);
+            snprintf(Front, (size_t)(i + 2), "%s", buffer.c_str());
             snprintf(Rear, sizeof(Rear), "%s", &buffer[i + 1 + Length_Old]);
             strncat(Front, Number_New, sizeof(Front) - strlen(Front));
             strncat(Front, Rear, sizeof(Front) - strlen(Front));
-            //memset(buffer, 0, FILE_LINE);
-            snprintf(buffer, FILE_LINE, "%s", Front);
-            //memset(Front, 0, FILE_LINE);
-            //memset(Rear, 0, FILE_LINE);
-            return;
+            buffer = Front;
+            return ;
         }
     }
 }
 
 int VCF_Link(char *tarfile, char *formfile, long add_count)
 {
-    FILE *fp_tag, *fp_frm;
-    if((fp_tag=fopen(tarfile,"a+"))==NULL)
-        exit(-1);
-    if((fp_frm=fopen(formfile,"r"))==NULL)
-        exit(-1);
-
-    fseek(fp_tag,0,SEEK_END);
-
-    //Skip the source file to the beginning of the "##" section.
-    char *Buffer = NULL;
-    size_t Len = FILE_LINE;
-
+    string buff;
+    string cmd = formfile;
+    ifstream infile;
+    ofstream outfile;
+    infile.open(formfile,ios::in);
+    outfile.open(tarfile, ios::out|ios::app);
     while (1)
     {
-        getline(&Buffer, &Len,fp_frm);
-        if(feof(fp_frm))
+        getline(infile,buff);
+        if(infile.eof())
         {
             printf("There is no need to stitch the content!");
-            fclose(fp_frm);
-            fclose(fp_tag);
+            infile.close();
+            outfile.close();
             return 0;
         }
-        if(Buffer[0] != '#') break;
+        if(buff[0] != '#') break;
     }
-
-    VCF_Modify(Buffer,add_count);
-    fputs(Buffer,fp_tag);
+    VCF_Modify(buff,add_count);
+    outfile<<buff;
     //Write the cache, modify the address, write the stitching file.
-    while (getline(&Buffer, &Len, fp_frm) != -1)
+    while (1)
     {
+        getline(infile,buff);
+        if(infile.eof()) break;
         //Restore the address in VCF.
-        VCF_Modify(Buffer,add_count);
-        fputs(Buffer,fp_tag);
-//        free(Buffer);
-//        Buffer = NULL;
-    }
-    if (Buffer)
-    {
-        free(Buffer);
+        VCF_Modify(buff,add_count);
+        outfile<<buff;
     }
 
-    fclose(fp_frm);
-    fclose(fp_tag);
+
+    infile.close();
+    outfile.close();
     return 0;
 
 }
@@ -103,8 +90,8 @@ int StitchVCF(int argc,char *argv[])
     //Command string.
     char ShellCommand[CMD_NUM];
     char *Buffer = NULL;
-    size_t Len = FILE_LINE;
-    
+    size_t Len = 0;
+
     char PathWork[CMD_NUM];
     int SplitNumber;
 
@@ -146,6 +133,11 @@ int StitchVCF(int argc,char *argv[])
         getline(&Buffer, &Len,fp_fa);
     }
     fclose(fp_fa);
+    if (Buffer)
+    {
+        free(Buffer);
+        Buffer = NULL;
+    }
 
 //    omp_set_nested(1);
 
@@ -158,7 +150,7 @@ int StitchVCF(int argc,char *argv[])
     {
         char Command[CMD_NUM];
         char *VCFBuffer = NULL;
-        size_t VCFLen = FILE_LINE;
+        size_t VCFLen = 0;
 
         ReadCount[i][0] = 0;
 
@@ -177,7 +169,7 @@ int StitchVCF(int argc,char *argv[])
 
         //Get the length of each line in the FA files.
         snprintf(Command, sizeof(Command), "wc -L %s/fa/%s.fa > %s_tmp", PathWork, ChrName[i].c_str(),
-                ChrName[i].c_str());
+                 ChrName[i].c_str());
         system(Command);
         snprintf(Command, sizeof(Command), "%s_tmp", ChrName[i].c_str());
         if ((fp_chr = fopen(Command, "r")) == NULL)
@@ -190,7 +182,7 @@ int StitchVCF(int argc,char *argv[])
         {
             //Read the current FA file number of rows.
             snprintf(Command, sizeof(Command), "wc -l %s/fa/%s/%s_%d.fa > %s_tmp", PathWork, ChrName[i].c_str(),
-                    ChrName[i].c_str(), j, ChrName[i].c_str());
+                     ChrName[i].c_str(), j, ChrName[i].c_str());
             system(Command);
             snprintf(Command, sizeof(Command), "%s_tmp", ChrName[i].c_str());
             if ((fp_chr = fopen(Command, "r")) == NULL)
@@ -204,6 +196,11 @@ int StitchVCF(int argc,char *argv[])
         }
         snprintf(Command, sizeof(Command), "%s_tmp", ChrName[i].c_str());
         remove(Command);
+        if (VCFBuffer)
+        {
+            free(VCFBuffer);
+            VCFBuffer = NULL;
+        }
     }
     printf("VCF results are completed.\n");
 
@@ -217,8 +214,8 @@ int StitchVCF(int argc,char *argv[])
 
         //Copy a copy of the first VCF file.
         snprintf(Command, sizeof(Command), "cp -f %s/vcf/%s/%s_0.var.flt.vcf %s/vcf/Final_Result/%s.var.flt.vcf", PathWork,
-                ChrName[i].c_str(), ChrName[i].c_str(), PathWork,
-                ChrName[i].c_str());
+                 ChrName[i].c_str(), ChrName[i].c_str(), PathWork,
+                 ChrName[i].c_str());
         system(Command);
 
         char VCF_File[CMD_NUM];
@@ -227,12 +224,11 @@ int StitchVCF(int argc,char *argv[])
         for (int n = 1; n < FileNumber[i]; n++)
         {
             snprintf(Command, sizeof(Command), "%s/vcf/%s/%s_%d.var.flt.vcf", PathWork, ChrName[i].c_str(),ChrName[i].c_str(),n);
-            printf("%s start!\n", Command);
             VCF_Link(VCF_File, Command, ReadCount[i][n]);
-            printf("%s finished!\n", Command);
         }
     }
     printf("VCF results stitching done.\n");
+
 
     long FinishTime = time((time_t*)NULL);
     printf("finish time = %ld\n", FinishTime);

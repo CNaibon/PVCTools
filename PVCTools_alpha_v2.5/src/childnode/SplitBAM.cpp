@@ -55,16 +55,13 @@ int SplitBAM(int argc,char *argv[])
     snprintf(ShellCommand, sizeof(ShellCommand), "touch %s/bamlist", PathWork);
     system(ShellCommand);
 
-    FILE *fp_bam;
-    char *Buffer = NULL;
-    size_t Len = FILE_LINE;
-
     //Import BAM list. If you need to customize the list, you should modify the [bamlist], fill in the need to split the BAM file
     if (ImportBAM == false)
     {
+        FILE *fp_bamw;
         char BAMFile[CMD_NUM];
         snprintf(ShellCommand, sizeof(ShellCommand), "%s/bamlist", PathWork);
-        if ((fp_bam = fopen(ShellCommand, "w")) == NULL)
+        if ((fp_bamw = fopen(ShellCommand, "w")) == NULL)
             exit(-1);
         DIR *dir;
         struct dirent *ptr;
@@ -83,21 +80,23 @@ int SplitBAM(int argc,char *argv[])
                 }
             }
             if (Suffix != "bam") continue;
-            fputs(BAMFile, fp_bam);
-            fputs("\n", fp_bam);
+            fputs(BAMFile, fp_bamw);
+            fputs("\n", fp_bamw);
         }
         closedir(dir);
-        fclose(fp_bam);
+        fclose(fp_bamw);
     }
+
+    ifstream fp_bam;
+    string Buffer;
     snprintf(ShellCommand, sizeof(ShellCommand), "%s/bamlist", PathWork);
-    if ((fp_bam = fopen(ShellCommand, "r")) == NULL)
-        exit(-1);
-    getline(&Buffer, &Len, fp_bam);
-    while (!feof(fp_bam))
+    fp_bam.open(ShellCommand,ios::in);
+    getline(fp_bam, Buffer);
+    while (!fp_bam.eof())
     {
-        if (strlen(Buffer) != 0)
+        if (Buffer.size() != 0)
         {
-            for (int i = (int)strlen(Buffer) - 1; i > 0; i--)
+            for (int i = (int)Buffer.size() - 1; i > 0; i--)
             {
                 if (Buffer[i] == '.')
                 {
@@ -105,13 +104,13 @@ int SplitBAM(int argc,char *argv[])
                     break;
                 }
             }
-            SampleName.push_back(Buffer);
-            snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/sample/%s", PathWork, Buffer);
+            SampleName.push_back(Buffer.c_str());
+            snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/sample/%s", PathWork, Buffer.c_str());
             system(ShellCommand);
         }
-        getline(&Buffer, &Len, fp_bam);
+        getline(fp_bam, Buffer);
     }
-    fclose(fp_bam);
+    fp_bam.close();
 
     printf("The sample was split according to the chromosome...\n");
 

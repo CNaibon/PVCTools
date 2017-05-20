@@ -321,54 +321,6 @@ CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.o.provides: CMak
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.o.provides.build: CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.o
 
 
-CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.o: CMakeFiles/PVCTools_alpha_v2_5.dir/flags.make
-CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.o: ../include/StitchVCF.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.o"
-	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/include/StitchVCF.cpp
-
-CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.i"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/include/StitchVCF.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.i
-
-CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.s"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/include/StitchVCF.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.s
-
-CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.o.requires:
-
-.PHONY : CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.o.requires
-
-CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.o.provides: CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.o.requires
-	$(MAKE) -f CMakeFiles/PVCTools_alpha_v2_5.dir/build.make CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.o.provides.build
-.PHONY : CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.o.provides
-
-CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.o.provides.build: CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.o
-
-
-CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.o: CMakeFiles/PVCTools_alpha_v2_5.dir/flags.make
-CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.o: ../include/stichvcftext.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.o"
-	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/include/stichvcftext.cpp
-
-CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.i"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/include/stichvcftext.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.i
-
-CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.s"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/include/stichvcftext.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.s
-
-CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.o.requires:
-
-.PHONY : CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.o.requires
-
-CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.o.provides: CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.o.requires
-	$(MAKE) -f CMakeFiles/PVCTools_alpha_v2_5.dir/build.make CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.o.provides.build
-.PHONY : CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.o.provides
-
-CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.o.provides.build: CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.o
-
-
 # Object files for target PVCTools_alpha_v2_5
 PVCTools_alpha_v2_5_OBJECTS = \
 "CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Environment.cpp.o" \
@@ -381,9 +333,7 @@ PVCTools_alpha_v2_5_OBJECTS = \
 "CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/StitchVCF.cpp.o" \
 "CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Submit.cpp.o" \
 "CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/Environment.cpp.o" \
-"CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.o" \
-"CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.o" \
-"CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.o"
+"CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.o"
 
 # External object files for target PVCTools_alpha_v2_5
 PVCTools_alpha_v2_5_EXTERNAL_OBJECTS =
@@ -399,11 +349,9 @@ PVCTools_alpha_v2_5.exe: CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Stitch
 PVCTools_alpha_v2_5.exe: CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Submit.cpp.o
 PVCTools_alpha_v2_5.exe: CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/Environment.cpp.o
 PVCTools_alpha_v2_5.exe: CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.o
-PVCTools_alpha_v2_5.exe: CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.o
-PVCTools_alpha_v2_5.exe: CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.o
 PVCTools_alpha_v2_5.exe: CMakeFiles/PVCTools_alpha_v2_5.dir/build.make
 PVCTools_alpha_v2_5.exe: CMakeFiles/PVCTools_alpha_v2_5.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Linking CXX executable PVCTools_alpha_v2_5.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX executable PVCTools_alpha_v2_5.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/PVCTools_alpha_v2_5.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -422,8 +370,6 @@ CMakeFiles/PVCTools_alpha_v2_5.dir/requires: CMakeFiles/PVCTools_alpha_v2_5.dir/
 CMakeFiles/PVCTools_alpha_v2_5.dir/requires: CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Submit.cpp.o.requires
 CMakeFiles/PVCTools_alpha_v2_5.dir/requires: CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/Environment.cpp.o.requires
 CMakeFiles/PVCTools_alpha_v2_5.dir/requires: CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.o.requires
-CMakeFiles/PVCTools_alpha_v2_5.dir/requires: CMakeFiles/PVCTools_alpha_v2_5.dir/include/StitchVCF.cpp.o.requires
-CMakeFiles/PVCTools_alpha_v2_5.dir/requires: CMakeFiles/PVCTools_alpha_v2_5.dir/include/stichvcftext.cpp.o.requires
 
 .PHONY : CMakeFiles/PVCTools_alpha_v2_5.dir/requires
 

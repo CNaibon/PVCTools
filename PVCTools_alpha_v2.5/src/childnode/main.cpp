@@ -48,6 +48,7 @@ int main(int argc, char *argv[])
         SplitBAM(argc - 1, argv + 1);
         SegmentBAM(argc - 1, argv + 1);
         Submit(argc - 1, argv + 1);
+        SmallFA(argc - 1, argv + 1);
     }
     else
     {

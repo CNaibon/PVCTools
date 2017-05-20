@@ -31,13 +31,13 @@ int Submit(int argc, char *argv[])
     vector<string> SampleName;
     //Command string.
     char ShellCommand[CMD_NUM];
-    char *Buffer = NULL;
-    size_t Len = FILE_LINE;
+    string Buffer;
 
     char PathWork[CMD_NUM];
     char Queue[CMD_NUM] = "fatnode";
     char Span[CMD_NUM] = "20";
     string Tool = "samtools";
+    string Parameters = " ";
 
     for (int i = 0; i < argc; i++)
     {
@@ -60,19 +60,22 @@ int Submit(int argc, char *argv[])
         {
             Tool = argv[i + 1];
         }
+        if (cmd == "-P")
+        {
+            Parameters = argv[i + 1];
+        }
     }
 
     //Import BAM list, if you need to customize the list, you should modify the [bamlist], fill in the need to split the BAM file.
-    FILE *fp_bam;
+    ifstream fp_bam;
     snprintf(ShellCommand, sizeof(ShellCommand), "%s/bamlist", PathWork);
-    if ((fp_bam = fopen(ShellCommand, "r")) == NULL)
-        exit(-1);
-    getline(&Buffer, &Len, fp_bam);
-    while (!feof(fp_bam))
+    fp_bam.open(ShellCommand,ios::in);
+    getline(fp_bam, Buffer);
+    while (!fp_bam.eof())
     {
-        if (strlen(Buffer) != 0)
+        if (Buffer.size() != 0)
         {
-            for (int i = (int)strlen(Buffer) - 1; i > 0; i--)
+            for (int i = (int)Buffer.size() - 1; i > 0; i--)
             {
                 if (Buffer[i] == '.')
                 {
@@ -80,23 +83,22 @@ int Submit(int argc, char *argv[])
                     break;
                 }
             }
-            SampleName.push_back(Buffer);
+            SampleName.push_back(Buffer.c_str());
         }
-        getline(&Buffer, &Len, fp_bam);
+        getline(fp_bam, Buffer);
     }
-    fclose(fp_bam);
+    fp_bam.close();
 
     //Import FA list, if you need to customize the list, you should modify the [falist], fill in the need to split the FA file.
     snprintf(ShellCommand, sizeof(ShellCommand), "%s/falist", PathWork);
-    FILE *fp_fa;
-    if ((fp_fa = fopen(ShellCommand, "r")) == NULL)
-        exit(-1);
-    getline(&Buffer, &Len, fp_fa);
-    while (!feof(fp_fa))
+    ifstream fp_fa;
+    fp_fa.open(ShellCommand,ios::in);
+    getline(fp_fa, Buffer);
+    while (!fp_fa.eof())
     {
-        if (strlen(Buffer) != 0)
+        if (Buffer.size() != 0)
         {
-            for (int i = (int)strlen(Buffer) - 1; i > 0; i--)
+            for (int i = (int)Buffer.size() - 1; i > 0; i--)
             {
                 if (Buffer[i] == '.')
                 {
@@ -104,11 +106,11 @@ int Submit(int argc, char *argv[])
                     break;
                 }
             }
-            ChrName.push_back(Buffer);
+            ChrName.push_back(Buffer.c_str());
         }
-        getline(&Buffer, &Len, fp_fa);
+        getline(fp_fa, Buffer);
     }
-    fclose(fp_fa);
+    fp_fa.close();
 
     int FileNumber[ChrName.size()];
 
@@ -118,22 +120,20 @@ int Submit(int argc, char *argv[])
     for (int i = 0; i < (int)ChrName.size(); ++i)
     {
         char Command[CMD_NUM];
-        char *SubBuffer = NULL;
-        size_t SubLen = FILE_LINE;
+        string SubBuffer;
 
         snprintf(Command, sizeof(Command), "touch %s_tmp", ChrName[i].c_str());
         system(Command);
 
-        FILE *fp_sp;
+        ifstream fp_sp;
         //Count the current number of files.
         snprintf(Command, sizeof(Command), "ls -l %s/fa/%s |grep \"^-\"|wc -l > %s_tmp ", PathWork, ChrName[i].c_str(), ChrName[i].c_str());
         system(Command);
         snprintf(Command, sizeof(Command), "%s_tmp", ChrName[i].c_str());
-        if ((fp_sp = fopen(Command, "r")) == NULL)
-            exit(-1);
-        getline(&SubBuffer, &SubLen, fp_sp);
+        fp_sp.open(Command,ios::in);
+        getline(fp_sp, SubBuffer);
         //The number of files after bisection.
-        FileNumber[i] = atoi(SubBuffer);
+        FileNumber[i] = atoi(SubBuffer.c_str());
 
         snprintf(Command, sizeof(Command), "rm -rf %s_tmp ", ChrName[i].c_str());
         system(Command);
@@ -178,9 +178,9 @@ int Submit(int argc, char *argv[])
 
             if (Tool == "samtools")
             {
-                snprintf(Command, sizeof(Command), "%s mpileup -u -t DP,AD,ADF -f ", PATH_SAMTOOLS);
+                snprintf(Command, sizeof(Command), "%s mpileup -u -t DP,AD,ADF %s ", PATH_SAMTOOLS, Parameters.c_str());
                 fputs(Command, fp_sh);
-                snprintf(Command, sizeof(Command), "%s/fa/%s/%s_%d.fa ", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), k);
+                snprintf(Command, sizeof(Command), "-f %s/fa/%s/%s_%d.fa ", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), k);
                 fputs(Command, fp_sh);
                 //Write a number of sample small copies.
                 for (int n = 0; n < (int)SampleName.size(); n++)
@@ -199,7 +199,7 @@ int Submit(int argc, char *argv[])
             }
             else if (Tool == "gatk")
             {
-                snprintf(Command, sizeof(Command), "java -jar %s -T HaplotypeCaller ", PATH_GATK);
+                snprintf(Command, sizeof(Command), "java -jar %s -T HaplotypeCaller %s ", PATH_GATK, Parameters.c_str());
                 fputs(Command, fp_sh);
                 snprintf(Command, sizeof(Command), "-R %s/fa/%s/%s_%d.fa -nct 1 ", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), k);
                 fputs(Command, fp_sh);
@@ -221,7 +221,7 @@ int Submit(int argc, char *argv[])
             {
                 snprintf(Command, sizeof(Command), "/usr/bin/time -f \"%%E\" ");
                 fputs(Command, fp_sh);
-                snprintf(Command, sizeof(Command), "%s --strict-vcf ", PATH_FREEBAYES);
+                snprintf(Command, sizeof(Command), "%s --strict-vcf %s ", PATH_FREEBAYES, Parameters.c_str());
                 fputs(Command, fp_sh);
                 snprintf(Command, sizeof(Command), "-f %s/fa/%s/%s_%d.fa ", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), k);
                 fputs(Command, fp_sh);

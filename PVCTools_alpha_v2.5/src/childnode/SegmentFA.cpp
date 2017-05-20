@@ -19,11 +19,10 @@ int SegmentFA(int argc,char *argv[])
     printf("start time = %ld\n", StartTime);
 
     vector<string> ChrName;
-    FILE *fp_Tmp;
+    ifstream fp_Tmp;
     //Command string
     char ShellCommand[CMD_NUM];
-    char *Buffer = NULL;
-    size_t Len = FILE_LINE;
+    string Buffer;
 
     //Create a shell command to call the result log file
     system("touch tmp");
@@ -51,19 +50,19 @@ int SegmentFA(int argc,char *argv[])
         }
     }
 
-    FILE *fp_FA;
+
     if(Limit == 0)
     {
         //Import FA list. If you need to customize the list, you should modify [falist], fill in the need to split the fa files.
         snprintf(ShellCommand, sizeof(ShellCommand), "%s/falist", PathWork);
-        if ((fp_FA = fopen(ShellCommand, "r")) == NULL)
-            exit(-1);
-        getline(&Buffer, &Len, fp_FA);
-        while (!feof(fp_FA))
+        ifstream fp_fa;
+        fp_fa.open(ShellCommand,ios::in);
+        getline(fp_fa, Buffer);
+        while (!fp_fa.eof())
         {
-            if (strlen(Buffer) != 0)
+            if (Buffer.size() != 0)
             {
-                for (int i = (int)strlen(Buffer) - 1; i > 0; i--)
+                for (int i = (int)Buffer.size() - 1; i > 0; i--)
                 {
                     if (Buffer[i] == '.')
                     {
@@ -71,14 +70,15 @@ int SegmentFA(int argc,char *argv[])
                         break;
                     }
                 }
-                ChrName.push_back(Buffer);
+                ChrName.push_back(Buffer.c_str());
             }
-            getline(&Buffer, &Len, fp_FA);
+            getline(fp_fa, Buffer);
         }
-        fclose(fp_FA);
+        fp_fa.close();
     }
     else
     {
+        FILE *fp_FA;
         snprintf(ShellCommand, sizeof(ShellCommand), "%s/falist", PathWork);
         if ((fp_FA = fopen(ShellCommand, "w")) == NULL)
             exit(-1);
@@ -103,11 +103,10 @@ int SegmentFA(int argc,char *argv[])
             //Call the command to query the FA file size.
             snprintf(ShellCommand, sizeof(ShellCommand), "du -h --block-size=M %s/fa/%s > tmp", PathWork, ptr->d_name);
             system(ShellCommand);
-            if ((fp_Tmp = fopen("tmp", "r")) == NULL)
-                exit(-1);
-            getline(&Buffer, &Len, fp_Tmp);
-            fclose(fp_Tmp);
-            long FASize = atol(Buffer);
+            fp_Tmp.open("tmp",ios::in);
+            getline(fp_Tmp, Buffer);
+            fp_Tmp.close();
+            long FASize = atol(Buffer.c_str());
             if (FASize < Limit) continue;
             strncpy(FAFile, ptr->d_name, sizeof(FAFile)-1);
             fputs(FAFile, fp_FA);
@@ -133,11 +132,10 @@ int SegmentFA(int argc,char *argv[])
     {
         snprintf(ShellCommand, sizeof(ShellCommand), "du -h --block-size=M %s/fa/%s.fa > tmp ", PathWork, ChrName[i].c_str());
         system(ShellCommand);
-        if ((fp_Tmp = fopen("tmp", "r")) == NULL)
-            exit(-1);
-        getline(&Buffer, &Len, fp_Tmp);
-        fclose(fp_Tmp);
-        long FASize = atol(Buffer);
+        fp_Tmp.open("tmp",ios::in);
+        getline(fp_Tmp, Buffer);
+        fp_Tmp.close();
+        long FASize = atol(Buffer.c_str());
         //Calculate the size of each post split.
         long fa_split_piece_size = FASize / SplitNumber;
         if (fa_split_piece_size == 0)
@@ -168,12 +166,11 @@ int SegmentFA(int argc,char *argv[])
         //Count the current number of files
         snprintf(ShellCommand, sizeof(ShellCommand), "ls -l %s/fa/%s |grep \"^-\"|wc -l > tmp ", PathWork, ChrName[i].c_str());
         system(ShellCommand);
-        if ((fp_Tmp = fopen("tmp", "r")) == NULL)
-            exit(-1);
-        getline(&Buffer, &Len, fp_Tmp);
+        fp_Tmp.open("tmp",ios::in);
+        getline(fp_Tmp, Buffer);
+        fp_Tmp.close();
         //The number of files after bisection
-        FileNumber[i] = atoi(Buffer);
-        fclose(fp_Tmp);
+        FileNumber[i] = atoi(Buffer.c_str());
         printf("FA files renaming...\n");
         for (int n = 0; n < FileNumber[i]; n++)
         {

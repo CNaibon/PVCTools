@@ -17,21 +17,19 @@ using namespace std;
 //The FA file is divided into chromosomes and obtained after cutting the chromosome name.
 void Fa_Chr(char *workpath,char *fa_path)
 {
-    FILE *fp;
-    if((fp = fopen(fa_path, "r")) == NULL)
-        exit(-1);
-    char *Line = NULL;
-    size_t Len = FILE_LINE;
+    ifstream fp;
+    fp.open(fa_path,ios::in);
+    string Line;
     char FileName[CMD_NUM];
     char ShellCommand[CMD_NUM];
     //Create the FA directory.
     snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/fa", workpath);
     system(ShellCommand);
-    getline(&Line, &Len, fp);
+    getline(fp,Line);
     //Extract the sequence of each chromosome
-    while (!feof(fp))
+    while (!fp.eof())
     {
-        strncpy(FileName,Line + 1 ,sizeof(FileName) - 4);
+        strncpy(FileName, &Line[1] ,sizeof(FileName) - 4);
         for (int i = 0; i < (int)strlen(FileName); i++)
         {
             if(FileName[i] == ' ' || FileName[i] == '\t' || FileName[i] == '\n')
@@ -44,22 +42,20 @@ void Fa_Chr(char *workpath,char *fa_path)
         snprintf(ShellCommand, sizeof(ShellCommand), "touch %s", FileName);
         system(ShellCommand);
 
-        FILE *fp_tmp;
-        if((fp_tmp = fopen(FileName, "w")) == NULL)
-            exit(-1);
-
-        fputs(Line, fp_tmp);
-        getline(&Line, &Len, fp);
-        while (strstr(Line, ">") == NULL && feof(fp) == 0)
+        ofstream fp_tmp;
+        fp_tmp.open(FileName, ios::out);
+        fp_tmp<<Line;
+        getline(fp,Line);
+        while (Line[0] != ">" && fp.eof() != 0)
         {
-            fputs(Line, fp_tmp);
-            getline(&Line, &Len, fp);
+            fp_tmp<<Line;
+            getline(fp,Line);
         }
-        fclose(fp_tmp);
+        fp_tmp.close();
         snprintf(ShellCommand, sizeof(ShellCommand), "mv %s %s/fa/", FileName, workpath);
         system(ShellCommand);
     }
-    fclose(fp);
+    fp.close();
 }
 
 int SplitFA(int argc,char *argv[])

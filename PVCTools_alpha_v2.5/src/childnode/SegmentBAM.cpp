@@ -13,12 +13,12 @@
 
 using namespace std;
 
-void Modify(char *buffer, char *chrname, int chrname_len, long addresses_number)
+void Modify(string &buffer, long addresses_number)
 {
     if (buffer[0] == '@') return;
     int count = 0;
     int flag = 0;
-    for (int i = 0; i < (int)strlen(buffer); i++)
+    for (int i = 0; i < (int)buffer.size(); i++)
     {
         if (buffer[i] == '\t')
         {
@@ -40,7 +40,7 @@ void Modify(char *buffer, char *chrname, int chrname_len, long addresses_number)
             snprintf(Rear, sizeof(Rear), "%s", &buffer[i + 1 + Length_Old]);
             strncat(Front, Number_New, sizeof(Front) - strlen(Front));
             strncat(Front, Rear, sizeof(Front) - strlen(Front));
-            snprintf(buffer, FILE_LINE, "%s", Front);
+            buffer = Front;
             flag = 0;
         }
         if (count == 7)
@@ -50,29 +50,26 @@ void Modify(char *buffer, char *chrname, int chrname_len, long addresses_number)
     }
 }
 
-int Sam_Address_Modify(char *file_name, const char *ChrName, long address_count)
+int Sam_Address_Modify(char *file_name, long address_count)
 {
-    FILE *fp_old, *fp_new;
-    if ((fp_old = fopen(file_name, "r")) == NULL)
-        exit(-1);
+    string Buffer;
+    ifstream fp_old;
+    ofstream fp_new;
+
     char TmpName[CMD_NUM];
     snprintf(TmpName, sizeof(TmpName), "%s-%d", file_name, (int)getpid());
-    if ((fp_new = fopen(TmpName, "w")) == NULL)
-        exit(-1);
-    int l1 = (int)strlen(ChrName);
-    char str1[l1];
-    strncpy(str1, ChrName, sizeof(str1)-1);
-    char *Buffer = NULL;
-    size_t Len = FILE_LINE;
-    getline(&Buffer, &Len, fp_old);
-    while (!feof(fp_old))
+    fp_old.open(file_name,ios::in);
+    fp_new.open(TmpName, ios::out|ios::app);
+
+    getline(fp_old, Buffer);
+    while (!fp_old.eof())
     {
-        Modify(Buffer, str1, l1, address_count);
-        fputs(Buffer, fp_new);
-        getline(&Buffer, &Len, fp_old);
+        Modify(Buffer, address_count);
+        fp_new<<Buffer;
+        getline(fp_old,Buffer);
     }
-    fclose(fp_old);
-    fclose(fp_new);
+    fp_old.close();
+    fp_new.close();
     remove(file_name);
     rename(TmpName, file_name);
     return 0;
@@ -91,8 +88,7 @@ int SegmentBAM(int argc, char *argv[])
     //Command string.
     char ShellCommand[CMD_NUM];
 
-    char *Buffer = NULL;
-    size_t Len = FILE_LINE;
+    string Buffer;
 
     char PathWork[CMD_NUM];
     int SplitNumber;
@@ -114,16 +110,15 @@ int SegmentBAM(int argc, char *argv[])
     
     
     //Import BAM list, if you need to customize the list, you should modify the [bamlist], fill in the need to split the BAM file
-    FILE *fp_bam;
+    ifstream fp_bam;
     snprintf(ShellCommand, sizeof(ShellCommand), "%s/bamlist", PathWork);
-    if ((fp_bam = fopen(ShellCommand, "r")) == NULL)
-        exit(-1);
-    getline(&Buffer, &Len, fp_bam);
-    while (!feof(fp_bam))
+    fp_bam.open(ShellCommand,ios::in);
+    getline(fp_bam, Buffer);
+    while (!fp_bam.eof())
     {
-        if (strlen(Buffer) != 0)
+        if (Buffer.size() != 0)
         {
-            for (int i = (int)strlen(Buffer) - 1; i > 0; i--)
+            for (int i = (int)Buffer.size() - 1; i > 0; i--)
             {
                 if (Buffer[i] == '.')
                 {
@@ -131,23 +126,22 @@ int SegmentBAM(int argc, char *argv[])
                     break;
                 }
             }
-            SampleName.push_back(Buffer);
+            SampleName.push_back(Buffer.c_str());
         }
-        getline(&Buffer, &Len, fp_bam);
+        getline(fp_bam, Buffer);
     }
-    fclose(fp_bam);
+    fp_bam.close();
 
     //Import FA list, if you need to customize the list, you should modify the [falist], fill in the need to split the FA file
     snprintf(ShellCommand, sizeof(ShellCommand), "%s/falist", PathWork);
-    FILE *fp_fa;
-    if ((fp_fa = fopen(ShellCommand, "r")) == NULL)
-        exit(-1);
-    getline(&Buffer, &Len, fp_fa);
-    while (!feof(fp_fa))
+    ifstream fp_fa;
+    fp_fa.open(ShellCommand,ios::in);
+    getline(fp_fa, Buffer);
+    while (!fp_fa.eof())
     {
-        if (strlen(Buffer) != 0)
+        if (Buffer.size() != 0)
         {
-            for (int i = (int)strlen(Buffer) - 1; i > 0; i--)
+            for (int i = (int)Buffer.size() - 1; i > 0; i--)
             {
                 if (Buffer[i] == '.')
                 {
@@ -155,11 +149,11 @@ int SegmentBAM(int argc, char *argv[])
                     break;
                 }
             }
-            ChrName.push_back(Buffer);
+            ChrName.push_back(Buffer.c_str());
         }
-        getline(&Buffer, &Len, fp_fa);
+        getline(fp_fa, Buffer);
     }
-    fclose(fp_fa);
+    fp_fa.close();
 
     int FileNumber[ChrName.size()];
 
@@ -203,8 +197,7 @@ int SegmentBAM(int argc, char *argv[])
     for (int i = 0; i < (int)ChrName.size(); ++i)
     {
         char TransCommand[CMD_NUM];
-        char *TransBuffer = NULL;
-        size_t TransLen = FILE_LINE;
+        string TransBuffer;
 
         ReadCount[i][0] = 0;
 
@@ -215,23 +208,22 @@ int SegmentBAM(int argc, char *argv[])
         snprintf(TransCommand, sizeof(TransCommand), "wc -L %s/fa/%s.fa > %s_tmp", PathWork, ChrName[i].c_str(), ChrName[i].c_str());
         system(TransCommand);
         snprintf(TransCommand, sizeof(TransCommand), "%s_tmp", ChrName[i].c_str());
-        FILE *fp_sp;
-        if ((fp_sp = fopen(TransCommand, "r")) == NULL)
-            exit(-1);
-        getline(&TransBuffer, &TransLen, fp_sp);
-        int Maxlen_PreLine = atoi(TransBuffer);
-        fclose(fp_sp);
+        ifstream fp_sp;
+        fp_sp.open(TransCommand,ios::in);
+        getline(fp_sp, TransBuffer);
+        //sscanf(TransBuffer, "%[^ ]", TransCommand);
+        int Maxlen_PreLine = atoi(TransBuffer.c_str());
+        fp_sp.close();
 
         //Count the current number of files
         snprintf(TransCommand, sizeof(TransCommand), "ls -l %s/fa/%s |grep \"^-\"|wc -l > %s_tmp ", PathWork, ChrName[i].c_str(), ChrName[i].c_str());
         system(TransCommand);
         snprintf(TransCommand, sizeof(TransCommand), "%s_tmp", ChrName[i].c_str());
-        if ((fp_sp = fopen(TransCommand, "r")) == NULL)
-            exit(-1);
-        getline(&TransBuffer, &TransLen, fp_sp);
+        fp_sp.open(TransCommand,ios::in);
+        getline(fp_sp, TransBuffer);
         //The number of files after bisection.
-        FileNumber[i] = atoi(TransBuffer);
-        fclose(fp_sp);
+        FileNumber[i] = atoi(TransBuffer.c_str());
+        fp_sp.close();
 
         //Statistics read number.
         for (int j = 0; j < FileNumber[i]; j++)
@@ -240,13 +232,12 @@ int SegmentBAM(int argc, char *argv[])
             snprintf(TransCommand, sizeof(TransCommand), "wc -l %s/fa/%s/%s_%d.fa > %s_tmp", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), j, ChrName[i].c_str());
             system(TransCommand);
             snprintf(TransCommand, sizeof(TransCommand), "%s_tmp", ChrName[i].c_str());
-            if ((fp_sp = fopen(TransCommand, "r")) == NULL)
-                exit(-1);
-            getline(&TransBuffer, &TransLen, fp_sp);
-            fclose(fp_sp);
+            fp_sp.open(TransCommand,ios::in);
+            getline(fp_sp, TransBuffer);
+            fp_sp.close();
 
             //Record the number of all reads so far.
-            ReadCount[i][j + 1] = ReadCount[i][j] + (atol(TransBuffer) - 1)*Maxlen_PreLine;
+            ReadCount[i][j + 1] = ReadCount[i][j] + (atol(TransBuffer.c_str()) - 1)*Maxlen_PreLine;
         }
         snprintf(TransCommand, sizeof(TransCommand), "%s_tmp", ChrName[i].c_str());
         remove(TransCommand);
@@ -306,7 +297,7 @@ int SegmentBAM(int argc, char *argv[])
                     snprintf(ModCommand, sizeof(ModCommand), "%s/sample/%s/%s_%s/%s_%s_%d.sam", PathWork, SampleName[n].c_str(),
                             SampleName[n].c_str(), ChrName[i].c_str(),
                             SampleName[n].c_str(), ChrName[i].c_str(), k);
-                    Sam_Address_Modify(ModCommand, ChrName[i].c_str(), ReadCount[i][k]);
+                    Sam_Address_Modify(ModCommand, ReadCount[i][k]);
                 }
 
                 //Change the modified sam file back to bam format.
