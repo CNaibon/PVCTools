@@ -26,6 +26,6 @@ set(SOURCE_FILES
         src/headnode/Environment.cpp
         src/headnode/WriteScript.cpp
         config
-        Makefile)
+        Makefile src/childnode/JudgeVCF.cpp)
 
 add_executable(PVCTools_alpha_v2_5 ${SOURCE_FILES})

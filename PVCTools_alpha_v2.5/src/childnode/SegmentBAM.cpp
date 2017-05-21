@@ -15,7 +15,10 @@ using namespace std;
 
 void Modify(string &buffer, long addresses_number)
 {
-    if (buffer[0] == '@') return;
+    if (buffer[0] == '@')
+    {
+        return;
+    }
     int count = 0;
     int flag = 0;
     for (int i = 0; i < (int)buffer.size(); i++)
@@ -59,13 +62,13 @@ int Sam_Address_Modify(char *file_name, long address_count)
     char TmpName[CMD_NUM];
     snprintf(TmpName, sizeof(TmpName), "%s-%d", file_name, (int)getpid());
     fp_old.open(file_name,ios::in);
-    fp_new.open(TmpName, ios::out|ios::app);
+    fp_new.open(TmpName, ios::out);
 
     getline(fp_old, Buffer);
     while (!fp_old.eof())
     {
         Modify(Buffer, address_count);
-        fp_new<<Buffer;
+        fp_new<<Buffer<<endl;
         getline(fp_old,Buffer);
     }
     fp_old.close();

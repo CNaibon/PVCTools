@@ -150,6 +150,33 @@ src/childnode/Environment.cpp.s:
 	$(MAKE) -f CMakeFiles/PVCTools_alpha_v2_5.dir/build.make CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Environment.cpp.s
 .PHONY : src/childnode/Environment.cpp.s
 
+src/childnode/JudgeVCF.o: src/childnode/JudgeVCF.cpp.o
+
+.PHONY : src/childnode/JudgeVCF.o
+
+# target to build an object file
+src/childnode/JudgeVCF.cpp.o:
+	$(MAKE) -f CMakeFiles/PVCTools_alpha_v2_5.dir/build.make CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/JudgeVCF.cpp.o
+.PHONY : src/childnode/JudgeVCF.cpp.o
+
+src/childnode/JudgeVCF.i: src/childnode/JudgeVCF.cpp.i
+
+.PHONY : src/childnode/JudgeVCF.i
+
+# target to preprocess a source file
+src/childnode/JudgeVCF.cpp.i:
+	$(MAKE) -f CMakeFiles/PVCTools_alpha_v2_5.dir/build.make CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/JudgeVCF.cpp.i
+.PHONY : src/childnode/JudgeVCF.cpp.i
+
+src/childnode/JudgeVCF.s: src/childnode/JudgeVCF.cpp.s
+
+.PHONY : src/childnode/JudgeVCF.s
+
+# target to generate assembly for a file
+src/childnode/JudgeVCF.cpp.s:
+	$(MAKE) -f CMakeFiles/PVCTools_alpha_v2_5.dir/build.make CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/JudgeVCF.cpp.s
+.PHONY : src/childnode/JudgeVCF.cpp.s
+
 src/childnode/SegmentBAM.o: src/childnode/SegmentBAM.cpp.o
 
 .PHONY : src/childnode/SegmentBAM.o
@@ -432,6 +459,9 @@ help:
 	@echo "... src/childnode/Environment.o"
 	@echo "... src/childnode/Environment.i"
 	@echo "... src/childnode/Environment.s"
+	@echo "... src/childnode/JudgeVCF.o"
+	@echo "... src/childnode/JudgeVCF.i"
+	@echo "... src/childnode/JudgeVCF.s"
 	@echo "... src/childnode/SegmentBAM.o"
 	@echo "... src/childnode/SegmentBAM.i"
 	@echo "... src/childnode/SegmentBAM.s"

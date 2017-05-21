@@ -119,6 +119,9 @@
 		<Unit filename="/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/Environment.cpp">
 			<Option target="PVCTools_alpha_v2_5"/>
 		</Unit>
+		<Unit filename="/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/JudgeVCF.cpp">
+			<Option target="PVCTools_alpha_v2_5"/>
+		</Unit>
 		<Unit filename="/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/SegmentBAM.cpp">
 			<Option target="PVCTools_alpha_v2_5"/>
 		</Unit>

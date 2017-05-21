@@ -63,7 +63,7 @@ int VCF_Link(char *tarfile, char *formfile, long add_count)
         if(buff.at(0) != '#') break;
     }
     VCF_Modify(buff,add_count);
-    outfile<<buff;
+    outfile<<buff<<endl;
     //Write the cache, modify the address, write the stitching file.
     while (1)
     {
@@ -71,7 +71,7 @@ int VCF_Link(char *tarfile, char *formfile, long add_count)
         if(infile.eof()) break;
         //Restore the address in VCF.
         VCF_Modify(buff,add_count);
-        outfile<<buff;
+        outfile<<buff<<endl;
     }
 
 
