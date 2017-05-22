@@ -29,10 +29,11 @@ int PrintEvmt(const char *dir)
         exit(-1);
     char *Buffer = NULL;
     size_t Len = FILE_LINE;
+    getline(&Buffer,&Len,fp);
     while (!feof(fp))
     {
-        getline(&Buffer,&Len,fp);
         std::cout << Buffer << std::endl;
+        getline(&Buffer,&Len,fp);
     }
     fclose(fp);
     printf("\n");
@@ -74,9 +75,9 @@ int SetToolsPath(const char *dir, const char *order, const char *path)
     snprintf(Command, sizeof(Command), "<PATH_%s>\t=\t", cmd.c_str());
     char *Buffer = NULL;
     size_t Len = FILE_LINE;
+    getline(&Buffer,&Len,fp_f);
     while (!feof(fp_f))
     {
-        getline(&Buffer,&Len,fp_f);
         if(strstr(Buffer, Command) != NULL)
         {
             int count = 0;
@@ -92,6 +93,7 @@ int SetToolsPath(const char *dir, const char *order, const char *path)
             }
         }
         fputs(Buffer, fp_t);
+        getline(&Buffer,&Len,fp_f);
     }
     fclose(fp_f);
     fclose(fp_t);
@@ -134,9 +136,9 @@ int GetToolsPath(const char *dir, char *path, const char *order)
     snprintf(Command, sizeof(Command), "<PATH_%s>\t=\t", cmd.c_str());
     char *Buffer = NULL;
     size_t Len = FILE_LINE;
+    getline(&Buffer,&Len,fp);
     while (!feof(fp))
     {
-        getline(&Buffer,&Len,fp);
         if(strstr(Buffer, Command) != NULL)
         {
             int count = 0;
@@ -155,6 +157,7 @@ int GetToolsPath(const char *dir, char *path, const char *order)
                 }
             }
         }
+        getline(&Buffer,&Len,fp);
     }
     fclose(fp);
     return 0;
