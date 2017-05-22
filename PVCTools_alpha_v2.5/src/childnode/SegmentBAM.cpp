@@ -105,10 +105,7 @@ int SegmentBAM(int argc, char *argv[])
             if (PathWork[strlen(PathWork) - 1] == '/')
                 PathWork[strlen(PathWork) - 1] = '\0';
         }
-        if (cmd == "-n")
-        {
-            SplitNumber = atoi(argv[i + 1]);
-        }
+        if (cmd == "-n") SplitNumber = atoi(argv[i + 1]);
     }
 
     string strbuff;

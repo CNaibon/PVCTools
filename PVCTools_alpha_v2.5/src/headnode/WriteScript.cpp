@@ -26,7 +26,6 @@ int main(int argc, char *argv[])
         std::cout << " SplitBAM             - The source ratio of the sample BAM file is split into small portions according to the included chromosome." << std::endl;
         std::cout << " SegmentBAM           - Each BAM file is segmented into small portions according to the split number." << std::endl;
         std::cout << " Submit               - Submit and calculate VCF results." << std::endl;
-        std::cout << " StitchVCF            - Stitching the calculated VCF file." << std::endl;
         std::cout << " SmallFA              - Calculate the small chromosome FA files." << std::endl;
         std::cout << " GetVCF               - Integration 'SplitFA' 'SegmentFA' 'SplitBAM' 'SegmentBAM' and 'Submit' steps." << std::endl;
         std::cout << " Environment          - Setting environment variable." << std::endl;
@@ -101,33 +100,14 @@ int main(int argc, char *argv[])
         }
         else if (cmd == "Submit")
         {
-            std::cout << "\t./PVCTools Submit <-w WorkPath> [-T Tools] [-q Queue] [-cpu CPU] [-span Span]" << std::endl;
-            std::cout << "\tRequired Parameters:" << std::endl;
-            std::cout << "\t\t-w               : Working directory path for using to store the generated files." << std::endl;
-            std::cout << "\tOptional Parameters:" << std::endl;
-            std::cout << "\t\t-T               : The tool you want to use to run the task (Default tool: samtools)." << std::endl;
-            std::cout << "\t\t                   Optional tools : [samtools] [gatk] [freebayes]." << std::endl;
-            std::cout << "\t\t-q               : The queue you want to run the task (Default queue: normal)." << std::endl;
-            std::cout << "\t\t-cpu             : The number of CPUs you want to allocate for running the task (Default value: 1)." << std::endl;
-            std::cout << "\t\t                   Ideal value: The number of samples." << std::endl;
-            std::cout << "\t\t                   BUT considering the CPU resources,this value should be less then the queue CPU maximum." << std::endl;
-            std::cout << "\t\t-span            : The maximum number of the CPU used on each node (Default value: 20)." << std::endl;
-            std::cout << "\tTips:" << std::endl;
-            std::cout << "\tYou may need to customize the FA file list that you want to import in [falist]." << std::endl;
-            std::cout << std::endl;
-        }
-        else if (cmd == "StitchVCF")
-        {
-            std::cout << "\t./PVCTools StitchVCF <-w WorkPath> <-n SplitNumber> [-q Queue] [-cpu CPU] [-span Span]" << std::endl;
+            std::cout << "\t./PVCTools Submit <-w WorkPath> <-n SplitNumber> [-T Tools] [-q Queue] [-cpu CPU] [-span Span]" << std::endl;
             std::cout << "\tRequired Parameters:" << std::endl;
             std::cout << "\t\t-w               : Working directory path for using to store the generated files." << std::endl;
             std::cout << "\t\t-n               : The number of divisions." << std::endl;
             std::cout << "\tOptional Parameters:" << std::endl;
+            std::cout << "\t\t-T               : The tool you want to use to run the task (Default tool: samtools)." << std::endl;
+            std::cout << "\t\t                   Optional tools : [samtools] [gatk] [freebayes]." << std::endl;
             std::cout << "\t\t-q               : The queue you want to run the task (Default queue: normal)." << std::endl;
-            std::cout << "\t\t-cpu             : The number of CPUs you want to allocate for running the task (Default value: 1)." << std::endl;
-            std::cout << "\t\t                   Ideal value: The number of samples." << std::endl;
-            std::cout << "\t\t                   BUT considering the CPU resources,this value should be less then the queue CPU maximum." << std::endl;
-            std::cout << "\t\t-span            : The maximum number of the CPU used on each node (Default value: 20)." << std::endl;
             std::cout << "\tTips:" << std::endl;
             std::cout << "\tYou may need to customize the FA file list that you want to import in [falist]." << std::endl;
             std::cout << std::endl;
@@ -181,14 +161,14 @@ int main(int argc, char *argv[])
         else
         {
             std::cout << "Error: Error Parameters." << std::endl;
-            std::cout << "Parameters should be 'SplitFA' 'SegmentFA' 'SplitBAM' 'SegmentBAM' 'Submit' 'StitchVCF' or 'SmallFA'." << std::endl;
+            std::cout << "Parameters should be 'SplitFA' 'SegmentFA' 'SplitBAM' 'SegmentBAM' 'Submit' or 'SmallFA'." << std::endl;
             std::cout << std::endl;
         }
     }
     else
     {
         std::string cmd = argv[1];
-        if (cmd == "SplitFA" || cmd == "SegmentFA" || cmd == "SplitBAM" || cmd == "SegmentBAM" || cmd == "Submit" || cmd == "StitchVCF" || cmd == "SmallFA" || cmd == "GetVCF")
+        if (cmd == "SplitFA" || cmd == "SegmentFA" || cmd == "SplitBAM" || cmd == "SegmentBAM" || cmd == "Submit" || cmd == "SmallFA" || cmd == "GetVCF")
         {
             char ShellCommand[CMD_NUM];
 
@@ -200,41 +180,13 @@ int main(int argc, char *argv[])
             for (int i = 0; i < argc; i++)
             {
                 cmd = argv[i];
-                if (cmd == "-w")
-                {
-                    sprintf(PathWork, "%s", argv[i + 1]);
-                }
-                if (cmd == "-q")
-                {
-                    sprintf(Queue, "%s", argv[i + 1]);
-                }
-                if (cmd == "-cpu")
-                {
-                    sprintf(Cpu, "%s", argv[i + 1]);
-                }
-                if (cmd == "-span")
-                {
-                    sprintf(Span, "%s", argv[i + 1]);
-                }
+                if (cmd == "-w") sprintf(PathWork, "%s", argv[i + 1]);
+                if (cmd == "-q") sprintf(Queue, "%s", argv[i + 1]);
+                if (cmd == "-cpu") sprintf(Cpu, "%s", argv[i + 1]);
+                if (cmd == "-span") sprintf(Span, "%s", argv[i + 1]);
             }
             char CurrentPath[CMD_NUM];
             //Get the current directory.
-//            getcwd(CurrentPath, sizeof(CurrentPath));
-//            int Count;
-//            Count = readlink("/proc/self/exe", CurrentPath, CMD_NUM);
-//            if (Count < 0 || Count >= CMD_NUM)
-//            {
-//                printf("Failed\n");
-//                return(EXIT_FAILURE);
-//            }
-//            for (int i = Count; i >= 0; --i)
-//            {
-//                if (CurrentPath[i] == '/')
-//                {
-//                    CurrentPath[i] = '\0';
-//                    break;
-//                }
-//            }
             snprintf(CurrentPath, sizeof(CurrentPath), "%s", argv[0]);
             int Count = 0;
             for (int j = int(strlen(CurrentPath)) - 1; j > 0; j--)
@@ -242,16 +194,10 @@ int main(int argc, char *argv[])
                 if (CurrentPath[j] == '/')
                 {
                     Count ++;
-                    if (Count == 2)
-                    {
-                        CurrentPath[j] = '\0';
-                    }
+                    if (Count == 2) CurrentPath[j] = '\0';
                 }
             }
-            if (Count < 2)
-            {
-                snprintf(CurrentPath, sizeof(CurrentPath), ".");
-            }
+            if (Count < 2) snprintf(CurrentPath, sizeof(CurrentPath), ".");
             FILE *fp_sh;
             sprintf(ShellCommand, "%s/run.sh", CurrentPath);
             if ((fp_sh = fopen(ShellCommand, "w")) == NULL)
@@ -285,10 +231,7 @@ int main(int argc, char *argv[])
             sprintf(ShellCommand, "bsub < %s/run.sh", CurrentPath);
             system(ShellCommand);
         }
-        else if(cmd == "Environment")
-        {
-            SetEvmt(argc, argv);
-        }
+        else if(cmd == "Environment") SetEvmt(argc, argv);
         else
         {
             std::cout << "Error: Error Parameters." << std::endl;

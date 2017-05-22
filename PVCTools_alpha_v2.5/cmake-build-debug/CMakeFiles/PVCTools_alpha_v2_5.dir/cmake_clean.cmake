@@ -11,6 +11,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/Environment.cpp.o"
   "CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.o"
   "CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/JudgeVCF.cpp.o"
+  "CMakeFiles/PVCTools_alpha_v2_5.dir/include/JudgeVCF.cpp.o"
   "PVCTools_alpha_v2_5.pdb"
   "PVCTools_alpha_v2_5.exe"
   "libPVCTools_alpha_v2_5.dll.a"

@@ -40,14 +40,8 @@ int SegmentFA(int argc,char *argv[])
             if (PathWork[strlen(PathWork) - 1] == '/')
                 PathWork[strlen(PathWork) - 1] = '\0';
         }
-        if (cmd == "-n")
-        {
-            SplitNumber = atoi(argv[i + 1]);
-        }
-        if (cmd == "-lm")
-        {
-            Limit = atol(argv[i + 1]);
-        }
+        if (cmd == "-n") SplitNumber = atoi(argv[i + 1]);
+        if (cmd == "-lm") Limit = atol(argv[i + 1]);
     }
 
 
@@ -89,10 +83,7 @@ int SegmentFA(int argc,char *argv[])
             string Suffix;
             for (int i = (int)strlen(FAFile) - 1; i > 0; i--)
             {
-                if (FAFile[i] == '.')
-                {
-                    Suffix = FAFile + i + 1;
-                }
+                if (FAFile[i] == '.') Suffix = FAFile + i + 1;
             }
             if (Suffix != "fa") continue;
             //Call the command to query the FA file size.
@@ -133,10 +124,7 @@ int SegmentFA(int argc,char *argv[])
         long FASize = atol(Buffer.c_str());
         //Calculate the size of each post split.
         long fa_split_piece_size = FASize / SplitNumber;
-        if (fa_split_piece_size == 0)
-        {
-            fa_split_piece_size = 1;
-        }
+        if (fa_split_piece_size == 0) fa_split_piece_size = 1;
 
         //Already exists before the chromosome processing data is deleted from the original data to prepare to write new data.
         snprintf(ShellCommand, sizeof(ShellCommand), "%s/fa/%s", PathWork, ChrName[i].c_str());

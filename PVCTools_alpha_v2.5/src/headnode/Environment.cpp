@@ -21,10 +21,7 @@ int PrintEvmt(const char *dir)
             }
         }
     }
-    if (Count < 2)
-    {
-        snprintf(CurrentPath, sizeof(CurrentPath), ".");
-    }
+    if (Count < 2) snprintf(CurrentPath, sizeof(CurrentPath), ".");
     char Config[CMD_NUM];
     snprintf(Config, sizeof(Config), "%s/config", CurrentPath);
     FILE *fp;
@@ -59,10 +56,7 @@ int SetToolsPath(const char *dir, const char *order, const char *path)
             }
         }
     }
-    if (Count < 2)
-    {
-        snprintf(CurrentPath, sizeof(CurrentPath), ".");
-    }
+    if (Count < 2) snprintf(CurrentPath, sizeof(CurrentPath), ".");
     char Config[CMD_NUM];
     char Config_tmp[CMD_NUM];
     snprintf(Config, sizeof(Config), "%s/config", CurrentPath);
@@ -88,10 +82,7 @@ int SetToolsPath(const char *dir, const char *order, const char *path)
             int count = 0;
             for (int i = 0; i < (int)strlen(Buffer); i++)
             {
-                if (Buffer[i] == '\t')
-                {
-                    count++;
-                }
+                if (Buffer[i] == '\t') count++;
                 if (count == 2)
                 {
                     strncat(Command, path, strlen(path));
@@ -126,10 +117,7 @@ int GetToolsPath(const char *dir, char *path, const char *order)
             }
         }
     }
-    if (Count < 2)
-    {
-        snprintf(CurrentPath, sizeof(CurrentPath), "..");
-    }
+    if (Count < 2) snprintf(CurrentPath, sizeof(CurrentPath), "..");
     char Config[CMD_NUM];
     snprintf(Config, sizeof(Config), "%s/config", CurrentPath);
 
@@ -154,10 +142,7 @@ int GetToolsPath(const char *dir, char *path, const char *order)
             int count = 0;
             for (int i = 0; i < (int)strlen(Buffer); i++)
             {
-                if (Buffer[i] == '\t')
-                {
-                    count++;
-                }
+                if (Buffer[i] == '\t') count++;
                 if (count == 2)
                 {
                     snprintf(path, CMD_NUM, "%s", &Buffer[i+1]);
@@ -180,10 +165,7 @@ int SetEvmt(int argc, char *argv[])
     for (int i = 0; i < argc; i++)
     {
         std::string cmd = argv[i];
-        if (cmd[0] == '-')
-        {
-            SetToolsPath(argv[0], argv[i] ,argv[i+1]);
-        }
+        if (cmd[0] == '-') SetToolsPath(argv[0], argv[i] ,argv[i+1]);
 
     }
     printf("Now, the environment variable is :\n");

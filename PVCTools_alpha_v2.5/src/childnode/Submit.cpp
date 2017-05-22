@@ -36,6 +36,7 @@ int Submit(int argc, char *argv[])
     char PathWork[CMD_NUM];
     char Queue[CMD_NUM] = "fatnode";
     char Span[CMD_NUM] = "20";
+    char SplitNumber[CMD_NUM];
     string Tool = "samtools";
     string Parameters = " ";
 
@@ -48,22 +49,11 @@ int Submit(int argc, char *argv[])
             if (PathWork[strlen(PathWork) - 1] == '/')
                 PathWork[strlen(PathWork) - 1] = '\0';
         }
-        if (cmd == "-q")
-        {
-            snprintf(Queue, sizeof(Queue), "%s", argv[i + 1]);
-        }
-        if (cmd == "-Span")
-        {
-            snprintf(Span, sizeof(Span), "%s", argv[i + 1]);
-        }
-        if (cmd == "-T")
-        {
-            Tool = argv[i + 1];
-        }
-        if (cmd == "-P")
-        {
-            Parameters = argv[i + 1];
-        }
+        if (cmd == "-n") snprintf(SplitNumber, sizeof(SplitNumber), "%s", argv[i + 1]);
+        if (cmd == "-q") snprintf(Queue, sizeof(Queue), "%s", argv[i + 1]);
+        if (cmd == "-Span") snprintf(Span, sizeof(Span), "%s", argv[i + 1]);
+        if (cmd == "-T") Tool = argv[i + 1];
+        if (cmd == "-P") Parameters = argv[i + 1];
     }
 
     string strbuff;
@@ -102,10 +92,10 @@ int Submit(int argc, char *argv[])
     fp_fa.close();
 
     int FileNumber[ChrName.size()];
+    long TotalNumber = 0;
 
 
     //Each chromosome is counted.
-#pragma omp parallel for
     for (int i = 0; i < (int)ChrName.size(); ++i)
     {
         char Command[CMD_NUM];
@@ -116,13 +106,14 @@ int Submit(int argc, char *argv[])
 
         ifstream fp_sp;
         //Count the current number of files.
-        snprintf(Command, sizeof(Command), "ls -l %s/fa/%s |grep \"^-\"|wc -l > %s_tmp ", PathWork, ChrName[i].c_str(), ChrName[i].c_str());
+        snprintf(Command, sizeof(Command), "ls -l %s/fa/%s |grep \"^-\"| grep '.fa$'|wc -l > %s_tmp ", PathWork, ChrName[i].c_str(), ChrName[i].c_str());
         system(Command);
         snprintf(Command, sizeof(Command), "%s_tmp", ChrName[i].c_str());
         fp_sp.open(Command,ios::in);
         getline(fp_sp, SubBuffer);
         //The number of files after bisection.
         FileNumber[i] = atoi(SubBuffer.c_str());
+        TotalNumber += long(FileNumber[i]);
 
         snprintf(Command, sizeof(Command), "rm -rf %s_tmp ", ChrName[i].c_str());
         system(Command);
@@ -229,6 +220,9 @@ int Submit(int argc, char *argv[])
                 fputs(Command, fp_sh);
             }
 
+            //JudgeVCF
+            snprintf(Command, sizeof(Command), "\n%s JudgeVCF -w %s -C %ld -N %s_%d -n %s", argv[0], PathWork, TotalNumber, ChrName[i].c_str(), k, SplitNumber);
+            fputs(Command, fp_sh);
             fclose(fp_sh);
 
             // Submit.

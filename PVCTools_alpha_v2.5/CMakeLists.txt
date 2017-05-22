@@ -11,7 +11,6 @@ set(SOURCE_FILES
         include/SmallFA.h
         include/SplitBAM.h
         include/SplitFA.h
-        include/StitchVCF.h
         include/Submit.h
         include/WriteScript.h
         src/childnode/Environment.cpp
@@ -21,11 +20,10 @@ set(SOURCE_FILES
         src/childnode/SmallFA.cpp
         src/childnode/SplitBAM.cpp
         src/childnode/SplitFA.cpp
-        src/childnode/StitchVCF.cpp
         src/childnode/Submit.cpp
         src/headnode/Environment.cpp
         src/headnode/WriteScript.cpp
         config
-        Makefile src/childnode/JudgeVCF.cpp)
+        Makefile src/childnode/JudgeVCF.cpp include/JudgeVCF.h)
 
 add_executable(PVCTools_alpha_v2_5 ${SOURCE_FILES})

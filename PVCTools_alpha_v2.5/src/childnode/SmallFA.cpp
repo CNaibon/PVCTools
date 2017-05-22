@@ -46,18 +46,9 @@ int SmallFA(int argc, char *argv[])
             if (PathWork[strlen(PathWork) - 1] == '/')
                 PathWork[strlen(PathWork) - 1] = '\0';
         }
-        if (cmd == "-q")
-        {
-            snprintf(Queue, sizeof(Queue), "%s", argv[i + 1]);
-        }
-        if (cmd == "-Span")
-        {
-            snprintf(Span, sizeof(Span), "%s", argv[i + 1]);
-        }
-        if (cmd == "-T")
-        {
-            Tool = argv[i + 1];
-        }
+        if (cmd == "-q") snprintf(Queue, sizeof(Queue), "%s", argv[i + 1]);
+        if (cmd == "-Span") snprintf(Span, sizeof(Span), "%s", argv[i + 1]);
+        if (cmd == "-T") Tool = argv[i + 1];
     }
     snprintf(ShellCommand, sizeof(ShellCommand), "ls -al %s/fa | grep '^-' | grep '.fa$' | awk '{print $9}' > %s/smalllist_tmp", PathWork, PathWork);
     system(ShellCommand);

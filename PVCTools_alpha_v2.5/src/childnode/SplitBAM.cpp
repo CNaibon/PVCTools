@@ -44,10 +44,7 @@ int SplitBAM(int argc,char *argv[])
             if (PathBAM[strlen(PathBAM) - 1] == '/')
                 PathBAM[strlen(PathBAM) - 1] = '\0';
         }
-        if (cmd == "-I")
-        {
-            ImportBAM = true;
-        }
+        if (cmd == "-I") ImportBAM = true;
     }
 
     snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/sample", PathWork);

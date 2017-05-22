@@ -123,6 +123,33 @@ PVCTools_alpha_v2_5/fast:
 	$(MAKE) -f CMakeFiles/PVCTools_alpha_v2_5.dir/build.make CMakeFiles/PVCTools_alpha_v2_5.dir/build
 .PHONY : PVCTools_alpha_v2_5/fast
 
+include/JudgeVCF.o: include/JudgeVCF.cpp.o
+
+.PHONY : include/JudgeVCF.o
+
+# target to build an object file
+include/JudgeVCF.cpp.o:
+	$(MAKE) -f CMakeFiles/PVCTools_alpha_v2_5.dir/build.make CMakeFiles/PVCTools_alpha_v2_5.dir/include/JudgeVCF.cpp.o
+.PHONY : include/JudgeVCF.cpp.o
+
+include/JudgeVCF.i: include/JudgeVCF.cpp.i
+
+.PHONY : include/JudgeVCF.i
+
+# target to preprocess a source file
+include/JudgeVCF.cpp.i:
+	$(MAKE) -f CMakeFiles/PVCTools_alpha_v2_5.dir/build.make CMakeFiles/PVCTools_alpha_v2_5.dir/include/JudgeVCF.cpp.i
+.PHONY : include/JudgeVCF.cpp.i
+
+include/JudgeVCF.s: include/JudgeVCF.cpp.s
+
+.PHONY : include/JudgeVCF.s
+
+# target to generate assembly for a file
+include/JudgeVCF.cpp.s:
+	$(MAKE) -f CMakeFiles/PVCTools_alpha_v2_5.dir/build.make CMakeFiles/PVCTools_alpha_v2_5.dir/include/JudgeVCF.cpp.s
+.PHONY : include/JudgeVCF.cpp.s
+
 src/childnode/Environment.o: src/childnode/Environment.cpp.o
 
 .PHONY : src/childnode/Environment.o
@@ -456,6 +483,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... PVCTools_alpha_v2_5"
+	@echo "... include/JudgeVCF.o"
+	@echo "... include/JudgeVCF.i"
+	@echo "... include/JudgeVCF.s"
 	@echo "... src/childnode/Environment.o"
 	@echo "... src/childnode/Environment.i"
 	@echo "... src/childnode/Environment.s"
