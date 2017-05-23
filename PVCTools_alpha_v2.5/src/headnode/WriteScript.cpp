@@ -18,7 +18,7 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
-    std::string cmd = argv[1];
+
     // Verify at least one arg.
     if (argc == 1)
     {
@@ -34,6 +34,7 @@ int main(int argc, char *argv[])
     }
     else if (argc == 2)
     {
+        std::string cmd = argv[1];
         if (cmd == "SplitFA" )
         {
             std::cout << "\t./PVCTools SplitFA <-w WorkPath> <-fa FAPath> [-q Queue] [-cpu CPU] [-span Span]" << std::endl;
@@ -166,6 +167,7 @@ int main(int argc, char *argv[])
     }
     else
     {
+        std::string cmd = argv[1];
         if (cmd == "SplitFA" || cmd == "SegmentFA" || cmd == "SplitBAM" || cmd == "SegmentBAM" || cmd == "Submit" || cmd == "SmallFA" || cmd == "GetVCF")
         {
             char ShellCommand[CMD_NUM];
