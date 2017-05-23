@@ -25,8 +25,7 @@ int PrintEvmt(const char *dir)
     char Config[CMD_NUM];
     snprintf(Config, sizeof(Config), "%s/config", CurrentPath);
     FILE *fp;
-    if ((fp = fopen(Config, "r")) == NULL)
-        exit(-1);
+    if ((fp = fopen(Config, "r")) == NULL) exit(-1);
     char *Buffer = NULL;
     size_t Len = FILE_LINE;
     getline(&Buffer,&Len,fp);
@@ -64,10 +63,8 @@ int SetToolsPath(const char *dir, const char *order, const char *path)
     snprintf(Config_tmp, sizeof(Config_tmp), "%s/config_tmp", CurrentPath);
 
     FILE *fp_f, *fp_t;
-    if ((fp_f = fopen(Config, "r")) == NULL)
-        exit(-1);
-    if ((fp_t = fopen(Config_tmp, "w")) == NULL)
-        exit(-1);
+    if ((fp_f = fopen(Config, "r")) == NULL) exit(-1);
+    if ((fp_t = fopen(Config_tmp, "w")) == NULL) exit(-1);
     std::string cmd = order;
     std::transform(cmd.begin() + 1, cmd.end(), cmd.begin(), toupper);
     cmd.at(cmd.size() - 1) = '\0';
@@ -148,10 +145,7 @@ int GetToolsPath(const char *dir, char *path, const char *order)
                 if (count == 2)
                 {
                     snprintf(path, CMD_NUM, "%s", &Buffer[i+1]);
-                    if (path[strlen(path)-1] == '\n' || path[strlen(path)-1] == '\r')
-                    {
-                        path[strlen(path)-1] = '\0';
-                    }
+                    if (path[strlen(path)-1] == '\n' || path[strlen(path)-1] == '\r') path[strlen(path)-1] = '\0';
                     fclose(fp);
                     return 0;
                 }

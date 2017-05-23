@@ -26,13 +26,11 @@ int Submit(int argc, char *argv[])
     GetToolsPath(argv[0], PATH_GATK, "-gatk");
     char PATH_FREEBAYES[CMD_NUM];
     GetToolsPath(argv[0], PATH_FREEBAYES, "-freebayes");
-
     vector<string> ChrName;
     vector<string> SampleName;
     //Command string.
     char ShellCommand[CMD_NUM];
     string Buffer;
-
     char PathWork[CMD_NUM];
     char Queue[CMD_NUM] = "fatnode";
     char Span[CMD_NUM] = "20";
@@ -46,8 +44,7 @@ int Submit(int argc, char *argv[])
         if (cmd == "-w")
         {
             snprintf(PathWork, sizeof(PathWork), "%s", argv[i + 1]);
-            if (PathWork[strlen(PathWork) - 1] == '/')
-                PathWork[strlen(PathWork) - 1] = '\0';
+            if (PathWork[strlen(PathWork) - 1] == '/') PathWork[strlen(PathWork) - 1] = '\0';
         }
         if (cmd == "-n") snprintf(SplitNumber, sizeof(SplitNumber), "%s", argv[i + 1]);
         if (cmd == "-q") snprintf(Queue, sizeof(Queue), "%s", argv[i + 1]);

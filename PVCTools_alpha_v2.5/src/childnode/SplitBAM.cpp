@@ -20,10 +20,8 @@ int SplitBAM(int argc,char *argv[])
     printf("start time = %ld\n", StartTime);
 
     vector<string> SampleName;
-
     char PATH_BAMUTIL[CMD_NUM];
     GetToolsPath(argv[0], PATH_BAMUTIL, "-bamUtil");
-
     char ShellCommand[CMD_NUM];
     char PathWork[CMD_NUM];
     char PathBAM[CMD_NUM];
@@ -35,14 +33,12 @@ int SplitBAM(int argc,char *argv[])
         if (cmd == "-w")
         {
             snprintf(PathWork, sizeof(PathWork), "%s", argv[i + 1]);
-            if (PathWork[strlen(PathWork) - 1] == '/')
-                PathWork[strlen(PathWork) - 1] = '\0';
+            if (PathWork[strlen(PathWork) - 1] == '/') PathWork[strlen(PathWork) - 1] = '\0';
         }
         if (cmd == "-bam")
         {
             snprintf(PathBAM, sizeof(PathBAM), "%s", argv[i + 1]);
-            if (PathBAM[strlen(PathBAM) - 1] == '/')
-                PathBAM[strlen(PathBAM) - 1] = '\0';
+            if (PathBAM[strlen(PathBAM) - 1] == '/') PathBAM[strlen(PathBAM) - 1] = '\0';
         }
         if (cmd == "-I") ImportBAM = true;
     }

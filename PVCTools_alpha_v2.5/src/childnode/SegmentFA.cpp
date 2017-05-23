@@ -23,13 +23,12 @@ int SegmentFA(int argc,char *argv[])
     //Command string
     char ShellCommand[CMD_NUM];
     string Buffer;
-
-    //Create a shell command to call the result log file
-    system("touch tmp");
-
     long Limit = 0;
     int SplitNumber;
     char PathWork[CMD_NUM];
+
+    //Create a shell command to call the result log file
+    system("touch tmp");
 
     for (int i = 0; i < argc; i++)
     {
@@ -37,8 +36,7 @@ int SegmentFA(int argc,char *argv[])
         if (cmd == "-w")
         {
             snprintf(PathWork, sizeof(PathWork), "%s", argv[i + 1]);
-            if (PathWork[strlen(PathWork) - 1] == '/')
-                PathWork[strlen(PathWork) - 1] = '\0';
+            if (PathWork[strlen(PathWork) - 1] == '/') PathWork[strlen(PathWork) - 1] = '\0';
         }
         if (cmd == "-n") SplitNumber = atoi(argv[i + 1]);
         if (cmd == "-lm") Limit = atol(argv[i + 1]);
@@ -69,8 +67,7 @@ int SegmentFA(int argc,char *argv[])
     {
         FILE *fp_FA;
         snprintf(ShellCommand, sizeof(ShellCommand), "%s/falist", PathWork);
-        if ((fp_FA = fopen(ShellCommand, "w")) == NULL)
-            exit(-1);
+        if ((fp_FA = fopen(ShellCommand, "w")) == NULL) exit(-1);
         DIR * dir;
         struct dirent * ptr;
         char FAFile[CMD_NUM];

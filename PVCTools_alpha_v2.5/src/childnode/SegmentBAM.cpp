@@ -15,10 +15,7 @@ using namespace std;
 
 void Modify(string &buffer, long addresses_number)
 {
-    if (buffer[0] == '@')
-    {
-        return;
-    }
+    if (buffer[0] == '@') return;
     int count = 0;
     int flag = 0;
     for (int i = 0; i < (int)buffer.size(); i++)
@@ -46,10 +43,7 @@ void Modify(string &buffer, long addresses_number)
             buffer = Front;
             flag = 0;
         }
-        if (count == 7)
-        {
-            return;
-        }
+        if (count == 7) return;
     }
 }
 
@@ -58,8 +52,8 @@ int Sam_Address_Modify(char *file_name, long address_count)
     string Buffer;
     ifstream fp_old;
     ofstream fp_new;
-
     char TmpName[CMD_NUM];
+
     snprintf(TmpName, sizeof(TmpName), "%s-%d", file_name, (int)getpid());
     fp_old.open(file_name,ios::in);
     fp_new.open(TmpName, ios::out);
@@ -85,14 +79,11 @@ int SegmentBAM(int argc, char *argv[])
 
     char PATH_SAMTOOLS[CMD_NUM];
     GetToolsPath(argv[0], PATH_SAMTOOLS, "-samtools");
-
     vector<string> ChrName;
     vector<string> SampleName;
     //Command string.
     char ShellCommand[CMD_NUM];
-
     string Buffer;
-
     char PathWork[CMD_NUM];
     int SplitNumber;
     
@@ -102,8 +93,7 @@ int SegmentBAM(int argc, char *argv[])
         if (cmd == "-w")
         {
             snprintf(PathWork, sizeof(PathWork), "%s", argv[i + 1]);
-            if (PathWork[strlen(PathWork) - 1] == '/')
-                PathWork[strlen(PathWork) - 1] = '\0';
+            if (PathWork[strlen(PathWork) - 1] == '/') PathWork[strlen(PathWork) - 1] = '\0';
         }
         if (cmd == "-n") SplitNumber = atoi(argv[i + 1]);
     }
@@ -186,7 +176,6 @@ int SegmentBAM(int argc, char *argv[])
     {
         char TransCommand[CMD_NUM];
         string TransBuffer;
-
         ReadCount[i][0] = 0;
 
         snprintf(TransCommand, sizeof(TransCommand), "touch %s_tmp", ChrName[i].c_str());
@@ -223,7 +212,6 @@ int SegmentBAM(int argc, char *argv[])
             fp_sp.open(TransCommand,ios::in);
             getline(fp_sp, TransBuffer);
             fp_sp.close();
-
             //Record the number of all reads so far.
             ReadCount[i][j + 1] = ReadCount[i][j] + (atol(TransBuffer.c_str()) - 1)*Maxlen_PreLine;
         }

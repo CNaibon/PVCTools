@@ -10,7 +10,7 @@ HEAD_OBJ = $(patsubst %.cpp,${DIR_HEAD_OBJ}/%.o,$(notdir ${HEAD_SRC}))
 CHILD_SRC = $(wildcard ${DIR_CHILD_SRC}/*.cpp)
 CHILD_OBJ = $(patsubst %.cpp,${DIR_CHILD_OBJ}/%.o,$(notdir ${CHILD_SRC}))
 
-HEAD_TARGET = PCVTools
+HEAD_TARGET = PVCTools
 CHILD_TARGET = $(DIR_BIN)/main
 TARGET = $(HEAD_TARGET) $(CHILD_TARGET)
 

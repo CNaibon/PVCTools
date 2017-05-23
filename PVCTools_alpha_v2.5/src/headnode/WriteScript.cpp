@@ -18,6 +18,7 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
+    std::string cmd = argv[1];
     // Verify at least one arg.
     if (argc == 1)
     {
@@ -33,7 +34,6 @@ int main(int argc, char *argv[])
     }
     else if (argc == 2)
     {
-        std::string cmd = argv[1];
         if (cmd == "SplitFA" )
         {
             std::cout << "\t./PVCTools SplitFA <-w WorkPath> <-fa FAPath> [-q Queue] [-cpu CPU] [-span Span]" << std::endl;
@@ -155,7 +155,6 @@ int main(int argc, char *argv[])
             std::cout << "\t\t-bcftools        : Setting bcftools path." << std::endl;
             std::cout << "\t\t-bamUtil         : Setting bamUtil path." << std::endl;
             std::cout << std::endl;
-
             PrintEvmt(argv[0]);
         }
         else
@@ -167,11 +166,9 @@ int main(int argc, char *argv[])
     }
     else
     {
-        std::string cmd = argv[1];
         if (cmd == "SplitFA" || cmd == "SegmentFA" || cmd == "SplitBAM" || cmd == "SegmentBAM" || cmd == "Submit" || cmd == "SmallFA" || cmd == "GetVCF")
         {
             char ShellCommand[CMD_NUM];
-
             char Queue[CMD_NUM] = "normal";
             char Cpu[CMD_NUM] = "1";
             char Span[CMD_NUM] = "20";
@@ -200,8 +197,7 @@ int main(int argc, char *argv[])
             if (Count < 2) snprintf(CurrentPath, sizeof(CurrentPath), ".");
             FILE *fp_sh;
             sprintf(ShellCommand, "%s/run.sh", CurrentPath);
-            if ((fp_sh = fopen(ShellCommand, "w")) == NULL)
-                exit(-1);
+            if ((fp_sh = fopen(ShellCommand, "w")) == NULL) exit(-1);
             //Write the relevant parameters of the script.
             sprintf(ShellCommand, "#BSUB -q %s\n", Queue);
             fputs(ShellCommand, fp_sh);

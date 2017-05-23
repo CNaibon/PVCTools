@@ -12,10 +12,7 @@ void VCF_Modify(string &buffer, long addresses_number)
     int count = 0;
     for (int i = 0; i < (int)buffer.size(); i++)
     {
-        if (buffer[i] == '\t')
-        {
-            count++;
-        }
+        if (buffer[i] == '\t') count++;
         if (count == 1)
         {
             char *p = &buffer[i + 1];
@@ -68,8 +65,6 @@ int VCF_Link(char *tarfile, char *formfile, long add_count)
         VCF_Modify(buff,add_count);
         outfile<<buff<<endl;
     }
-
-
     infile.close();
     outfile.close();
     return 0;
@@ -85,7 +80,6 @@ int StitchVCF(int argc,char *argv[])
     //Command string.
     char ShellCommand[CMD_NUM];
     string Buffer;
-
     char PathWork[CMD_NUM];
     int SplitNumber;
 
@@ -95,8 +89,7 @@ int StitchVCF(int argc,char *argv[])
         if (cmd == "-w")
         {
             snprintf(PathWork, sizeof(PathWork), "%s", argv[i + 1]);
-            if (PathWork[strlen(PathWork) - 1] == '/')
-                PathWork[strlen(PathWork) - 1] = '\0';
+            if (PathWork[strlen(PathWork) - 1] == '/') PathWork[strlen(PathWork) - 1] = '\0';
         }
         if (cmd == "-n") SplitNumber = atoi(argv[i + 1]);
     }
@@ -222,8 +215,7 @@ int JudgeVCF(int argc, char *argv[])
         if (cmd == "-w")
         {
             snprintf(PathWork, sizeof(PathWork), "%s", argv[i + 1]);
-            if (PathWork[strlen(PathWork) - 1] == '/')
-                PathWork[strlen(PathWork) - 1] = '\0';
+            if (PathWork[strlen(PathWork) - 1] == '/') PathWork[strlen(PathWork) - 1] = '\0';
         }
         if (cmd == "-C") TotalNumber = atol(argv[i + 1]);
         if (cmd == "-N") FileName = argv[i + 1];
