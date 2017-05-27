@@ -20,7 +20,7 @@ int SplitBAM(int argc,char *argv[])
     printf("start time = %ld\n", StartTime);
 
     vector<string> SampleName;
-    char PATH_BAMUTIL[CMD_NUM];
+    string PATH_BAMUTIL;
     GetToolsPath(argv[0], PATH_BAMUTIL, "-bamUtil");
     char ShellCommand[CMD_NUM];
     char PathWork[CMD_NUM];
@@ -107,7 +107,7 @@ int SplitBAM(int argc,char *argv[])
     for (int k = 0; k < (int)SampleName.size(); ++k)//The sample is split by chromosome.
     {
         char Command[CMD_NUM];
-        snprintf(Command, sizeof(Command), "%s splitChromosome --in %s/%s.bam --out %s/sample/%s/%s_ --bamout", PATH_BAMUTIL, PathBAM, SampleName[k].c_str(),PathWork,SampleName[k].c_str(),SampleName[k].c_str());
+        snprintf(Command, sizeof(Command), "%s splitChromosome --in %s/%s.bam --out %s/sample/%s/%s_ --bamout", PATH_BAMUTIL.c_str(), PathBAM, SampleName[k].c_str(),PathWork,SampleName[k].c_str(),SampleName[k].c_str());
         system(Command);
     }
     printf("The sample was split by chromosome resolution.\n");

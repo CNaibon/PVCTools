@@ -13,12 +13,12 @@
 
 using namespace std;
 
-void Modify(string &buffer, long addresses_number)
+void Modify(char *buffer, long addresses_number)
 {
     if (buffer[0] == '@') return;
     int count = 0;
     int flag = 0;
-    for (int i = 0; i < (int)buffer.size(); i++)
+    for (int i = 0; i < (int)strlen(buffer); i++)
     {
         if (buffer[i] == '\t')
         {
@@ -36,11 +36,11 @@ void Modify(string &buffer, long addresses_number)
             //Modify the starting address.
             long Num_New = Num_Old - addresses_number;
             snprintf(Number_New, sizeof(Number_New), "%ld", Num_New);
-            snprintf(Front, (size_t)(i + 2), "%s", buffer.c_str());
+            snprintf(Front, (size_t)(i + 2), "%s", buffer);
             snprintf(Rear, sizeof(Rear), "%s", &buffer[i + 1 + Length_Old]);
             strncat(Front, Number_New, sizeof(Front) - strlen(Front));
             strncat(Front, Rear, sizeof(Front) - strlen(Front));
-            buffer = Front;
+            snprintf(buffer, FILE_LINE, "%s", Front);
             flag = 0;
         }
         if (count == 7) return;
@@ -49,24 +49,44 @@ void Modify(string &buffer, long addresses_number)
 
 int Sam_Address_Modify(char *file_name, long address_count)
 {
-    string Buffer;
-    ifstream fp_old;
-    ofstream fp_new;
+//    string Buffer;
+//    ifstream fp_old;
+//    ofstream fp_new;
+//    char TmpName[CMD_NUM];
+//
+//    snprintf(TmpName, sizeof(TmpName), "%s-%d", file_name, (int)getpid());
+//    fp_old.open(file_name,ios::in);
+//    fp_new.open(TmpName, ios::out);
+//
+//    getline(fp_old, Buffer);
+//    while (!fp_old.eof())
+//    {
+//        Modify(Buffer, address_count);
+//        fp_new<<Buffer<<endl;
+//        getline(fp_old,Buffer);
+//    }
+//    fp_old.close();
+//    fp_new.close();
+
+    FILE *fp_old, *fp_new;
+    if ((fp_old = fopen(file_name, "r")) == NULL)
+        exit(-1);
     char TmpName[CMD_NUM];
-
     snprintf(TmpName, sizeof(TmpName), "%s-%d", file_name, (int)getpid());
-    fp_old.open(file_name,ios::in);
-    fp_new.open(TmpName, ios::out);
-
-    getline(fp_old, Buffer);
-    while (!fp_old.eof())
+    if ((fp_new = fopen(TmpName, "w")) == NULL)
+        exit(-1);
+    char *Buffer = NULL;
+    size_t Len = FILE_LINE;
+    getline(&Buffer, &Len, fp_old);
+    while (!feof(fp_old))
     {
         Modify(Buffer, address_count);
-        fp_new<<Buffer<<endl;
-        getline(fp_old,Buffer);
+        fputs(Buffer, fp_new);
+        getline(&Buffer, &Len, fp_old);
     }
-    fp_old.close();
-    fp_new.close();
+    fclose(fp_old);
+    fclose(fp_new);
+
     remove(file_name);
     rename(TmpName, file_name);
     return 0;
@@ -77,7 +97,7 @@ int SegmentBAM(int argc, char *argv[])
     long StartTime = time((time_t*)NULL);
     printf("start time = %ld\n", StartTime);
 
-    char PATH_SAMTOOLS[CMD_NUM];
+    string PATH_SAMTOOLS;
     GetToolsPath(argv[0], PATH_SAMTOOLS, "-samtools");
     vector<string> ChrName;
     vector<string> SampleName;
@@ -155,10 +175,10 @@ int SegmentBAM(int argc, char *argv[])
             snprintf(SortCommand, sizeof(SortCommand), "mkdir -p %s/sample/%s/%s_%s_TemporarySort", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
             system(SortCommand);
 
-            snprintf(SortCommand, sizeof(SortCommand), "%s sort -T %s/sample/%s/%s_%s_TemporarySort %s/sample/%s/%s_%s.bam > %s/sample/%s/%s_%s_sorted.bam ", PATH_SAMTOOLS, PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+            snprintf(SortCommand, sizeof(SortCommand), "%s sort -T %s/sample/%s/%s_%s_TemporarySort %s/sample/%s/%s_%s.bam > %s/sample/%s/%s_%s_sorted.bam ", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
             system(SortCommand);
 
-            snprintf(SortCommand, sizeof(SortCommand), "%s index %s/sample/%s/%s_%s_sorted.bam ", PATH_SAMTOOLS, PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+            snprintf(SortCommand, sizeof(SortCommand), "%s index %s/sample/%s/%s_%s_sorted.bam ", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
             system(SortCommand);
 
             snprintf(SortCommand, sizeof(SortCommand), "rm -rf %s/sample/%s/%s_%s_TemporarySort", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
@@ -248,7 +268,7 @@ int SegmentBAM(int argc, char *argv[])
             {
                 // Extract read in the corresponding interval.
                 snprintf(ModCommand, sizeof(ModCommand),
-                         "%s view -bh %s/sample/%s/%s_%s_sorted.bam %s:%ld-%ld > %s/sample/%s/%s_%s/%s_%s_%d.bam", PATH_SAMTOOLS,
+                         "%s view -bh %s/sample/%s/%s_%s_sorted.bam %s:%ld-%ld > %s/sample/%s/%s_%s/%s_%s_%d.bam", PATH_SAMTOOLS.c_str(),
                         PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), ChrName[i].c_str(),
                         ReadCount[i][k] + 1, ReadCount[i][k + 1], PathWork, SampleName[n].c_str(),
                         SampleName[n].c_str(), ChrName[i].c_str(),
@@ -256,7 +276,7 @@ int SegmentBAM(int argc, char *argv[])
                 system(ModCommand);
 
                 //The split BAM file into SAM format.
-                snprintf(ModCommand, sizeof(ModCommand), "%s view -h %s/sample/%s/%s_%s/%s_%s_%d.bam > %s/sample/%s/%s_%s/%s_%s_%d.sam", PATH_SAMTOOLS, PathWork, SampleName[n].c_str(),
+                snprintf(ModCommand, sizeof(ModCommand), "%s view -h %s/sample/%s/%s_%s/%s_%s_%d.bam > %s/sample/%s/%s_%s/%s_%s_%d.sam", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(),
                         SampleName[n].c_str(), ChrName[i].c_str(),
                         SampleName[n].c_str(), ChrName[i].c_str(), k, PathWork, SampleName[n].c_str(),
                         SampleName[n].c_str(), ChrName[i].c_str(),
@@ -277,7 +297,7 @@ int SegmentBAM(int argc, char *argv[])
                 }
 
                 //Change the modified sam file back to bam format.
-                snprintf(ModCommand, sizeof(ModCommand), "%s view -b %s/sample/%s/%s_%s/%s_%s_%d.sam > %s/sample/%s/%s_%s/%s_%s_%d.bam", PATH_SAMTOOLS, PathWork, SampleName[n].c_str(),
+                snprintf(ModCommand, sizeof(ModCommand), "%s view -b %s/sample/%s/%s_%s/%s_%s_%d.sam > %s/sample/%s/%s_%s/%s_%s_%d.bam", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(),
                         SampleName[n].c_str(), ChrName[i].c_str(),
                         SampleName[n].c_str(), ChrName[i].c_str(), k, PathWork, SampleName[n].c_str(),
                         SampleName[n].c_str(), ChrName[i].c_str(),

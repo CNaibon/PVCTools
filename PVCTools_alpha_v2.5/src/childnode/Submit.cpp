@@ -18,14 +18,15 @@ int Submit(int argc, char *argv[])
     long StartTime = time((time_t*)NULL);
     printf("start time = %ld\n", StartTime);
 
-    char PATH_SAMTOOLS[CMD_NUM];
+    string  PATH_SAMTOOLS;
     GetToolsPath(argv[0], PATH_SAMTOOLS, "-samtools");
-    char PATH_BCFTOOLS[CMD_NUM];
+    string PATH_BCFTOOLS;
     GetToolsPath(argv[0], PATH_BCFTOOLS, "-bcftools");
-    char PATH_GATK[CMD_NUM];
+    string PATH_GATK;
     GetToolsPath(argv[0], PATH_GATK, "-gatk");
-    char PATH_FREEBAYES[CMD_NUM];
+    string PATH_FREEBAYES;
     GetToolsPath(argv[0], PATH_FREEBAYES, "-freebayes");
+
     vector<string> ChrName;
     vector<string> SampleName;
     //Command string.
@@ -155,7 +156,7 @@ int Submit(int argc, char *argv[])
 
             if (Tool == "samtools")
             {
-                snprintf(Command, sizeof(Command), "%s mpileup -u -t DP,AD,ADF %s ", PATH_SAMTOOLS, Parameters.c_str());
+                snprintf(Command, sizeof(Command), "%s mpileup -u -t DP,AD,ADF %s ", PATH_SAMTOOLS.c_str(), Parameters.c_str());
                 fputs(Command, fp_sh);
                 snprintf(Command, sizeof(Command), "-f %s/fa/%s/%s_%d.fa ", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), k);
                 fputs(Command, fp_sh);
@@ -171,12 +172,17 @@ int Submit(int argc, char *argv[])
                     snprintf(Command, sizeof(Command), "%s/sample/%s/%s_%s/%s_%s_%d.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), k);
                     fputs(Command, fp_sh);
                 }
-                snprintf(Command, sizeof(Command), "| %s call -vmO v -o %s/vcf/%s/%s_%d.var.flt.vcf ", PATH_BCFTOOLS, PathWork, ChrName[i].c_str(), ChrName[i].c_str(), k);
+                snprintf(Command, sizeof(Command), "| %s call -vmO v -o %s/vcf/%s/%s_%d.var.flt.vcf ", PATH_BCFTOOLS.c_str(), PathWork, ChrName[i].c_str(), ChrName[i].c_str(), k);
                 fputs(Command, fp_sh);
             }
             else if (Tool == "gatk")
             {
-                snprintf(Command, sizeof(Command), "java -jar %s -T HaplotypeCaller %s ", PATH_GATK, Parameters.c_str());
+                snprintf(Command, sizeof(Command), "java -jar CreateSequenceDictionary.jar ");
+                fputs(Command, fp_sh);
+                snprintf(Command, sizeof(Command), "R= %s/fa/%s/%s_%d.fasta O= %s/fa/%s/%s_%d.dict\n", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), k, PathWork, ChrName[i].c_str(), ChrName[i].c_str(), k);
+                fputs(Command, fp_sh);
+
+                snprintf(Command, sizeof(Command), "java -jar %s -T HaplotypeCaller %s ", PATH_GATK.c_str(), Parameters.c_str());
                 fputs(Command, fp_sh);
                 snprintf(Command, sizeof(Command), "-R %s/fa/%s/%s_%d.fa -nct 1 ", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), k);
                 fputs(Command, fp_sh);
@@ -198,7 +204,7 @@ int Submit(int argc, char *argv[])
             {
                 snprintf(Command, sizeof(Command), "/usr/bin/time -f \"%%E\" ");
                 fputs(Command, fp_sh);
-                snprintf(Command, sizeof(Command), "%s --strict-vcf %s ", PATH_FREEBAYES, Parameters.c_str());
+                snprintf(Command, sizeof(Command), "%s --strict-vcf %s ", PATH_FREEBAYES.c_str(), Parameters.c_str());
                 fputs(Command, fp_sh);
                 snprintf(Command, sizeof(Command), "-f %s/fa/%s/%s_%d.fa ", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), k);
                 fputs(Command, fp_sh);
@@ -223,8 +229,8 @@ int Submit(int argc, char *argv[])
             fclose(fp_sh);
 
             // Submit.
-            snprintf(Command, sizeof(Command), "bsub < %s/sub_script/%s_%d_%s.sh", PathWork, ChrName[i].c_str(), k, Tool.c_str());
-            system(Command);
+//            snprintf(Command, sizeof(Command), "bsub < %s/sub_script/%s_%d_%s.sh", PathWork, ChrName[i].c_str(), k, Tool.c_str());
+//            system(Command);
         }
     }
     printf("The VCF task has been submitted to each node.\n");

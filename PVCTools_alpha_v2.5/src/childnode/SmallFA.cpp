@@ -17,14 +17,15 @@ int SmallFA(int argc, char *argv[])
     long StartTime = time((time_t*)NULL);
     printf("start time = %ld\n", StartTime);
 
-    char PATH_SAMTOOLS[CMD_NUM];
+    string  PATH_SAMTOOLS;
     GetToolsPath(argv[0], PATH_SAMTOOLS, "-samtools");
-    char PATH_BCFTOOLS[CMD_NUM];
+    string PATH_BCFTOOLS;
     GetToolsPath(argv[0], PATH_BCFTOOLS, "-bcftools");
-    char PATH_GATK[CMD_NUM];
+    string PATH_GATK;
     GetToolsPath(argv[0], PATH_GATK, "-gatk");
-    char PATH_FREEBAYES[CMD_NUM];
+    string PATH_FREEBAYES;
     GetToolsPath(argv[0], PATH_FREEBAYES, "-freebayes");
+
     vector<string> ChrName;
     vector<string> SampleName;
     //Command string.
@@ -34,6 +35,7 @@ int SmallFA(int argc, char *argv[])
     char Queue[CMD_NUM] = "normal";
     char Span[CMD_NUM] = "20";
     string Tool = "samtools";
+    string Parameters = " ";
 
     for (int i = 0; i < argc; i++)
     {
@@ -46,6 +48,7 @@ int SmallFA(int argc, char *argv[])
         if (cmd == "-q") snprintf(Queue, sizeof(Queue), "%s", argv[i + 1]);
         if (cmd == "-Span") snprintf(Span, sizeof(Span), "%s", argv[i + 1]);
         if (cmd == "-T") Tool = argv[i + 1];
+        if (cmd == "-P") Parameters = argv[i + 1];
     }
     snprintf(ShellCommand, sizeof(ShellCommand), "ls -al %s/fa | grep '^-' | grep '.fa$' | awk '{print $9}' > %s/smalllist_tmp", PathWork, PathWork);
     system(ShellCommand);
@@ -131,9 +134,9 @@ int SmallFA(int argc, char *argv[])
 
         if (Tool == "samtools")
         {
-            snprintf(Command, sizeof(Command), "%s mpileup -u -t DP,AD,ADF -f ", PATH_SAMTOOLS);
+            snprintf(Command, sizeof(Command), "%s mpileup -u -t DP,AD,ADF %s ", PATH_SAMTOOLS.c_str(), Parameters.c_str());
             fputs(Command, fp_sh);
-            snprintf(Command, sizeof(Command), "%s/fa/%s.fa ", PathWork, ChrName[i].c_str());
+            snprintf(Command, sizeof(Command), "-f %s/fa/%s.fa ", PathWork, ChrName[i].c_str());
             fputs(Command, fp_sh);
             //Write a number of sample small copies.
             for (int n = 0; n < (int)SampleName.size(); n++)
@@ -144,12 +147,21 @@ int SmallFA(int argc, char *argv[])
                 snprintf(Command, sizeof(Command), "%s/sample/%s/%s_%s.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
                 fputs(Command, fp_sh);
             }
-            snprintf(Command, sizeof(Command), "| %s call -vmO v -o %s/vcf/Final_Result/%s.var.flt.vcf", PATH_BCFTOOLS, PathWork, ChrName[i].c_str());
+            snprintf(Command, sizeof(Command), "| %s call -vmO v -o %s/vcf/Final_Result/%s.var.flt.vcf", PATH_BCFTOOLS.c_str(), PathWork, ChrName[i].c_str());
             fputs(Command, fp_sh);
         }
         else if (Tool == "gatk")
         {
-            snprintf(Command, sizeof(Command), "java -jar %s -T HaplotypeCaller ", PATH_GATK);
+            snprintf(Command, sizeof(Command), "%s faidx %s/fa/%s.fa\n", PATH_SAMTOOLS.c_str(), PathWork, ChrName[i].c_str());
+            fputs(Command, fp_sh);
+
+            snprintf(Command, sizeof(Command), "java -jar /gpfs01/home/jingjing/software/GATK/picard-tools-1.119/CreateSequenceDictionary.jar ");
+            fputs(Command, fp_sh);
+
+            snprintf(Command, sizeof(Command), "R= %s/fa/%s.fa O= %s/fa/%s.dict\n", PathWork, ChrName[i].c_str(), PathWork, ChrName[i].c_str());
+            fputs(Command, fp_sh);
+
+            snprintf(Command, sizeof(Command), "java -jar %s -T HaplotypeCaller %s ", PATH_GATK.c_str(), Parameters.c_str());
             fputs(Command, fp_sh);
             snprintf(Command, sizeof(Command), "-R %s/fa/%s.fa -nct 1 ", PathWork, ChrName[i].c_str());
             fputs(Command, fp_sh);
@@ -168,7 +180,7 @@ int SmallFA(int argc, char *argv[])
         {
             snprintf(Command, sizeof(Command), "/usr/bin/time -f \"%%E\" ");
             fputs(Command, fp_sh);
-            snprintf(Command, sizeof(Command), "%s --strict-vcf ", PATH_FREEBAYES);
+            snprintf(Command, sizeof(Command), "%s --strict-vcf %s ", PATH_FREEBAYES.c_str(), Parameters.c_str());
             fputs(Command, fp_sh);
             snprintf(Command, sizeof(Command), "-f %s/fa/%s.fa ", PathWork, ChrName[i].c_str());
             fputs(Command, fp_sh);

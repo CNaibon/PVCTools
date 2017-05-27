@@ -101,13 +101,14 @@ int main(int argc, char *argv[])
         }
         else if (cmd == "Submit")
         {
-            std::cout << "\t./PVCTools Submit <-w WorkPath> <-n SplitNumber> [-T Tools] [-q Queue] [-cpu CPU] [-span Span]" << std::endl;
+            std::cout << "\t./PVCTools Submit <-w WorkPath> <-n SplitNumber> [-T Tools] [-P Tool'sParameters] [-q Queue] [-cpu CPU] [-span Span]" << std::endl;
             std::cout << "\tRequired Parameters:" << std::endl;
             std::cout << "\t\t-w               : Working directory path for using to store the generated files." << std::endl;
             std::cout << "\t\t-n               : The number of divisions." << std::endl;
             std::cout << "\tOptional Parameters:" << std::endl;
             std::cout << "\t\t-T               : The tool you want to use to run the task (Default tool: samtools)." << std::endl;
             std::cout << "\t\t                   Optional tools : [samtools] [gatk] [freebayes]." << std::endl;
+            std::cout << "\t\t-P                 Calculating tool's parameters." << std::endl;
             std::cout << "\t\t-q               : The queue you want to run the task (Default queue: normal)." << std::endl;
             std::cout << "\tTips:" << std::endl;
             std::cout << "\tYou may need to customize the FA file list that you want to import in [falist]." << std::endl;
@@ -115,12 +116,13 @@ int main(int argc, char *argv[])
         }
         else if (cmd == "SmallFA")
         {
-            std::cout << "\t./PVCTools SmallFA <-w WorkPath> [-T Tools] [-q Queue] [-cpu CPU] [-span Span]" << std::endl;
+            std::cout << "\t./PVCTools SmallFA <-w WorkPath> [-T Tools] [-P Tool'sParameters] [-q Queue] [-cpu CPU] [-span Span]" << std::endl;
             std::cout << "\tRequired Parameters:" << std::endl;
             std::cout << "\t\t-w               : Working directory path for using to store the generated files." << std::endl;
             std::cout << "\tOptional Parameters:" << std::endl;
             std::cout << "\t\t-T               : The tool you want to use to run the task (Default tool: samtools)." << std::endl;
             std::cout << "\t\t                   Optional tools : [samtools] [gatk] [freebayes]." << std::endl;
+            std::cout << "\t\t-P                 Calculating tool's parameters." << std::endl;
             std::cout << "\t\t-q               : The queue you want to run the task (Default queue: normal)." << std::endl;
             std::cout << "\t\t-cpu             : The number of CPUs you want to allocate for running the task (Default value: 1)." << std::endl;
             std::cout << "\t\t                   Ideal value: The number of samples." << std::endl;
@@ -130,7 +132,7 @@ int main(int argc, char *argv[])
         }
         else if (cmd == "GetVCF")
         {
-            std::cout << "\t./PVCTools GetVCF <-w WorkPath> <-fa FAPath> <-bam BAMPath> <-n SplitNumber> [-lm Size] [-I] [-T Tools] [-q Queue] [-cpu CPU] [-span Span]" << std::endl;
+            std::cout << "\t./PVCTools GetVCF <-w WorkPath> <-fa FAPath> <-bam BAMPath> <-n SplitNumber> [-lm Size] [-I] [-T Tools] [-P Tool'sParameters] [-q Queue] [-cpu CPU] [-span Span]" << std::endl;
             std::cout << "\tRequired Parameters:" << std::endl;
             std::cout << "\t\t-w               : Working directory path for using to store the generated files." << std::endl;
             std::cout << "\t\t-fa              : The path of the original FA file."<< std::endl;
@@ -141,6 +143,7 @@ int main(int argc, char *argv[])
             std::cout << "\t\t-I               : Will import [bamlist](By default, do not import, all of the BAM files in the target path will be calculated)." << std::endl;
             std::cout << "\t\t-T               : The tool you want to use to run the task (Default tool: samtools)." << std::endl;
             std::cout << "\t\t                   Optional tools : [samtools] [gatk] [freebayes]." << std::endl;
+            std::cout << "\t\t-P                 Calculating tool's parameters." << std::endl;
             std::cout << "\t\t-q               : The queue you want to run the task (Default queue: normal)." << std::endl;
             std::cout << "\t\t-cpu             : The number of CPUs you want to allocate for running the task (Default value: 1)." << std::endl;
             std::cout << "\t\t                   Ideal value: The number of samples." << std::endl;

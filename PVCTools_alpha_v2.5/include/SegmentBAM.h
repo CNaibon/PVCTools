@@ -9,7 +9,7 @@
 #include "Environment.h"
 
 using std::string;
-void Modify(string &buffer, long addresses_number);
+void Modify(char *buffer, long addresses_number);
 int Sam_Address_Modify(char *file_name, long address_count);
 int SegmentBAM(int argc, char *argv[]);
 
