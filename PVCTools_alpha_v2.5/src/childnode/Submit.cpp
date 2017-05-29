@@ -177,14 +177,17 @@ int Submit(int argc, char *argv[])
             }
             else if (Tool == "gatk")
             {
-                snprintf(Command, sizeof(Command), "java -jar CreateSequenceDictionary.jar ");
+                snprintf(Command, sizeof(Command), "%s faidx %s/fa/%s.fa\n", PATH_SAMTOOLS.c_str(), PathWork, ChrName[i].c_str());
                 fputs(Command, fp_sh);
-                snprintf(Command, sizeof(Command), "R= %s/fa/%s/%s_%d.fasta O= %s/fa/%s/%s_%d.dict\n", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), k, PathWork, ChrName[i].c_str(), ChrName[i].c_str(), k);
+
+                snprintf(Command, sizeof(Command), "java -jar /gpfs01/home/jingjing/software/GATK/picard-tools-1.119/CreateSequenceDictionary.jar ");
+                fputs(Command, fp_sh);
+                snprintf(Command, sizeof(Command), "R= %s/fa/%s.fa O= %s/fa/%s.dict\n", PathWork, ChrName[i].c_str(), PathWork, ChrName[i].c_str());
                 fputs(Command, fp_sh);
 
                 snprintf(Command, sizeof(Command), "java -jar %s -T HaplotypeCaller %s ", PATH_GATK.c_str(), Parameters.c_str());
                 fputs(Command, fp_sh);
-                snprintf(Command, sizeof(Command), "-R %s/fa/%s/%s_%d.fa -nct 1 ", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), k);
+                snprintf(Command, sizeof(Command), "-R %s/fa/%s.fa -nct 1 ", PathWork, ChrName[i].c_str(), ChrName[i].c_str());
                 fputs(Command, fp_sh);
                 for (int n = 0; n < (int)SampleName.size(); n++)
                 {
@@ -224,13 +227,13 @@ int Submit(int argc, char *argv[])
             }
 
             //JudgeVCF
-            snprintf(Command, sizeof(Command), "\n%s JudgeVCF -w %s -C %ld -N %s_%d -n %s", argv[0], PathWork, TotalNumber, ChrName[i].c_str(), k, SplitNumber);
+            snprintf(Command, sizeof(Command), "\n%s JudgeVCF -w %s -C %ld -N %s_%d -n %s -S big", argv[0], PathWork, TotalNumber, ChrName[i].c_str(), k, SplitNumber);
             fputs(Command, fp_sh);
             fclose(fp_sh);
 
-            // Submit.
-//            snprintf(Command, sizeof(Command), "bsub < %s/sub_script/%s_%d_%s.sh", PathWork, ChrName[i].c_str(), k, Tool.c_str());
-//            system(Command);
+            //Submit.
+            snprintf(Command, sizeof(Command), "bsub < %s/sub_script/%s_%d_%s.sh", PathWork, ChrName[i].c_str(), k, Tool.c_str());
+            system(Command);
         }
     }
     printf("The VCF task has been submitted to each node.\n");

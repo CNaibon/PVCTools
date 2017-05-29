@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
         }
         else if (cmd == "Submit")
         {
-            std::cout << "\t./PVCTools Submit <-w WorkPath> <-n SplitNumber> [-T Tools] [-P Tool'sParameters] [-q Queue] [-cpu CPU] [-span Span]" << std::endl;
+            std::cout << "\t./PVCTools Submit <-w WorkPath> <-n SplitNumber> [-T Tools] [-P Tool'sParameters] [-q Queue]" << std::endl;
             std::cout << "\tRequired Parameters:" << std::endl;
             std::cout << "\t\t-w               : Working directory path for using to store the generated files." << std::endl;
             std::cout << "\t\t-n               : The number of divisions." << std::endl;

@@ -108,6 +108,9 @@ int SegmentFA(int argc,char *argv[])
         fclose(fp_FA);
     }
 
+    snprintf(ShellCommand, sizeof(ShellCommand), "sort %s/falist -o %s/falist", PathWork, PathWork);
+    system(ShellCommand);
+
     int FileNumber[ChrName.size()];
 
     //Each chromosome is divided

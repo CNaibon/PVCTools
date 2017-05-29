@@ -56,6 +56,8 @@ int SmallFA(int argc, char *argv[])
     system(ShellCommand);
     snprintf(ShellCommand, sizeof(ShellCommand), "rm %s/smalllist_tmp" , PathWork);
     system(ShellCommand);
+    snprintf(ShellCommand, sizeof(ShellCommand), "sort %s/smalllist -o %s/smalllist", PathWork, PathWork);
+    system(ShellCommand);
 
     string strbuff;
     //Import BAM list, if you need to customize the list, you should modify the [bamlist], fill in the need to split the BAM file
@@ -195,6 +197,9 @@ int SmallFA(int argc, char *argv[])
             snprintf(Command, sizeof(Command), "-v %s/vcf/Final_Result/%s.vcf", PathWork, ChrName[i].c_str());
             fputs(Command, fp_sh);
         }
+
+        snprintf(Command, sizeof(Command), "\n%s JudgeVCF -w %s -C %ld -N %s -S small", argv[0], PathWork, long(ChrName.size()), ChrName[i].c_str());
+        fputs(Command, fp_sh);
         fclose(fp_sh);
         // Submit.
         snprintf(Command, sizeof(Command), "bsub < %s/sub_script/smallFA/%s_%s.sh", PathWork, ChrName[i].c_str(), Tool.c_str());

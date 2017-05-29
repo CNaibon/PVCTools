@@ -71,11 +71,82 @@ int VCF_Link(char *tarfile, char *formfile, long add_count)
 
 }
 
+int TotalVCF(const char *workdir)
+{
+    char BigFA[CMD_NUM];
+    snprintf(BigFA, sizeof(BigFA), "%s/big_success", workdir);
+    char SmallFA[CMD_NUM];
+    snprintf(SmallFA, sizeof(SmallFA), "%s/small_success", workdir);
+
+    if(access(BigFA,0) == 0 && access(SmallFA,0) == 0)
+    {
+        char ShellCommand[CMD_NUM];
+        vector<string> ChrName;
+        string Buffer;
+        string strbuff;
+        ifstream fp_list;
+
+        remove(BigFA);
+        remove(SmallFA);
+
+        snprintf(ShellCommand, sizeof(ShellCommand), "%s/falist", workdir);
+        fp_list.open(ShellCommand,ios::in);
+        getline(fp_list, Buffer);
+        while (!fp_list.eof())
+        {
+            if (Buffer.size() != 0)
+            {
+                int i = Buffer.rfind('.');
+                strbuff = Buffer.substr(0,i);
+                ChrName.push_back(strbuff.c_str());
+            }
+            getline(fp_list, Buffer);
+        }
+        fp_list.close();
+
+        snprintf(ShellCommand, sizeof(ShellCommand), "%s/smalllist", workdir);
+        fp_list.open(ShellCommand,ios::in);
+        getline(fp_list, Buffer);
+        while (!fp_list.eof())
+        {
+            if (Buffer.size() != 0)
+            {
+                int i = Buffer.rfind('.');
+                strbuff = Buffer.substr(0,i);
+                ChrName.push_back(strbuff.c_str());
+            }
+            getline(fp_list, Buffer);
+        }
+        fp_list.close();
+
+        snprintf(ShellCommand, sizeof(ShellCommand), "cp -f %s/vcf/Final_Result/%s.var.flt.vcf %s/vcf/Final_Result.var.flt.vcf", workdir, ChrName[0].c_str(), workdir);
+        system(ShellCommand);
+
+        char VCF_File[CMD_NUM];
+        snprintf(VCF_File, sizeof(VCF_File), "%s/vcf/Final_Result.var.flt.vcf", workdir);
+
+        ofstream outfile;
+        outfile.open(VCF_File, ios::out|ios::app);
+        for (long i = 1; i < long(ChrName.size()); i++)
+        {
+            snprintf(ShellCommand, sizeof(ShellCommand), "%s/vcf/Final_Result/%s.var.flt.vcf", workdir, ChrName[i].c_str());
+            ifstream infile;
+            infile.open(ShellCommand,ios::in);
+            getline(infile,Buffer);
+            while (!infile.eof())
+            {
+                if(Buffer.at(0) != '#') outfile<<Buffer<<endl;
+                getline(infile,Buffer);
+            }
+            infile.close();
+        }
+        outfile.close();
+    }
+    return 0;
+}
+
 int StitchVCF(int argc,char *argv[])
 {
-    long StartTime = time((time_t*)NULL);
-    printf("start time = %ld\n", StartTime);
-
     vector<string> ChrName;
     //Command string.
     char ShellCommand[CMD_NUM];
@@ -192,13 +263,6 @@ int StitchVCF(int argc,char *argv[])
         }
     }
     printf("VCF results stitching done.\n");
-
-
-    long FinishTime = time((time_t*)NULL);
-    printf("finish time = %ld\n", FinishTime);
-    long RunningTime = FinishTime - StartTime;
-    printf("running time = %ld\n", RunningTime);
-
     return 0;
 }
 
@@ -206,6 +270,7 @@ int JudgeVCF(int argc, char *argv[])
 {
     char PathWork[CMD_NUM];
     string FileName;
+    string Size;
     long TotalNumber = 0;
     char Command[CMD_NUM];
     char SplitNumber[CMD_NUM];
@@ -220,12 +285,17 @@ int JudgeVCF(int argc, char *argv[])
         if (cmd == "-C") TotalNumber = atol(argv[i + 1]);
         if (cmd == "-N") FileName = argv[i + 1];
         if (cmd == "-n") snprintf(SplitNumber, sizeof(SplitNumber), "%s", argv[i + 1]);
+        if (cmd == "-S")
+        {
+            snprintf(Command, sizeof(Command), "%s_Count", argv[i + 1]);
+            Size = Command;
+        }
     }
     FILE *fp;
-    snprintf(Command, sizeof(Command), "%s/FA_Count", PathWork);
+    snprintf(Command, sizeof(Command), "%s/%s", PathWork, Size.c_str());
     if ((fp = fopen(Command, "a+")) == NULL)
     {
-        cerr<<"Can't open the FA_Count file."<<std::endl;
+        cerr<<"Can't open the Count file."<<std::endl;
         exit(-1);
     }
     int fd = fileno(fp);
@@ -235,7 +305,7 @@ int JudgeVCF(int argc, char *argv[])
     fclose(fp);
     ifstream fp_tmp;
     string Buffer;
-    snprintf(Command, sizeof(Command), "wc -l %s/FA_Count > %s/%s_tmp", PathWork, PathWork, FileName.c_str());
+    snprintf(Command, sizeof(Command), "wc -l %s/%s > %s/%s_tmp", PathWork, Size.c_str(), PathWork, FileName.c_str());
     system(Command);
     snprintf(Command, sizeof(Command), "%s/%s_tmp", PathWork, FileName.c_str());
     fp_tmp.open(Command,ios::in);
@@ -243,9 +313,9 @@ int JudgeVCF(int argc, char *argv[])
     fp_tmp.close();
     remove(Command);
     flock(fd,LOCK_UN);
-    if ( atol(Buffer.c_str()) == TotalNumber)
+    if (atol(Buffer.c_str()) == TotalNumber && Size == "big_Count")
     {
-        snprintf(Command, sizeof(Command), "%s/FA_Count", PathWork);
+        snprintf(Command, sizeof(Command), "%s/%s", PathWork, Size.c_str());
         remove(Command);
         char* ary[4];
         char ary1[] = "-w";
@@ -256,6 +326,19 @@ int JudgeVCF(int argc, char *argv[])
         ary[3] = SplitNumber;
         printf("staring stitchVCF!\n");
         StitchVCF(4, ary);
+        snprintf(Command, sizeof(Command), "%s/big_success", PathWork);
+        fp = fopen(Command, "w");
+        fclose(fp);
+        TotalVCF(PathWork);
+    }
+    else if (atol(Buffer.c_str()) == TotalNumber && Size == "small_Count")
+    {
+        snprintf(Command, sizeof(Command), "%s/%s", PathWork, Size.c_str());
+        remove(Command);
+        snprintf(Command, sizeof(Command), "%s/small_success", PathWork);
+        fp = fopen(Command, "w");
+        fclose(fp);
+        TotalVCF(PathWork);
     }
     return 0;
 }
