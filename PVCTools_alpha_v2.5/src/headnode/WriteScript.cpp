@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
         }
         else if (cmd == "SmallFA")
         {
-            std::cout << "\t./PVCTools SmallFA <-w WorkPath> [-T Tools] [-P Tool'sParameters] [-q Queue] [-cpu CPU] [-span Span]" << std::endl;
+            std::cout << "\t./PVCTools SmallFA <-w WorkPath> [-T Tools] [-P Tool'sParameters] [-q Queue]" << std::endl;
             std::cout << "\tRequired Parameters:" << std::endl;
             std::cout << "\t\t-w               : Working directory path for using to store the generated files." << std::endl;
             std::cout << "\tOptional Parameters:" << std::endl;
@@ -124,10 +124,6 @@ int main(int argc, char *argv[])
             std::cout << "\t\t                   Optional tools : [samtools] [gatk] [freebayes]." << std::endl;
             std::cout << "\t\t-P                 Calculating tool's parameters." << std::endl;
             std::cout << "\t\t-q               : The queue you want to run the task (Default queue: normal)." << std::endl;
-            std::cout << "\t\t-cpu             : The number of CPUs you want to allocate for running the task (Default value: 1)." << std::endl;
-            std::cout << "\t\t                   Ideal value: The number of samples." << std::endl;
-            std::cout << "\t\t                   BUT considering the CPU resources,this value should be less then the queue CPU maximum." << std::endl;
-            std::cout << "\t\t-span            : The maximum number of the CPU used on each node (Default value: 20)." << std::endl;
             std::cout << std::endl;
         }
         else if (cmd == "GetVCF")
@@ -153,11 +149,10 @@ int main(int argc, char *argv[])
         }
         else if (cmd == "Environment")
         {
-            std::cout << "\t./PVCTools Environment [-samtools PATH] [-bcftools PATH] [-bamUtil PATH]" << std::endl;
+            std::cout << "\t./PVCTools Environment [-tool_name1 PATH] [-tool_name2 PATH] ..." << std::endl;
             std::cout << "\tOptional Parameters:" << std::endl;
-            std::cout << "\t\t-samtools        : Setting samtools path." << std::endl;
-            std::cout << "\t\t-bcftools        : Setting bcftools path." << std::endl;
-            std::cout << "\t\t-bamUtil         : Setting bamUtil path." << std::endl;
+            std::cout << "\t\t-tool_name       : Setting tool's path." << std::endl;
+            std::cout << "\t\t                   Optional tools : [samtools] [gatk] [freebayes] [bamUtil] [bcftools]." << std::endl;
             std::cout << std::endl;
             PrintEvmt(argv[0]);
         }
