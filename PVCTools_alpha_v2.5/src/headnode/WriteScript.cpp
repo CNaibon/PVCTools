@@ -101,11 +101,12 @@ int main(int argc, char *argv[])
         }
         else if (cmd == "Submit")
         {
-            std::cout << "\t./PVCTools Submit <-w WorkPath> <-n SplitNumber> [-T Tools] [-P Tool'sParameters] [-q Queue]" << std::endl;
+            std::cout << "\t./PVCTools Submit <-w WorkPath> <-n SplitNumber> [-single] [-T Tools] [-P Tool'sParameters] [-q Queue] [-single]" << std::endl;
             std::cout << "\tRequired Parameters:" << std::endl;
             std::cout << "\t\t-w               : Working directory path for using to store the generated files." << std::endl;
             std::cout << "\t\t-n               : The number of divisions." << std::endl;
             std::cout << "\tOptional Parameters:" << std::endl;
+            std::cout << "\t\t-single          : If you use this module separately , you have to use this parameter." << std::endl;
             std::cout << "\t\t-T               : The tool you want to use to run the task (Default tool: samtools)." << std::endl;
             std::cout << "\t\t                   Optional tools : [samtools] [gatk] [freebayes]." << std::endl;
             std::cout << "\t\t-P                 Calculating tool's parameters." << std::endl;

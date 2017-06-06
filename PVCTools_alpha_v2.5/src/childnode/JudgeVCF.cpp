@@ -71,16 +71,12 @@ int VCF_Link(char *tarfile, char *formfile, long add_count)
 
 }
 
-int TotalVCF(const char *workdir, bool judge)
+int TotalVCF(const char *workdir, int judge)
 {
     char BigFA[CMD_NUM];
     snprintf(BigFA, sizeof(BigFA), "%s/big_success", workdir);
     char SmallFA[CMD_NUM];
-    if (judge)
-    {
-        snprintf(SmallFA, sizeof(SmallFA), "%s/small_success", workdir);
-    }
-
+    snprintf(SmallFA, sizeof(SmallFA), "%s/small_success", workdir);
 
     if(access(BigFA,0) == 0 && judge && access(SmallFA,0) == 0)
     {
@@ -145,7 +141,7 @@ int TotalVCF(const char *workdir, bool judge)
             infile.close();
         }
         outfile.close();
-    } else if(access(BigFA,0) == 0 && !judge)
+    } else if(access(BigFA,0) == 0 && judge == 0)
     {
         char ShellCommand[CMD_NUM];
         vector<string> ChrName;
@@ -193,7 +189,6 @@ int TotalVCF(const char *workdir, bool judge)
             infile.close();
         }
         outfile.close();
-
     }
     return 0;
 }
@@ -327,6 +322,8 @@ int JudgeVCF(int argc, char *argv[])
     long TotalNumber = 0;
     char Command[CMD_NUM];
     char SplitNumber[CMD_NUM];
+    int single_judge = 1;
+
     for (int i = 0; i < argc; i++)
     {
         string cmd = argv[i];
@@ -343,6 +340,7 @@ int JudgeVCF(int argc, char *argv[])
             snprintf(Command, sizeof(Command), "%s_Count", argv[i + 1]);
             Size = Command;
         }
+        if (cmd == "-single") single_judge = 0;
     }
     FILE *fp;
     snprintf(Command, sizeof(Command), "%s/%s", PathWork, Size.c_str());
@@ -382,7 +380,7 @@ int JudgeVCF(int argc, char *argv[])
         snprintf(Command, sizeof(Command), "%s/big_success", PathWork);
         fp = fopen(Command, "w");
         fclose(fp);
-        TotalVCF(PathWork);
+        TotalVCF(PathWork, single_judge);
     }
     else if (atol(Buffer.c_str()) == TotalNumber && Size == "small_Count")
     {
@@ -391,7 +389,7 @@ int JudgeVCF(int argc, char *argv[])
         snprintf(Command, sizeof(Command), "%s/small_success", PathWork);
         fp = fopen(Command, "w");
         fclose(fp);
-        TotalVCF(PathWork);
+        TotalVCF(PathWork, single_judge);
     }
     return 0;
 }

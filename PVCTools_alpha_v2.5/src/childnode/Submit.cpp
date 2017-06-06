@@ -38,6 +38,7 @@ int Submit(int argc, char *argv[])
     char SplitNumber[CMD_NUM];
     string Tool = "samtools";
     string Parameters = " ";
+    string single_judge = " ";
 
     for (int i = 0; i < argc; i++)
     {
@@ -52,6 +53,7 @@ int Submit(int argc, char *argv[])
         if (cmd == "-Span") snprintf(Span, sizeof(Span), "%s", argv[i + 1]);
         if (cmd == "-T") Tool = argv[i + 1];
         if (cmd == "-P") Parameters = argv[i + 1];
+        if (cmd == "-single") single_judge = argv[i];
     }
 
     string strbuff;
@@ -227,7 +229,7 @@ int Submit(int argc, char *argv[])
             }
 
             //JudgeVCF
-            snprintf(Command, sizeof(Command), "\n%s JudgeVCF -w %s -C %ld -N %s_%d -n %s -S big", argv[0], PathWork, TotalNumber, ChrName[i].c_str(), k, SplitNumber);
+            snprintf(Command, sizeof(Command), "\n%s JudgeVCF -w %s -C %ld -N %s_%d -n %s -S big %s", argv[0], PathWork, TotalNumber, ChrName[i].c_str(), k, SplitNumber, single_judge.c_str());
             fputs(Command, fp_sh);
             fclose(fp_sh);
 
