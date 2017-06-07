@@ -13,61 +13,106 @@
 
 using namespace std;
 
-void Modify(char *buffer, long addresses_number)
+int Modify(char *buffer, long addresses_number, char *chr_name, string tool, long LN)
 {
-    if (buffer[0] == '@') return;
-    int count = 0;
-    int flag = 0;
-    for (int i = 0; i < (int)strlen(buffer); i++)
+    if (tool == "samtools")
     {
-        if (buffer[i] == '\t')
+        if (buffer[0] == '@') return 0;
+        int count = 0;
+        int flag = 0;
+        for (int i = 0; i < (int)strlen(buffer); i++)
         {
-            count++;
-            if (count == 3 || count == 7) flag = 1;
+            if (buffer[i] == '\t')
+            {
+                count++;
+                if (count == 3 || count == 7) flag = 1;
+            }
+            if (flag == 1)
+            {
+                char *p = &buffer[i + 1];
+                char Front[FILE_LINE], Rear[FILE_LINE];
+                char Number_Old[CMD_NUM], Number_New[CMD_NUM];
+                long Num_Old = atol(p);
+                snprintf(Number_Old, sizeof(Number_Old), "%ld", Num_Old);
+                int Length_Old = (int)strlen(Number_Old);
+                //Modify the starting address.
+                long Num_New = Num_Old - addresses_number;
+                snprintf(Number_New, sizeof(Number_New), "%ld", Num_New);
+                snprintf(Front, (size_t)(i + 2), "%s", buffer);
+                snprintf(Rear, sizeof(Rear), "%s", &buffer[i + 1 + Length_Old]);
+                strncat(Front, Number_New, sizeof(Front) - strlen(Front));
+                strncat(Front, Rear, sizeof(Front) - strlen(Front));
+                snprintf(buffer, FILE_LINE, "%s", Front);
+                flag = 0;
+            }
+            if (count == 7) return 0;
         }
-        if (flag == 1)
+    } else if (tool == "gatk")
+    {
+        if(strstr(buffer, "@SQ") && strstr(buffer, chr_name))
         {
-            char *p = &buffer[i + 1];
-            char Front[FILE_LINE], Rear[FILE_LINE];
-            char Number_Old[CMD_NUM], Number_New[CMD_NUM];
-            long Num_Old = atol(p);
-            snprintf(Number_Old, sizeof(Number_Old), "%ld", Num_Old);
-            int Length_Old = (int)strlen(Number_Old);
-            //Modify the starting address.
-            long Num_New = Num_Old - addresses_number;
-            snprintf(Number_New, sizeof(Number_New), "%ld", Num_New);
-            snprintf(Front, (size_t)(i + 2), "%s", buffer);
-            snprintf(Rear, sizeof(Rear), "%s", &buffer[i + 1 + Length_Old]);
-            strncat(Front, Number_New, sizeof(Front) - strlen(Front));
-            strncat(Front, Rear, sizeof(Front) - strlen(Front));
-            snprintf(buffer, FILE_LINE, "%s", Front);
-            flag = 0;
+            int count = 0;
+            for (int i = 0; i < (int)buffer.size(); i++)
+            {
+                if (buffer[i] == '\t') count++;
+                if (count == 2)
+                {
+                    char *p = &buffer[i + 4];
+                    char Front[FILE_LINE], Rear[FILE_LINE];
+                    char Number_Old[CMD_NUM], Number_New[CMD_NUM];
+                    long Num_Old = atol(p);
+                    snprintf(Number_Old, sizeof(Number_Old), "%ld", Num_Old);
+                    int Length_Old = (int)strlen(Number_Old);
+                    snprintf(Number_New, sizeof(Number_New), "%ld", LN);
+                    snprintf(Front, (size_t)(i + 5), "%s", buffer.c_str());
+                    snprintf(Rear, sizeof(Rear), "%s", &buffer[i + 4 + Length_Old]);
+                    strncat(Front, Number_New, sizeof(Front) - strlen(Front));
+                    strncat(Front, Rear, sizeof(Front) - strlen(Front));
+                    snprintf(buffer, FILE_LINE, "%s", Front);
+                    return 0;
+                }
+            }
         }
-        if (count == 7) return;
+        else if (strstr(buffer, "@SQ")) return -1;
+        else
+        {
+            if (buffer[0] == '@') return 0;
+            int count = 0;
+            int flag = 0;
+            for (int i = 0; i < (int)strlen(buffer); i++)
+            {
+                if (buffer[i] == '\t')
+                {
+                    count++;
+                    if (count == 3 || count == 7) flag = 1;
+                }
+                if (flag == 1)
+                {
+                    char *p = &buffer[i + 1];
+                    char Front[FILE_LINE], Rear[FILE_LINE];
+                    char Number_Old[CMD_NUM], Number_New[CMD_NUM];
+                    long Num_Old = atol(p);
+                    snprintf(Number_Old, sizeof(Number_Old), "%ld", Num_Old);
+                    int Length_Old = (int) strlen(Number_Old);
+                    //Modify the starting address.
+                    long Num_New = Num_Old - addresses_number;
+                    snprintf(Number_New, sizeof(Number_New), "%ld", Num_New);
+                    snprintf(Front, (size_t)(i + 2), "%s", buffer);
+                    snprintf(Rear, sizeof(Rear), "%s", &buffer[i + 1 + Length_Old]);
+                    strncat(Front, Number_New, sizeof(Front) - strlen(Front));
+                    strncat(Front, Rear, sizeof(Front) - strlen(Front));
+                    snprintf(buffer, FILE_LINE, "%s", Front);
+                    flag = 0;
+                }
+                if (count == 7) return 0;
+            }
+        }
     }
+
 }
 
-int Sam_Address_Modify(char *file_name, long address_count)
+int Sam_Address_Modify(char *file_name, long address_count, char *chr_name, string tool, long LN)
 {
-//    string Buffer;
-//    ifstream fp_old;
-//    ofstream fp_new;
-//    char TmpName[CMD_NUM];
-//
-//    snprintf(TmpName, sizeof(TmpName), "%s-%d", file_name, (int)getpid());
-//    fp_old.open(file_name,ios::in);
-//    fp_new.open(TmpName, ios::out);
-//
-//    getline(fp_old, Buffer);
-//    while (!fp_old.eof())
-//    {
-//        Modify(Buffer, address_count);
-//        fp_new<<Buffer<<endl;
-//        getline(fp_old,Buffer);
-//    }
-//    fp_old.close();
-//    fp_new.close();
-
     FILE *fp_old, *fp_new;
     if ((fp_old = fopen(file_name, "r")) == NULL)
         exit(-1);
@@ -80,8 +125,7 @@ int Sam_Address_Modify(char *file_name, long address_count)
     getline(&Buffer, &Len, fp_old);
     while (!feof(fp_old))
     {
-        Modify(Buffer, address_count);
-        fputs(Buffer, fp_new);
+        if(Modify(Buffer, address_count, chr_name, tool, LN) != -1) fputs(Buffer, fp_new);
         getline(&Buffer, &Len, fp_old);
     }
     fclose(fp_old);
@@ -106,6 +150,7 @@ int SegmentBAM(int argc, char *argv[])
     string Buffer;
     char PathWork[CMD_NUM];
     int SplitNumber;
+    string Tool = "samtools";
     
     for (int i = 0; i < argc; i++)
     {
@@ -116,6 +161,7 @@ int SegmentBAM(int argc, char *argv[])
             if (PathWork[strlen(PathWork) - 1] == '/') PathWork[strlen(PathWork) - 1] = '\0';
         }
         if (cmd == "-n") SplitNumber = atoi(argv[i + 1]);
+        if (cmd == "-T") Tool = argv[i + 1];
     }
 
     string strbuff;
@@ -189,6 +235,7 @@ int SegmentBAM(int argc, char *argv[])
     printf("Sort is end.\n");
 
     long ReadCount[ChrName.size()][2 * SplitNumber];
+    long LNCount[ChrName.size()][2 * SplitNumber];
 
     //Split BAM according to each chromosome.
 #pragma omp parallel for
@@ -233,7 +280,8 @@ int SegmentBAM(int argc, char *argv[])
             getline(fp_sp, TransBuffer);
             fp_sp.close();
             //Record the number of all reads so far.
-            ReadCount[i][j + 1] = ReadCount[i][j] + (atol(TransBuffer.c_str()) - 1)*Maxlen_PreLine;
+            LNCount[i][j] = (atol(TransBuffer.c_str()) - 1)*Maxlen_PreLine;
+            ReadCount[i][j + 1] = ReadCount[i][j] + LNCount[i][j];
         }
         snprintf(TransCommand, sizeof(TransCommand), "%s_tmp", ChrName[i].c_str());
         remove(TransCommand);
@@ -288,13 +336,10 @@ int SegmentBAM(int argc, char *argv[])
                 remove(ModCommand);
 
                 //Sam address modified.
-                if (k > 0)
-                {
-                    snprintf(ModCommand, sizeof(ModCommand), "%s/sample/%s/%s_%s/%s_%s_%d.sam", PathWork, SampleName[n].c_str(),
-                            SampleName[n].c_str(), ChrName[i].c_str(),
-                            SampleName[n].c_str(), ChrName[i].c_str(), k);
-                    Sam_Address_Modify(ModCommand, ReadCount[i][k]);
-                }
+                snprintf(ModCommand, sizeof(ModCommand), "%s/sample/%s/%s_%s/%s_%s_%d.sam", PathWork, SampleName[n].c_str(),
+                         SampleName[n].c_str(), ChrName[i].c_str(),
+                         SampleName[n].c_str(), ChrName[i].c_str(), k);
+                if (k > 0 || Tool == "gatk") Sam_Address_Modify(ModCommand, ReadCount[i][k] ,ChrName[i].c_str(), Tool, LNCount[i][k]);
 
                 //Change the modified sam file back to bam format.
                 snprintf(ModCommand, sizeof(ModCommand), "%s view -b %s/sample/%s/%s_%s/%s_%s_%d.sam > %s/sample/%s/%s_%s/%s_%s_%d.bam", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(),
