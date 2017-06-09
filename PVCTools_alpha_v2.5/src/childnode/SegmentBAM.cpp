@@ -136,6 +136,26 @@ int Sam_Address_Modify(char *file_name, long address_count, char *chr_name, stri
     return 0;
 }
 
+int getheader(char *work_path, char *file_name)
+{
+    FILE *fp, *fp_h;
+    if ((fp = fopen(file_name, "r")) == NULL) exit(-1);
+    char TmpName[CMD_NUM];
+    snprintf(TmpName, sizeof(TmpName), "%s/header", work_path);
+    if ((fp_h = fopen(TmpName, "w")) == NULL) exit(-1);
+    char *Buffer = NULL;
+    size_t Len = FILE_LINE;
+    getline(&Buffer, &Len, fp);
+    while (!feof(fp))
+    {
+        if(Buffer[0] == '@') fputs(Buffer, fp_h);
+        getline(&Buffer, &Len, fp_old);
+    }
+    fclose(fp);
+    fclose(fp_h);
+    return 0;
+}
+
 int SegmentBAM(int argc, char *argv[])
 {
     long StartTime = time((time_t*)NULL);
@@ -339,6 +359,7 @@ int SegmentBAM(int argc, char *argv[])
                 snprintf(ModCommand, sizeof(ModCommand), "%s/sample/%s/%s_%s/%s_%s_%d.sam", PathWork, SampleName[n].c_str(),
                          SampleName[n].c_str(), ChrName[i].c_str(),
                          SampleName[n].c_str(), ChrName[i].c_str(), k);
+                if (i == 0 && n == 0 && k == 0) getheader(PathWork, ModCommand);
                 if (k > 0 || Tool == "gatk") Sam_Address_Modify(ModCommand, ReadCount[i][k] ,ChrName[i].c_str(), Tool, LNCount[i][k]);
 
                 //Change the modified sam file back to bam format.

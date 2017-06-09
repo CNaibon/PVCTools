@@ -119,7 +119,7 @@ int TotalVCF(const char *workdir, int judge)
         }
         fp_list.close();
 
-        snprintf(ShellCommand, sizeof(ShellCommand), "cp -f %s/vcf/Final_Result/%s.var.flt.vcf %s/vcf/Final_Result.var.flt.vcf", workdir, ChrName[0].c_str(), workdir);
+        snprintf(ShellCommand, sizeof(ShellCommand), "cp -f %s/header %s/vcf/Final_Result.var.flt.vcf", workdir, workdir);
         system(ShellCommand);
 
         char VCF_File[CMD_NUM];
@@ -141,6 +141,8 @@ int TotalVCF(const char *workdir, int judge)
             infile.close();
         }
         outfile.close();
+        snprintf(ShellCommand, sizeof(ShellCommand), "%s/header", workdir);
+        remove(ShellCommand);
     } else if(access(BigFA,0) == 0 && judge == 0)
     {
         char ShellCommand[CMD_NUM];
@@ -167,7 +169,7 @@ int TotalVCF(const char *workdir, int judge)
         }
         fp_list.close();
 
-        snprintf(ShellCommand, sizeof(ShellCommand), "cp -f %s/vcf/Final_Result/%s.var.flt.vcf %s/vcf/Final_Result.var.flt.vcf", workdir, ChrName[0].c_str(), workdir);
+        snprintf(ShellCommand, sizeof(ShellCommand), "cp -f %s/header %s/vcf/Final_Result.var.flt.vcf", workdir, workdir);
         system(ShellCommand);
 
         char VCF_File[CMD_NUM];
@@ -189,6 +191,8 @@ int TotalVCF(const char *workdir, int judge)
             infile.close();
         }
         outfile.close();
+        snprintf(ShellCommand, sizeof(ShellCommand), "%s/header", workdir);
+        remove(ShellCommand);
     }
     return 0;
 }
@@ -296,9 +300,7 @@ int StitchVCF(int argc,char *argv[])
         char Command[CMD_NUM];
 
         //Copy a copy of the first VCF file.
-        snprintf(Command, sizeof(Command), "cp -f %s/vcf/%s/%s_0.var.flt.vcf %s/vcf/Final_Result/%s.var.flt.vcf", PathWork,
-                 ChrName[i].c_str(), ChrName[i].c_str(), PathWork,
-                 ChrName[i].c_str());
+        snprintf(Command, sizeof(Command), "cp -f %s/header %s/vcf/Final_Result/%s.var.flt.vcf", PathWork, PathWork, ChrName[i].c_str());
         system(Command);
 
         char VCF_File[CMD_NUM];
