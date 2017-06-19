@@ -68,7 +68,6 @@ int VCF_Link(char *tarfile, char *formfile, long add_count)
     infile.close();
     outfile.close();
     return 0;
-
 }
 
 int TotalVCF(const char *workdir, int judge)
@@ -246,6 +245,7 @@ int StitchVCF(int argc,char *argv[])
     {
         char Command[CMD_NUM];
         string VCFBuffer;
+        ifstream fp_chr;
 
         ReadCount[i][0] = 0;
 
@@ -255,7 +255,6 @@ int StitchVCF(int argc,char *argv[])
         snprintf(Command, sizeof(Command), "ls -l %s/fa/%s |grep \"^-\"|wc -l > %s_tmp", PathWork, ChrName[i].c_str(), ChrName[i].c_str());
         system(Command);
         snprintf(Command, sizeof(Command), "%s_tmp", ChrName[i].c_str());
-        ifstream fp_chr;
         fp_chr.open(Command,ios::in);
         getline(fp_chr, VCFBuffer);
         FileNumber[i] = atoi(VCFBuffer.c_str()) / 2;

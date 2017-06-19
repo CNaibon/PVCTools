@@ -13,6 +13,29 @@
 
 using namespace std;
 
+int AddReserve(char *tar_file, char *from_file, int line_number)
+{
+    if(line_number == 0) return 0;
+    ifstream infile;
+    ofstream outfile;
+    infile.open(from_file,ios::in);
+    outfile.open(tar_file, ios::out|ios::app);
+    string buff;
+    getline(infile,buff);
+    for(int i = 0; i < line_number && infile.eof() == 0;)
+    {
+        if(buff[0] != '>')
+        {
+            outfile<<buff<<endl;
+            i++;
+        }
+        getline(infile,buff);
+    }
+    infile.close();
+    outfile.close();
+    return 0;
+}
+
 int SegmentFA(int argc,char *argv[])
 {
     long StartTime = time((time_t*)NULL);
@@ -25,6 +48,7 @@ int SegmentFA(int argc,char *argv[])
     string Buffer;
     long Limit = 0;
     int SplitNumber;
+    double Reserve = 0;
     char PathWork[CMD_NUM];
 
     //Create a shell command to call the result log file
@@ -40,6 +64,7 @@ int SegmentFA(int argc,char *argv[])
         }
         if (cmd == "-n") SplitNumber = atoi(argv[i + 1]);
         if (cmd == "-lm") Limit = atol(argv[i + 1]);
+        if (cmd == "-R") Reserve = atol(argv[i + 1]);
     }
 
 
@@ -172,14 +197,30 @@ int SegmentFA(int argc,char *argv[])
                 system(ShellCommand);
             }
         }
+        ifstream fp_chr;
+        //Get the length of each line in the FA files.
+        snprintf(ShellCommand, sizeof(ShellCommand), "wc -L %s/fa/%s.fa > tmp", PathWork, ChrName[i].c_str());
+        system(ShellCommand);
+        snprintf(ShellCommand, sizeof(ShellCommand), "tmp");
+        fp_chr.open(ShellCommand,ios::in);
+        getline(fp_chr, Buffer);
+        int Maxlen_PreLine = atoi(Buffer.c_str());
+        fp_chr.close();
+        //Add the reserved value at the end of the segment FA file
+        for (int n = 0; n < FileNumber[i] - 1; n++)
+        {
+            char tar_file[CMD_NUM];
+            char from_file[CMD_NUM];
+            snprintf(tar_file, sizeof(tar_file), "%s/fa/%s/%s_%d.fa", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), n);
+            snprintf(from_file, sizeof(from_file), "%s/fa/%s/%s_%d.fa", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), n + 1);
+            AddReserve(tar_file, from_file, (int)ceil(Reserve / Maxlen_PreLine));
+        }
         printf("FA files rename is done.\n");
     }
     remove("tmp");
-
     long FinishTime = time((time_t*)NULL);
     printf("finish time = %ld\n", FinishTime);
     long RunningTime = FinishTime - StartTime;
     printf("running time = %ld\n", RunningTime);
-
     return 0;
 }

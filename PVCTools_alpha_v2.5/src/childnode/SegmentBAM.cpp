@@ -13,14 +13,14 @@
 
 using namespace std;
 
-int Modify(char *buffer, long addresses_number, char *chr_name, string tool, long LN)
+int Modify(string &buffer, long addresses_number, const char *chr_name, string tool, long LN)
 {
     if (tool == "samtools")
     {
         if (buffer[0] == '@') return 0;
         int count = 0;
         int flag = 0;
-        for (int i = 0; i < (int)strlen(buffer); i++)
+        for (int i = 0; i < (int)buffer.size(); i++)
         {
             if (buffer[i] == '\t')
             {
@@ -38,18 +38,18 @@ int Modify(char *buffer, long addresses_number, char *chr_name, string tool, lon
                 //Modify the starting address.
                 long Num_New = Num_Old - addresses_number;
                 snprintf(Number_New, sizeof(Number_New), "%ld", Num_New);
-                snprintf(Front, (size_t)(i + 2), "%s", buffer);
+                snprintf(Front, (size_t)(i + 2), "%s", buffer.c_str());
                 snprintf(Rear, sizeof(Rear), "%s", &buffer[i + 1 + Length_Old]);
                 strncat(Front, Number_New, sizeof(Front) - strlen(Front));
                 strncat(Front, Rear, sizeof(Front) - strlen(Front));
-                snprintf(buffer, FILE_LINE, "%s", Front);
+                buffer = Front;
                 flag = 0;
             }
             if (count == 7) return 0;
         }
     } else if (tool == "gatk")
     {
-        if(strstr(buffer, "@SQ") && strstr(buffer, chr_name))
+        if(buffer.find("@SQ") != string::npos && buffer.find(chr_name) != string::npos)
         {
             int count = 0;
             for (int i = 0; i < (int)buffer.size(); i++)
@@ -68,18 +68,18 @@ int Modify(char *buffer, long addresses_number, char *chr_name, string tool, lon
                     snprintf(Rear, sizeof(Rear), "%s", &buffer[i + 4 + Length_Old]);
                     strncat(Front, Number_New, sizeof(Front) - strlen(Front));
                     strncat(Front, Rear, sizeof(Front) - strlen(Front));
-                    snprintf(buffer, FILE_LINE, "%s", Front);
+                    buffer = Front;
                     return 0;
                 }
             }
         }
-        else if (strstr(buffer, "@SQ")) return -1;
+        else if (buffer.find("@SQ") != string::npos) return -1;
         else
         {
             if (buffer[0] == '@') return 0;
             int count = 0;
             int flag = 0;
-            for (int i = 0; i < (int)strlen(buffer); i++)
+            for (int i = 0; i < (int)buffer.size(); i++)
             {
                 if (buffer[i] == '\t')
                 {
@@ -97,39 +97,36 @@ int Modify(char *buffer, long addresses_number, char *chr_name, string tool, lon
                     //Modify the starting address.
                     long Num_New = Num_Old - addresses_number;
                     snprintf(Number_New, sizeof(Number_New), "%ld", Num_New);
-                    snprintf(Front, (size_t)(i + 2), "%s", buffer);
+                    snprintf(Front, (size_t)(i + 2), "%s", buffer.c_str());
                     snprintf(Rear, sizeof(Rear), "%s", &buffer[i + 1 + Length_Old]);
                     strncat(Front, Number_New, sizeof(Front) - strlen(Front));
                     strncat(Front, Rear, sizeof(Front) - strlen(Front));
-                    snprintf(buffer, FILE_LINE, "%s", Front);
+                    buffer = Front;
                     flag = 0;
                 }
                 if (count == 7) return 0;
             }
         }
     }
-
 }
 
-int Sam_Address_Modify(char *file_name, long address_count, char *chr_name, string tool, long LN)
+int Sam_Address_Modify(char *file_name, long address_count, const char *chr_name, string tool, long LN)
 {
-    FILE *fp_old, *fp_new;
-    if ((fp_old = fopen(file_name, "r")) == NULL)
-        exit(-1);
+    ifstream fp_old;
+    ofstream fp_new;
+    fp_old.open(file_name,ios::in);
     char TmpName[CMD_NUM];
     snprintf(TmpName, sizeof(TmpName), "%s-%d", file_name, (int)getpid());
-    if ((fp_new = fopen(TmpName, "w")) == NULL)
-        exit(-1);
-    char *Buffer = NULL;
-    size_t Len = FILE_LINE;
-    getline(&Buffer, &Len, fp_old);
-    while (!feof(fp_old))
+    fp_new.open(TmpName, ios::out);
+    string Buffer;
+    getline(fp_old,Buffer);
+    while (!fp_old.eof())
     {
-        if(Modify(Buffer, address_count, chr_name, tool, LN) != -1) fputs(Buffer, fp_new);
-        getline(&Buffer, &Len, fp_old);
+        if(Modify(Buffer, address_count, chr_name, tool, LN) != -1) fp_new<<Buffer<<endl;
+        getline(fp_old,Buffer);
     }
-    fclose(fp_old);
-    fclose(fp_new);
+    fp_old.close();
+    fp_new.close();
 
     remove(file_name);
     rename(TmpName, file_name);
@@ -149,7 +146,7 @@ int getheader(char *work_path, char *file_name)
     while (!feof(fp))
     {
         if(Buffer[0] == '@') fputs(Buffer, fp_h);
-        getline(&Buffer, &Len, fp_old);
+        getline(&Buffer, &Len, fp);
     }
     fclose(fp);
     fclose(fp_h);

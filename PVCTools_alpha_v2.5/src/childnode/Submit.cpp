@@ -189,7 +189,7 @@ int Submit(int argc, char *argv[])
 
                 snprintf(Command, sizeof(Command), "java -jar %s -T HaplotypeCaller %s ", PATH_GATK.c_str(), Parameters.c_str());
                 fputs(Command, fp_sh);
-                snprintf(Command, sizeof(Command), "-R %s/fa/%s.fa -nct 1 ", PathWork, ChrName[i].c_str(), ChrName[i].c_str());
+                snprintf(Command, sizeof(Command), "-R %s/fa/%s.fa -nct 1 ", PathWork, ChrName[i].c_str());
                 fputs(Command, fp_sh);
                 for (int n = 0; n < (int)SampleName.size(); n++)
                 {

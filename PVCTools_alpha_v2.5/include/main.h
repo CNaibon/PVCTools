@@ -19,6 +19,7 @@
 #include <iostream>
 #include <fstream>
 #include <sys/file.h>
+#include <math.h>
 
 
 

@@ -5,7 +5,7 @@
 #ifndef PVCTOOLS_ALPHA_V2_0_ENVIRONMENT_H
 #define PVCTOOLS_ALPHA_V2_0_ENVIRONMENT_H
 
-#include "main.h"
+#include <main.h>
 
 #define FILE_LINE 16383
 #define CMD_NUM 2048
