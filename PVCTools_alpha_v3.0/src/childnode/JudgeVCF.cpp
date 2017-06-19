@@ -204,6 +204,7 @@ int StitchVCF(int argc,char *argv[])
     string Buffer;
     char PathWork[CMD_NUM];
     int SplitNumber;
+    double Reserved = 0;
 
     for (int i = 0; i < argc; i++)
     {
@@ -214,6 +215,7 @@ int StitchVCF(int argc,char *argv[])
             if (PathWork[strlen(PathWork) - 1] == '/') PathWork[strlen(PathWork) - 1] = '\0';
         }
         if (cmd == "-n") SplitNumber = atoi(argv[i + 1]);
+        if (cmd == "-R") Reserved = atoi(argv[i + 1]);
     }
 
     string strbuff;
@@ -282,7 +284,7 @@ int StitchVCF(int argc,char *argv[])
             fp_chr.close();
 
             //Record the number of all reads so far.
-            ReadCount[i][j + 1] = ReadCount[i][j] + (atol(VCFBuffer.c_str()) - 1) * Maxlen_PreLine;
+            ReadCount[i][j + 1] = ReadCount[i][j] + (atol(VCFBuffer.c_str()) - 1 - (int)(ceil(Reserved / Maxlen_PreLine))) * Maxlen_PreLine;
 
         }
         snprintf(Command, sizeof(Command), "%s_tmp", ChrName[i].c_str());
