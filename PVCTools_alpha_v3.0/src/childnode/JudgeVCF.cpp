@@ -392,7 +392,7 @@ int JudgeVCF(int argc, char *argv[])
         char* ary[6];
         char ary1[] = "-w";
         char ary2[] = "-n";
-        char ary3[] = "-";
+        char ary3[] = "-R";
         ary[0] = ary1;
         ary[1] = PathWork;
         ary[2] = ary2;
