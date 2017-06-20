@@ -360,7 +360,7 @@ int JudgeVCF(int argc, char *argv[])
             Size = Command;
         }
         if (cmd == "-single") single_judge = 0;
-        if (cmd == "-R") snprintf(Reserved, sizeof(SplitNumber), "%s", argv[i + 1]);
+        if (cmd == "-R") snprintf(Reserved, sizeof(Reserved), "%s", argv[i + 1]);
     }
 
     FILE *fp;

@@ -39,6 +39,7 @@ int Submit(int argc, char *argv[])
     string Tool = "samtools";
     string Parameters = " ";
     string single_judge = " ";
+    double Reserved = 0;
 
     for (int i = 0; i < argc; i++)
     {
@@ -54,6 +55,7 @@ int Submit(int argc, char *argv[])
         if (cmd == "-T") Tool = argv[i + 1];
         if (cmd == "-P") Parameters = argv[i + 1];
         if (cmd == "-single") single_judge = argv[i];
+        if (cmd == "-R") Reserved = atol(argv[i + 1]);
     }
 
     string strbuff;
@@ -229,7 +231,7 @@ int Submit(int argc, char *argv[])
             }
 
             //JudgeVCF
-            snprintf(Command, sizeof(Command), "\n%s JudgeVCF -w %s -C %ld -N %s_%d -n %s -S big %s", argv[0], PathWork, TotalNumber, ChrName[i].c_str(), k, SplitNumber, single_judge.c_str());
+            snprintf(Command, sizeof(Command), "\n%s JudgeVCF -w %s -C %ld -N %s_%d -n %s -S big %s -R %lf", argv[0], PathWork, TotalNumber, ChrName[i].c_str(), k, SplitNumber, single_judge.c_str(), Reserved);
             fputs(Command, fp_sh);
             fclose(fp_sh);
 
