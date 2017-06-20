@@ -215,7 +215,7 @@ int SegmentFA(int argc,char *argv[])
                 char from_file[CMD_NUM];
                 snprintf(tar_file, sizeof(tar_file), "%s/fa/%s/%s_%d.fa", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), n);
                 snprintf(from_file, sizeof(from_file), "%s/fa/%s/%s_%d.fa", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), n + 1);
-                AddReserve(tar_file, from_file, (int)ceil(Reserve / Maxlen_PreLine));
+                AddReserve(tar_file, from_file, (int)(ceil(Reserve / Maxlen_PreLine)));
             }
         }
         printf("FA files rename is done.\n");

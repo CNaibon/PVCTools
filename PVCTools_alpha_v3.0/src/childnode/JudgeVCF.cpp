@@ -232,7 +232,7 @@ int StitchVCF(int argc,char *argv[])
             if (PathWork[strlen(PathWork) - 1] == '/') PathWork[strlen(PathWork) - 1] = '\0';
         }
         if (cmd == "-n") SplitNumber = atoi(argv[i + 1]);
-        if (cmd == "-R") Reserved = atoi(argv[i + 1]);
+        if (cmd == "-R") Reserved = atol(argv[i + 1]);
     }
 
     string strbuff;
@@ -299,10 +299,8 @@ int StitchVCF(int argc,char *argv[])
             fp_chr.open(Command,ios::in);
             getline(fp_chr, VCFBuffer);
             fp_chr.close();
-
             //Record the number of all reads so far.
             ReadCount[i][j + 1] = ReadCount[i][j] + (atol(VCFBuffer.c_str()) - 1 - (int)(ceil(Reserved / Maxlen_PreLine))) * Maxlen_PreLine;
-
         }
         snprintf(Command, sizeof(Command), "%s_tmp", ChrName[i].c_str());
         remove(Command);
@@ -343,6 +341,7 @@ int JudgeVCF(int argc, char *argv[])
     char Command[CMD_NUM];
     char SplitNumber[CMD_NUM];
     int single_judge = 1;
+    double Reserved = 0;
 
     for (int i = 0; i < argc; i++)
     {
@@ -361,6 +360,7 @@ int JudgeVCF(int argc, char *argv[])
             Size = Command;
         }
         if (cmd == "-single") single_judge = 0;
+        if (cmd == "-R") Reserved = atol(argv[i + 1]);
     }
 
     FILE *fp;
@@ -389,15 +389,18 @@ int JudgeVCF(int argc, char *argv[])
     {
         snprintf(Command, sizeof(Command), "%s/%s", PathWork, Size.c_str());
         remove(Command);
-        char* ary[4];
+        char* ary[6];
         char ary1[] = "-w";
         char ary2[] = "-n";
+        char ary3[] = "-";
         ary[0] = ary1;
         ary[1] = PathWork;
         ary[2] = ary2;
         ary[3] = SplitNumber;
+        ary[4] = ary3;
+        ary[5] = Reserved;
         printf("staring stitch VCF!\n");
-        StitchVCF(4, ary);
+        StitchVCF(6, ary);
         snprintf(Command, sizeof(Command), "%s/big_success", PathWork);
         fp = fopen(Command, "w");
         fclose(fp);
