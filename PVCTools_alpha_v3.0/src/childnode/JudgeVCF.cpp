@@ -118,7 +118,16 @@ int TotalVCF(const char *workdir, int judge)
         }
         fp_list.close();
 
-        snprintf(ShellCommand, sizeof(ShellCommand), "cp -f %s/header %s/vcf/Final_Result.var.flt.vcf", workdir, workdir);
+        string PATH_SAMTOOLS;
+        GetToolsPath(argv[0], PATH_SAMTOOLS, "-samtools");
+        string PATH_BCFTOOLS;
+        GetToolsPath(argv[0], PATH_BCFTOOLS, "-bcftools");
+        snprintf(ShellCommand, sizeof(ShellCommand), "%s mpileup -u -t DP,AD,ADF %s/header.bam | %s call -vmO v -o %s/header.vcf", PATH_SAMTOOLS, workdir, PATH_BCFTOOLS, workdir);
+        system(ShellCommand);
+        snprintf(ShellCommand, sizeof(ShellCommand), "%s/header.bam", workdir);
+        remove(ShellCommand);
+
+        snprintf(ShellCommand, sizeof(ShellCommand), "cp -f %s/header.vcf %s/vcf/Final_Result.var.flt.vcf", workdir, workdir);
         system(ShellCommand);
 
         char VCF_File[CMD_NUM];
@@ -140,7 +149,7 @@ int TotalVCF(const char *workdir, int judge)
             infile.close();
         }
         outfile.close();
-        snprintf(ShellCommand, sizeof(ShellCommand), "%s/header", workdir);
+        snprintf(ShellCommand, sizeof(ShellCommand), "%s/header.vcf", workdir);
         remove(ShellCommand);
     } else if(access(BigFA,0) == 0 && judge == 0)
     {
@@ -168,7 +177,15 @@ int TotalVCF(const char *workdir, int judge)
         }
         fp_list.close();
 
-        snprintf(ShellCommand, sizeof(ShellCommand), "cp -f %s/header %s/vcf/Final_Result.var.flt.vcf", workdir, workdir);
+        string PATH_SAMTOOLS;
+        GetToolsPath(argv[0], PATH_SAMTOOLS, "-samtools");
+        string PATH_BCFTOOLS;
+        GetToolsPath(argv[0], PATH_BCFTOOLS, "-bcftools");
+        snprintf(ShellCommand, sizeof(ShellCommand), "%s mpileup -u -t DP,AD,ADF %s/header.bam | %s call -vmO v -o %s/header.vcf", PATH_SAMTOOLS, workdir, PATH_BCFTOOLS, workdir);
+        system(ShellCommand);
+        snprintf(ShellCommand, sizeof(ShellCommand), "%s/header.bam", workdir);
+        remove(ShellCommand);
+        snprintf(ShellCommand, sizeof(ShellCommand), "cp -f %s/header.vcf %s/vcf/Final_Result.var.flt.vcf", workdir, workdir);
         system(ShellCommand);
 
         char VCF_File[CMD_NUM];
@@ -190,7 +207,7 @@ int TotalVCF(const char *workdir, int judge)
             infile.close();
         }
         outfile.close();
-        snprintf(ShellCommand, sizeof(ShellCommand), "%s/header", workdir);
+        snprintf(ShellCommand, sizeof(ShellCommand), "%s/header.vcf", workdir);
         remove(ShellCommand);
     }
     return 0;
@@ -301,7 +318,7 @@ int StitchVCF(int argc,char *argv[])
         char Command[CMD_NUM];
 
         //Copy a copy of the first VCF file.
-        snprintf(Command, sizeof(Command), "cp -f %s/header %s/vcf/Final_Result/%s.var.flt.vcf", PathWork, PathWork, ChrName[i].c_str());
+        snprintf(Command, sizeof(Command), "cp -f %s/vcf/%s/%s_0.var.flt.vcf %s/vcf/Final_Result/%s.var.flt.vcf", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), PathWork, ChrName[i].c_str());
         system(Command);
 
         char VCF_File[CMD_NUM];
@@ -345,6 +362,7 @@ int JudgeVCF(int argc, char *argv[])
         }
         if (cmd == "-single") single_judge = 0;
     }
+
     FILE *fp;
     snprintf(Command, sizeof(Command), "%s/%s", PathWork, Size.c_str());
     if ((fp = fopen(Command, "a+")) == NULL)
@@ -378,7 +396,7 @@ int JudgeVCF(int argc, char *argv[])
         ary[1] = PathWork;
         ary[2] = ary2;
         ary[3] = SplitNumber;
-        printf("staring stitchVCF!\n");
+        printf("staring stitch VCF!\n");
         StitchVCF(4, ary);
         snprintf(Command, sizeof(Command), "%s/big_success", PathWork);
         fp = fopen(Command, "w");
