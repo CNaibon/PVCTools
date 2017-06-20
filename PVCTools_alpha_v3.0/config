@@ -1,5 +1,0 @@
-<PATH_SAMTOOLS>	=	/gpfs01/software/bio/samtools-1.3.1/samtools
-<PATH_BCFTOOLS>	=	/gpfs01/software/bio/bcftools-1.2/bcftools
-<PATH_BAMUTIL>	=	/gpfs01/home/dshhu/software/bamUtil/bin/./bam
-<PATH_GATK>	=	/gpfs01/home/jingjing/software/GATK/GenomeAnalysisTK.jar
-<PATH_FREEBAYES>	=	~/soft/freebayes/bin/freebayes
