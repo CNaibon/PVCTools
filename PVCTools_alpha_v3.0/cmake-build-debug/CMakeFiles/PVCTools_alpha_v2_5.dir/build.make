@@ -43,10 +43,10 @@ RM = /cygdrive/c/Users/liujiajun/.CLion2017.1/system/cygwin_cmake/bin/cmake.exe 
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5
+CMAKE_SOURCE_DIR = /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug
+CMAKE_BINARY_DIR = /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/PVCTools_alpha_v2_5.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/PVCTools_alpha_v2_5.dir/flags.make
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Environment.cpp.o: CMakeFiles/PVCTools_alpha_v2_5.dir/flags.make
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Environment.cpp.o: ../src/childnode/Environment.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Environment.cpp.o"
-	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Environment.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/Environment.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Environment.cpp.o"
+	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Environment.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/Environment.cpp
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Environment.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Environment.cpp.i"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/Environment.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Environment.cpp.i
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/Environment.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Environment.cpp.i
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Environment.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Environment.cpp.s"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/Environment.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Environment.cpp.s
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/Environment.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Environment.cpp.s
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Environment.cpp.o.requires:
 
@@ -83,16 +83,16 @@ CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Environment.cpp.o.provides.buil
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/main.cpp.o: CMakeFiles/PVCTools_alpha_v2_5.dir/flags.make
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/main.cpp.o: ../src/childnode/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/main.cpp.o"
-	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/main.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/main.cpp.o"
+	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/main.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/main.cpp
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/main.cpp.i"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/main.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/main.cpp.i
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/main.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/main.cpp.i
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/main.cpp.s"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/main.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/main.cpp.s
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/main.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/main.cpp.s
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/main.cpp.o.requires:
 
@@ -107,16 +107,16 @@ CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/main.cpp.o.provides.build: CMak
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentBAM.cpp.o: CMakeFiles/PVCTools_alpha_v2_5.dir/flags.make
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentBAM.cpp.o: ../src/childnode/SegmentBAM.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentBAM.cpp.o"
-	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentBAM.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/SegmentBAM.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentBAM.cpp.o"
+	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentBAM.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/SegmentBAM.cpp
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentBAM.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentBAM.cpp.i"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/SegmentBAM.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentBAM.cpp.i
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/SegmentBAM.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentBAM.cpp.i
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentBAM.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentBAM.cpp.s"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/SegmentBAM.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentBAM.cpp.s
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/SegmentBAM.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentBAM.cpp.s
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentBAM.cpp.o.requires:
 
@@ -131,16 +131,16 @@ CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentBAM.cpp.o.provides.build
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentFA.cpp.o: CMakeFiles/PVCTools_alpha_v2_5.dir/flags.make
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentFA.cpp.o: ../src/childnode/SegmentFA.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentFA.cpp.o"
-	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentFA.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/SegmentFA.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentFA.cpp.o"
+	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentFA.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/SegmentFA.cpp
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentFA.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentFA.cpp.i"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/SegmentFA.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentFA.cpp.i
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/SegmentFA.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentFA.cpp.i
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentFA.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentFA.cpp.s"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/SegmentFA.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentFA.cpp.s
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/SegmentFA.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentFA.cpp.s
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentFA.cpp.o.requires:
 
@@ -155,16 +155,16 @@ CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SegmentFA.cpp.o.provides.build:
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SmallFA.cpp.o: CMakeFiles/PVCTools_alpha_v2_5.dir/flags.make
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SmallFA.cpp.o: ../src/childnode/SmallFA.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SmallFA.cpp.o"
-	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SmallFA.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/SmallFA.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SmallFA.cpp.o"
+	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SmallFA.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/SmallFA.cpp
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SmallFA.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SmallFA.cpp.i"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/SmallFA.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SmallFA.cpp.i
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/SmallFA.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SmallFA.cpp.i
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SmallFA.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SmallFA.cpp.s"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/SmallFA.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SmallFA.cpp.s
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/SmallFA.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SmallFA.cpp.s
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SmallFA.cpp.o.requires:
 
@@ -179,16 +179,16 @@ CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SmallFA.cpp.o.provides.build: C
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitBAM.cpp.o: CMakeFiles/PVCTools_alpha_v2_5.dir/flags.make
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitBAM.cpp.o: ../src/childnode/SplitBAM.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitBAM.cpp.o"
-	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitBAM.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/SplitBAM.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitBAM.cpp.o"
+	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitBAM.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/SplitBAM.cpp
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitBAM.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitBAM.cpp.i"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/SplitBAM.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitBAM.cpp.i
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/SplitBAM.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitBAM.cpp.i
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitBAM.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitBAM.cpp.s"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/SplitBAM.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitBAM.cpp.s
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/SplitBAM.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitBAM.cpp.s
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitBAM.cpp.o.requires:
 
@@ -203,16 +203,16 @@ CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitBAM.cpp.o.provides.build: 
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitFA.cpp.o: CMakeFiles/PVCTools_alpha_v2_5.dir/flags.make
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitFA.cpp.o: ../src/childnode/SplitFA.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitFA.cpp.o"
-	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitFA.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/SplitFA.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitFA.cpp.o"
+	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitFA.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/SplitFA.cpp
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitFA.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitFA.cpp.i"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/SplitFA.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitFA.cpp.i
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/SplitFA.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitFA.cpp.i
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitFA.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitFA.cpp.s"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/SplitFA.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitFA.cpp.s
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/SplitFA.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitFA.cpp.s
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitFA.cpp.o.requires:
 
@@ -227,16 +227,16 @@ CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/SplitFA.cpp.o.provides.build: C
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Submit.cpp.o: CMakeFiles/PVCTools_alpha_v2_5.dir/flags.make
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Submit.cpp.o: ../src/childnode/Submit.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Submit.cpp.o"
-	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Submit.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/Submit.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Submit.cpp.o"
+	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Submit.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/Submit.cpp
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Submit.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Submit.cpp.i"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/Submit.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Submit.cpp.i
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/Submit.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Submit.cpp.i
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Submit.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Submit.cpp.s"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/Submit.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Submit.cpp.s
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/Submit.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Submit.cpp.s
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Submit.cpp.o.requires:
 
@@ -251,16 +251,16 @@ CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/Submit.cpp.o.provides.build: CM
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/Environment.cpp.o: CMakeFiles/PVCTools_alpha_v2_5.dir/flags.make
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/Environment.cpp.o: ../src/headnode/Environment.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/Environment.cpp.o"
-	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/Environment.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/headnode/Environment.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/Environment.cpp.o"
+	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/Environment.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/headnode/Environment.cpp
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/Environment.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/Environment.cpp.i"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/headnode/Environment.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/Environment.cpp.i
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/headnode/Environment.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/Environment.cpp.i
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/Environment.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/Environment.cpp.s"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/headnode/Environment.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/Environment.cpp.s
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/headnode/Environment.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/Environment.cpp.s
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/Environment.cpp.o.requires:
 
@@ -275,16 +275,16 @@ CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/Environment.cpp.o.provides.build
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.o: CMakeFiles/PVCTools_alpha_v2_5.dir/flags.make
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.o: ../src/headnode/WriteScript.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.o"
-	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/headnode/WriteScript.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.o"
+	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/headnode/WriteScript.cpp
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.i"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/headnode/WriteScript.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.i
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/headnode/WriteScript.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.i
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.s"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/headnode/WriteScript.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.s
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/headnode/WriteScript.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.s
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.o.requires:
 
@@ -299,16 +299,16 @@ CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteScript.cpp.o.provides.build
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/JudgeVCF.cpp.o: CMakeFiles/PVCTools_alpha_v2_5.dir/flags.make
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/JudgeVCF.cpp.o: ../src/childnode/JudgeVCF.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/JudgeVCF.cpp.o"
-	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/JudgeVCF.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/JudgeVCF.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/JudgeVCF.cpp.o"
+	/usr/bin/c++.exe   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/JudgeVCF.cpp.o -c /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/JudgeVCF.cpp
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/JudgeVCF.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/JudgeVCF.cpp.i"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/JudgeVCF.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/JudgeVCF.cpp.i
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/JudgeVCF.cpp > CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/JudgeVCF.cpp.i
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/JudgeVCF.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/JudgeVCF.cpp.s"
-	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/src/childnode/JudgeVCF.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/JudgeVCF.cpp.s
+	/usr/bin/c++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/src/childnode/JudgeVCF.cpp -o CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/JudgeVCF.cpp.s
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/JudgeVCF.cpp.o.requires:
 
@@ -351,7 +351,7 @@ PVCTools_alpha_v2_5.exe: CMakeFiles/PVCTools_alpha_v2_5.dir/src/headnode/WriteSc
 PVCTools_alpha_v2_5.exe: CMakeFiles/PVCTools_alpha_v2_5.dir/src/childnode/JudgeVCF.cpp.o
 PVCTools_alpha_v2_5.exe: CMakeFiles/PVCTools_alpha_v2_5.dir/build.make
 PVCTools_alpha_v2_5.exe: CMakeFiles/PVCTools_alpha_v2_5.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX executable PVCTools_alpha_v2_5.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Linking CXX executable PVCTools_alpha_v2_5.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/PVCTools_alpha_v2_5.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -378,6 +378,6 @@ CMakeFiles/PVCTools_alpha_v2_5.dir/clean:
 .PHONY : CMakeFiles/PVCTools_alpha_v2_5.dir/clean
 
 CMakeFiles/PVCTools_alpha_v2_5.dir/depend:
-	cd /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5 /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5 /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug/CMakeFiles/PVCTools_alpha_v2_5.dir/DependInfo.cmake --color=$(COLOR)
+	cd /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0 /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0 /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/cmake-build-debug /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/cmake-build-debug /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0/cmake-build-debug/CMakeFiles/PVCTools_alpha_v2_5.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/PVCTools_alpha_v2_5.dir/depend
 

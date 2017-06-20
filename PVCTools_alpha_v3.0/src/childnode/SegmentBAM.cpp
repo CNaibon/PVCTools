@@ -134,13 +134,13 @@ int Sam_Address_Modify(char *file_name, long address_count, const char *chr_name
     return 0;
 }
 
-int getheader(char *work_path, char *file_name, char *samtools_path)
+int getheader(char *work_path, char *file_name, const char *samtools_path)
 {
     char ShellCommand[CMD_NUM];
     char TmpName[CMD_NUM];
     snprintf(TmpName, sizeof(TmpName), "%s/header.bam", work_path);
     snprintf(ShellCommand, sizeof(ShellCommand), "%s view -H %s/%s > %s", samtools_path, work_path, file_name, TmpName);
-    system(SortCommand);
+    system(ShellCommand);
     return 0;
 }
 
@@ -349,7 +349,7 @@ int SegmentBAM(int argc, char *argv[])
                 snprintf(ModCommand, sizeof(ModCommand), "%s/sample/%s/%s_%s/%s_%s_%d.sam", PathWork, SampleName[n].c_str(),
                          SampleName[n].c_str(), ChrName[i].c_str(),
                          SampleName[n].c_str(), ChrName[i].c_str(), k);
-                if (i == 0 && n == 0 && k == 0) getheader(PathWork, ModCommand, PATH_SAMTOOLS);
+                if (i == 0 && n == 0 && k == 0) getheader(PathWork, ModCommand, PATH_SAMTOOLS.c_str());
                 if (k > 0 || Tool == "gatk") Sam_Address_Modify(ModCommand, ReadCount[i][k] ,ChrName[i].c_str(), Tool, LNCount[i][k]);
 
                 //Change the modified sam file back to bam format.

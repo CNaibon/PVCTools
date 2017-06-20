@@ -119,10 +119,10 @@ int TotalVCF(const char *workdir, int judge)
         fp_list.close();
 
         string PATH_SAMTOOLS;
-        GetToolsPath(argv[0], PATH_SAMTOOLS, "-samtools");
+        GetToolsPath(workdir, PATH_SAMTOOLS, "-samtools");
         string PATH_BCFTOOLS;
-        GetToolsPath(argv[0], PATH_BCFTOOLS, "-bcftools");
-        snprintf(ShellCommand, sizeof(ShellCommand), "%s mpileup -u -t DP,AD,ADF %s/header.bam | %s call -vmO v -o %s/header.vcf", PATH_SAMTOOLS, workdir, PATH_BCFTOOLS, workdir);
+        GetToolsPath(workdir, PATH_BCFTOOLS, "-bcftools");
+        snprintf(ShellCommand, sizeof(ShellCommand), "%s mpileup -u -t DP,AD,ADF %s/header.bam | %s call -vmO v -o %s/header.vcf", PATH_SAMTOOLS.c_str(), workdir, PATH_BCFTOOLS.c_str(), workdir);
         system(ShellCommand);
         snprintf(ShellCommand, sizeof(ShellCommand), "%s/header.bam", workdir);
         remove(ShellCommand);
@@ -178,10 +178,10 @@ int TotalVCF(const char *workdir, int judge)
         fp_list.close();
 
         string PATH_SAMTOOLS;
-        GetToolsPath(argv[0], PATH_SAMTOOLS, "-samtools");
+        GetToolsPath(workdir, PATH_SAMTOOLS, "-samtools");
         string PATH_BCFTOOLS;
-        GetToolsPath(argv[0], PATH_BCFTOOLS, "-bcftools");
-        snprintf(ShellCommand, sizeof(ShellCommand), "%s mpileup -u -t DP,AD,ADF %s/header.bam | %s call -vmO v -o %s/header.vcf", PATH_SAMTOOLS, workdir, PATH_BCFTOOLS, workdir);
+        GetToolsPath(workdir, PATH_BCFTOOLS, "-bcftools");
+        snprintf(ShellCommand, sizeof(ShellCommand), "%s mpileup -u -t DP,AD,ADF %s/header.bam | %s call -vmO v -o %s/header.vcf", PATH_SAMTOOLS.c_str(), workdir, PATH_BCFTOOLS.c_str(), workdir);
         system(ShellCommand);
         snprintf(ShellCommand, sizeof(ShellCommand), "%s/header.bam", workdir);
         remove(ShellCommand);
@@ -341,7 +341,7 @@ int JudgeVCF(int argc, char *argv[])
     char Command[CMD_NUM];
     char SplitNumber[CMD_NUM];
     int single_judge = 1;
-    double Reserved = 0;
+    char Reserved[CMD_NUM] = "0";
 
     for (int i = 0; i < argc; i++)
     {
@@ -360,7 +360,7 @@ int JudgeVCF(int argc, char *argv[])
             Size = Command;
         }
         if (cmd == "-single") single_judge = 0;
-        if (cmd == "-R") Reserved = atol(argv[i + 1]);
+        if (cmd == "-R") snprintf(Reserved, sizeof(SplitNumber), "%s", argv[i + 1]);
     }
 
     FILE *fp;
