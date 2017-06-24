@@ -127,17 +127,17 @@ int TotalVCF(const char *workdir, int judge)
         snprintf(ShellCommand, sizeof(ShellCommand), "%s/header.bam", workdir);
         remove(ShellCommand);
 
-        snprintf(ShellCommand, sizeof(ShellCommand), "cp -f %s/header.vcf %s/vcf/Final_Result.var.flt.vcf", workdir, workdir);
+        snprintf(ShellCommand, sizeof(ShellCommand), "cp -f %s/header.vcf %s/vcf/Final_Result.vcf", workdir, workdir);
         system(ShellCommand);
 
         char VCF_File[CMD_NUM];
-        snprintf(VCF_File, sizeof(VCF_File), "%s/vcf/Final_Result.var.flt.vcf", workdir);
+        snprintf(VCF_File, sizeof(VCF_File), "%s/vcf/Final_Result.vcf", workdir);
 
         ofstream outfile;
         outfile.open(VCF_File, ios::out|ios::app);
         for (long i = 1; i < long(ChrName.size()); i++)
         {
-            snprintf(ShellCommand, sizeof(ShellCommand), "%s/vcf/Final_Result/%s.var.flt.vcf", workdir, ChrName[i].c_str());
+            snprintf(ShellCommand, sizeof(ShellCommand), "%s/vcf/Final_Result/%s.vcf", workdir, ChrName[i].c_str());
             ifstream infile;
             infile.open(ShellCommand,ios::in);
             getline(infile,Buffer);
@@ -185,17 +185,17 @@ int TotalVCF(const char *workdir, int judge)
         system(ShellCommand);
         snprintf(ShellCommand, sizeof(ShellCommand), "%s/header.bam", workdir);
         remove(ShellCommand);
-        snprintf(ShellCommand, sizeof(ShellCommand), "cp -f %s/header.vcf %s/vcf/Final_Result.var.flt.vcf", workdir, workdir);
+        snprintf(ShellCommand, sizeof(ShellCommand), "cp -f %s/header.vcf %s/vcf/Final_Result.vcf", workdir, workdir);
         system(ShellCommand);
 
         char VCF_File[CMD_NUM];
-        snprintf(VCF_File, sizeof(VCF_File), "%s/vcf/Final_Result.var.flt.vcf", workdir);
+        snprintf(VCF_File, sizeof(VCF_File), "%s/vcf/Final_Result.vcf", workdir);
 
         ofstream outfile;
         outfile.open(VCF_File, ios::out|ios::app);
         for (long i = 1; i < long(ChrName.size()); i++)
         {
-            snprintf(ShellCommand, sizeof(ShellCommand), "%s/vcf/Final_Result/%s.var.flt.vcf", workdir, ChrName[i].c_str());
+            snprintf(ShellCommand, sizeof(ShellCommand), "%s/vcf/Final_Result/%s.vcf", workdir, ChrName[i].c_str());
             ifstream infile;
             infile.open(ShellCommand,ios::in);
             getline(infile,Buffer);
@@ -271,12 +271,12 @@ int StitchVCF(int argc,char *argv[])
         snprintf(Command, sizeof(Command), "touch %s_tmp", ChrName[i].c_str());
         system(Command);
         //Count the current number of FA files.
-        snprintf(Command, sizeof(Command), "ls -l %s/fa/%s |grep \"^-\"|wc -l > %s_tmp", PathWork, ChrName[i].c_str(), ChrName[i].c_str());
+        snprintf(Command, sizeof(Command), "ls -l %s/fa/%s |grep \"^-\"| grep '.fa$' |wc -l > %s_tmp", PathWork, ChrName[i].c_str(), ChrName[i].c_str());
         system(Command);
         snprintf(Command, sizeof(Command), "%s_tmp", ChrName[i].c_str());
         fp_chr.open(Command,ios::in);
         getline(fp_chr, VCFBuffer);
-        FileNumber[i] = atoi(VCFBuffer.c_str()) / 2;
+        FileNumber[i] = atoi(VCFBuffer.c_str());
         fp_chr.close();
 
         //Get the length of each line in the FA files.
@@ -316,15 +316,15 @@ int StitchVCF(int argc,char *argv[])
         char Command[CMD_NUM];
 
         //Copy a copy of the first VCF file.
-        snprintf(Command, sizeof(Command), "cp -f %s/vcf/%s/%s_0.var.flt.vcf %s/vcf/Final_Result/%s.var.flt.vcf", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), PathWork, ChrName[i].c_str());
+        snprintf(Command, sizeof(Command), "cp -f %s/vcf/%s/%s_0.vcf %s/vcf/Final_Result/%s.vcf", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), PathWork, ChrName[i].c_str());
         system(Command);
 
         char VCF_File[CMD_NUM];
-        snprintf(VCF_File, sizeof(VCF_File), "%s/vcf/Final_Result/%s.var.flt.vcf", PathWork, ChrName[i].c_str());
+        snprintf(VCF_File, sizeof(VCF_File), "%s/vcf/Final_Result/%s.vcf", PathWork, ChrName[i].c_str());
 
         for (int n = 1; n < FileNumber[i]; n++)
         {
-            snprintf(Command, sizeof(Command), "%s/vcf/%s/%s_%d.var.flt.vcf", PathWork, ChrName[i].c_str(),ChrName[i].c_str(),n);
+            snprintf(Command, sizeof(Command), "%s/vcf/%s/%s_%d.vcf", PathWork, ChrName[i].c_str(),ChrName[i].c_str(),n);
             VCF_Link(VCF_File, Command, ReadCount[i][n]);
         }
     }

@@ -176,17 +176,14 @@ int Submit(int argc, char *argv[])
                     snprintf(Command, sizeof(Command), "%s/sample/%s/%s_%s/%s_%s_%d.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), k);
                     fputs(Command, fp_sh);
                 }
-                snprintf(Command, sizeof(Command), "| %s call -vmO v -o %s/vcf/%s/%s_%d.var.flt.vcf ", PATH_BCFTOOLS.c_str(), PathWork, ChrName[i].c_str(), ChrName[i].c_str(), k);
+                snprintf(Command, sizeof(Command), "| %s call -vmO v -o %s/vcf/%s/%s_%d.vcf ", PATH_BCFTOOLS.c_str(), PathWork, ChrName[i].c_str(), ChrName[i].c_str(), k);
                 fputs(Command, fp_sh);
             }
             else if (Tool == "gatk")
             {
-                snprintf(Command, sizeof(Command), "%s faidx %s/fa/%s.fa\n", PATH_SAMTOOLS.c_str(), PathWork, ChrName[i].c_str());
-                fputs(Command, fp_sh);
-
                 snprintf(Command, sizeof(Command), "java -jar /gpfs01/home/jingjing/software/GATK/picard-tools-1.119/CreateSequenceDictionary.jar ");
                 fputs(Command, fp_sh);
-                snprintf(Command, sizeof(Command), "R= %s/fa/%s.fa O= %s/fa/%s.dict\n", PathWork, ChrName[i].c_str(), PathWork, ChrName[i].c_str());
+                snprintf(Command, sizeof(Command), "R= %s/fa/%s_%d.fa O= %s/fa/%s_%d.dict\n", PathWork, ChrName[i].c_str(), k, PathWork, ChrName[i].c_str(), k);
                 fputs(Command, fp_sh);
 
                 snprintf(Command, sizeof(Command), "java -jar %s -T HaplotypeCaller %s ", PATH_GATK.c_str(), Parameters.c_str());

@@ -92,7 +92,7 @@ int main(int argc, char *argv[])
             std::cout << "\tOptional Parameters:" << std::endl;
             std::cout << "\t\t-R               : Add the reserved value at the end of the segment FA file (Default queue: 0)." << std::endl;
             std::cout << "\t\t-T               : The tool you want to use to run the task (Default tool: samtools)." << std::endl;
-            std::cout << "\t\t                   Optional tools : [samtools] [gatk]." << std::endl;
+            std::cout << "\t\t                   Optional tools : [samtools] [gatk] [freebayes]." << std::endl;
             std::cout << "\t\t-q               : The queue you want to run the task (Default queue: normal)." << std::endl;
             std::cout << "\t\t-cpu             : The number of CPUs you want to allocate for running the task (Default value: 1)." << std::endl;
             std::cout << "\t\t                   Ideal value: The number of samples." << std::endl;

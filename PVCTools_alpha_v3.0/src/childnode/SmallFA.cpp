@@ -149,7 +149,7 @@ int SmallFA(int argc, char *argv[])
                 snprintf(Command, sizeof(Command), "%s/sample/%s/%s_%s.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
                 fputs(Command, fp_sh);
             }
-            snprintf(Command, sizeof(Command), "| %s call -vmO v -o %s/vcf/Final_Result/%s.var.flt.vcf", PATH_BCFTOOLS.c_str(), PathWork, ChrName[i].c_str());
+            snprintf(Command, sizeof(Command), "| %s call -vmO v -o %s/vcf/Final_Result/%s.vcf", PATH_BCFTOOLS.c_str(), PathWork, ChrName[i].c_str());
             fputs(Command, fp_sh);
         }
         else if (Tool == "gatk")

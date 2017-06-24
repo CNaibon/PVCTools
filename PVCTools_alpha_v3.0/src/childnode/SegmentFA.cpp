@@ -41,6 +41,8 @@ int SegmentFA(int argc,char *argv[])
     long StartTime = time((time_t*)NULL);
     printf("start time = %ld\n", StartTime);
 
+    string PATH_SAMTOOLS;
+    GetToolsPath(argv[0], PATH_SAMTOOLS, "-samtools");
     vector<string> ChrName;
     ifstream fp_Tmp;
     //Command string
@@ -172,7 +174,7 @@ int SegmentFA(int argc,char *argv[])
         printf("FA files cutting is done\n");
 
         //Count the current number of files
-        snprintf(ShellCommand, sizeof(ShellCommand), "ls -l %s/fa/%s |grep \"^-\"|wc -l > tmp ", PathWork, ChrName[i].c_str());
+        snprintf(ShellCommand, sizeof(ShellCommand), "ls -l %s/fa/%s |grep \"^-\"| grep '.fa$' |wc -l > tmp ", PathWork, ChrName[i].c_str());
         system(ShellCommand);
         fp_Tmp.open("tmp",ios::in);
         getline(fp_Tmp, Buffer);
@@ -217,6 +219,11 @@ int SegmentFA(int argc,char *argv[])
                 snprintf(from_file, sizeof(from_file), "%s/fa/%s/%s_%d.fa", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), n + 1);
                 AddReserve(tar_file, from_file, (int)(ceil(Reserve / Maxlen_PreLine)));
             }
+        }
+        for (int n = 0; n < FileNumber[i]; n++)
+        {
+            snprintf(ShellCommand, sizeof(ShellCommand), "%s faidx %s/fa/%s/%s_%d.fa", PATH_SAMTOOLS.c_str(), PathWork, ChrName[i].c_str(), ChrName[i].c_str(),n);
+            system(ShellCommand);
         }
         printf("FA files rename is done.\n");
     }

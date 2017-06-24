@@ -15,7 +15,7 @@ using namespace std;
 
 int Modify(string &buffer, long addresses_number, const char *chr_name, string tool, long LN)
 {
-    if (tool == "samtools")
+    if (tool != "gatk")
     {
         if (buffer[0] == '@') return 0;
         int count = 0;
@@ -47,7 +47,7 @@ int Modify(string &buffer, long addresses_number, const char *chr_name, string t
             }
             if (count == 7) return 0;
         }
-    } else if (tool == "gatk")
+    } else
     {
         if(buffer.find("@SQ") != string::npos && buffer.find(chr_name) != string::npos)
         {
@@ -270,7 +270,7 @@ int SegmentBAM(int argc, char *argv[])
         fp_sp.close();
 
         //Count the current number of files
-        snprintf(TransCommand, sizeof(TransCommand), "ls -l %s/fa/%s |grep \"^-\"|wc -l > %s_tmp ", PathWork, ChrName[i].c_str(), ChrName[i].c_str());
+        snprintf(TransCommand, sizeof(TransCommand), "ls -l %s/fa/%s | grep \"^-\"| grep '.fa$' |wc -l > %s_tmp ", PathWork, ChrName[i].c_str(), ChrName[i].c_str());
         system(TransCommand);
         snprintf(TransCommand, sizeof(TransCommand), "%s_tmp", ChrName[i].c_str());
         fp_sp.open(TransCommand,ios::in);
@@ -359,10 +359,14 @@ int SegmentBAM(int argc, char *argv[])
                         SampleName[n].c_str(), ChrName[i].c_str(),
                         SampleName[n].c_str(), ChrName[i].c_str(), k);
                 system(ModCommand);
-                snprintf(ModCommand, sizeof(ModCommand), "%s/sample//%s/%s_%s/%s_%s_%d.sam", PathWork, SampleName[n].c_str(),
+                snprintf(ModCommand, sizeof(ModCommand), "%s/sample/%s/%s_%s/%s_%s_%d.sam", PathWork, SampleName[n].c_str(),
                         SampleName[n].c_str(), ChrName[i].c_str(),
                         SampleName[n].c_str(), ChrName[i].c_str(), k);
                 remove(ModCommand);
+                snprintf(ModCommand, sizeof(ModCommand), "%s index %s/sample/%s/%s_%s/%s_%s_%d.bam", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(),
+                         SampleName[n].c_str(), ChrName[i].c_str(),
+                         SampleName[n].c_str(), ChrName[i].c_str(), k);
+                system(ModCommand);
             }
             snprintf(ModCommand, sizeof(ModCommand), "%s/sample/%s/%s_%s_sorted.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
             remove(ModCommand);
