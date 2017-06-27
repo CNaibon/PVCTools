@@ -23,6 +23,8 @@ int SmallFA(int argc, char *argv[])
     GetToolsPath(argv[0], PATH_BCFTOOLS, "-bcftools");
     string PATH_GATK;
     GetToolsPath(argv[0], PATH_GATK, "-gatk");
+    string PATH_GATKCSD;
+    GetToolsPath(argv[0], PATH_GATK, "-gatkcsd");
     string PATH_FREEBAYES;
     GetToolsPath(argv[0], PATH_FREEBAYES, "-freebayes");
 
@@ -157,7 +159,7 @@ int SmallFA(int argc, char *argv[])
             snprintf(Command, sizeof(Command), "%s faidx %s/fa/%s.fa\n", PATH_SAMTOOLS.c_str(), PathWork, ChrName[i].c_str());
             fputs(Command, fp_sh);
 
-            snprintf(Command, sizeof(Command), "java -jar /gpfs01/home/jingjing/software/GATK/picard-tools-1.119/CreateSequenceDictionary.jar ");
+            snprintf(Command, sizeof(Command), "java -jar %s ", PATH_GATKCSD.c_str());
             fputs(Command, fp_sh);
 
             snprintf(Command, sizeof(Command), "R= %s/fa/%s.fa O= %s/fa/%s.dict\n", PathWork, ChrName[i].c_str(), PathWork, ChrName[i].c_str());
@@ -172,6 +174,10 @@ int SmallFA(int argc, char *argv[])
                 snprintf(Command, sizeof(Command), "touch %s/sample/%s/%s_%s.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
                 system(Command);
 
+                snprintf(Command, sizeof(Command), "%s index %s/sample/%s/%s_%s.bam", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(),
+                         SampleName[n].c_str(), ChrName[i].c_str());
+                system(Command);
+
                 snprintf(Command, sizeof(Command), "-I %s/sample/%s/%s_%s.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
                 fputs(Command, fp_sh);
             }
@@ -180,6 +186,8 @@ int SmallFA(int argc, char *argv[])
         }
         else if (Tool == "freebayes")
         {
+            snprintf(Command, sizeof(Command), "%s faidx %s/fa/%s.fa\n", PATH_SAMTOOLS.c_str(), PathWork, ChrName[i].c_str());
+            fputs(Command, fp_sh);
             snprintf(Command, sizeof(Command), "/usr/bin/time -f \"%%E\" ");
             fputs(Command, fp_sh);
             snprintf(Command, sizeof(Command), "%s --strict-vcf %s ", PATH_FREEBAYES.c_str(), Parameters.c_str());
@@ -189,6 +197,10 @@ int SmallFA(int argc, char *argv[])
             for (int n = 0; n < (int)SampleName.size(); n++)
             {
                 snprintf(Command, sizeof(Command), "touch %s/sample/%s/%s_%s.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+                system(Command);
+
+                snprintf(Command, sizeof(Command), "%s index %s/sample/%s/%s_%s.bam", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(),
+                         SampleName[n].c_str(), ChrName[i].c_str());
                 system(Command);
 
                 snprintf(Command, sizeof(Command), "-b %s/sample/%s/%s_%s.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());

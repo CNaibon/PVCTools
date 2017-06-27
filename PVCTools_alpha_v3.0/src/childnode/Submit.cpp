@@ -24,6 +24,8 @@ int Submit(int argc, char *argv[])
     GetToolsPath(argv[0], PATH_BCFTOOLS, "-bcftools");
     string PATH_GATK;
     GetToolsPath(argv[0], PATH_GATK, "-gatk");
+    string PATH_GATKCSD;
+    GetToolsPath(argv[0], PATH_GATK, "-gatkcsd");
     string PATH_FREEBAYES;
     GetToolsPath(argv[0], PATH_FREEBAYES, "-freebayes");
 
@@ -181,7 +183,7 @@ int Submit(int argc, char *argv[])
             }
             else if (Tool == "gatk")
             {
-                snprintf(Command, sizeof(Command), "java -jar /gpfs01/home/jingjing/software/GATK/picard-tools-1.119/CreateSequenceDictionary.jar ");
+                snprintf(Command, sizeof(Command), "java -jar %s ", PATH_GATKCSD.c_str());
                 fputs(Command, fp_sh);
                 snprintf(Command, sizeof(Command), "R= %s/fa/%s_%d.fa O= %s/fa/%s_%d.dict\n", PathWork, ChrName[i].c_str(), k, PathWork, ChrName[i].c_str(), k);
                 fputs(Command, fp_sh);
