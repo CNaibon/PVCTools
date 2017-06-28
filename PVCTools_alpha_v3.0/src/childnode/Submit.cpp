@@ -121,7 +121,6 @@ int Submit(int argc, char *argv[])
 
         snprintf(Command, sizeof(Command), "rm -rf %s_tmp ", ChrName[i].c_str());
         system(Command);
-
     }
 
     //Create the relevant directory.

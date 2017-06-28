@@ -174,7 +174,7 @@ int SegmentFA(int argc,char *argv[])
         printf("FA files cutting is done\n");
 
         //Count the current number of files
-        snprintf(ShellCommand, sizeof(ShellCommand), "ls -l %s/fa/%s |grep \"^-\"| grep '.fa$' |wc -l > tmp ", PathWork, ChrName[i].c_str());
+        snprintf(ShellCommand, sizeof(ShellCommand), "ls -l %s/fa/%s |grep \"^-\" |wc -l > tmp ", PathWork, ChrName[i].c_str());
         system(ShellCommand);
         fp_Tmp.open("tmp",ios::in);
         getline(fp_Tmp, Buffer);
