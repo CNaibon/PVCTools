@@ -292,6 +292,16 @@ int SegmentBAM(int argc, char *argv[])
             //Record the number of all reads so far.
             LNCount[i][j] = (atol(TransBuffer.c_str()) - 1)*Maxlen_PreLine;
             ReadCount[i][j + 1] = ReadCount[i][j] + LNCount[i][j]  - (long)((int)(ceil(Reserved / Maxlen_PreLine))*Maxlen_PreLine);
+            if(j == FileNumber[i] -1)
+            {
+                snprintf(TransCommand, sizeof(TransCommand), "tail -n 1 %s/fa/%s/%s_%d.fa | wc -c > %s_tmp", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), j, ChrName[i].c_str());
+                system(TransCommand);
+                snprintf(TransCommand, sizeof(TransCommand), "%s_tmp", ChrName[i].c_str());
+                fp_sp.open(TransCommand,ios::in);
+                getline(fp_sp, TransBuffer);
+                fp_sp.close();
+                ReadCount[i][j + 1] = ReadCount[i][j + 1] - Maxlen_PreLine + atol(TransBuffer.c_str()) - 1;
+            }
         }
         snprintf(TransCommand, sizeof(TransCommand), "%s_tmp", ChrName[i].c_str());
         remove(TransCommand);
@@ -353,7 +363,7 @@ int SegmentBAM(int argc, char *argv[])
                 if (k > 0 || Tool == "gatk") Sam_Address_Modify(ModCommand, ReadCount[i][k] ,ChrName[i].c_str(), Tool, LNCount[i][k]);
 
                 //Change the modified sam file back to bam format.
-                snprintf(ModCommand, sizeof(ModCommand), "%s view -b %s/sample/%s/%s_%s/%s_%s_%d.sam > %s/sample/%s/%s_%s/%s_%s_%d.bam", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(),
+                snprintf(ModCommand, sizeof(ModCommand), "%s view -b %s/sample/%s/%s_%s/%s_%s_%d.sam > %s/sample/%s/%s_%s/%s_%s_%d_original.bam", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(),
                         SampleName[n].c_str(), ChrName[i].c_str(),
                         SampleName[n].c_str(), ChrName[i].c_str(), k, PathWork, SampleName[n].c_str(),
                         SampleName[n].c_str(), ChrName[i].c_str(),
@@ -362,6 +372,14 @@ int SegmentBAM(int argc, char *argv[])
                 snprintf(ModCommand, sizeof(ModCommand), "%s/sample/%s/%s_%s/%s_%s_%d.sam", PathWork, SampleName[n].c_str(),
                         SampleName[n].c_str(), ChrName[i].c_str(),
                         SampleName[n].c_str(), ChrName[i].c_str(), k);
+                remove(ModCommand);
+                snprintf(ModCommand, sizeof(ModCommand), "%s sort %s/sample/%s/%s_%s/%s_%s_%d_original.bam > %s/sample/%s/%s_%s/%s_%s_%d.bam", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(),
+                         SampleName[n].c_str(), ChrName[i].c_str(),
+                         SampleName[n].c_str(), ChrName[i].c_str(), k, PathWork, SampleName[n].c_str(),SampleName[n].c_str(), ChrName[i].c_str(),SampleName[n].c_str(), ChrName[i].c_str(), k);
+                system(ModCommand);
+                snprintf(ModCommand, sizeof(ModCommand), "%s/sample/%s/%s_%s/%s_%s_%d_original.bam", PathWork, SampleName[n].c_str(),
+                         SampleName[n].c_str(), ChrName[i].c_str(),
+                         SampleName[n].c_str(), ChrName[i].c_str(), k);
                 remove(ModCommand);
                 snprintf(ModCommand, sizeof(ModCommand), "%s index %s/sample/%s/%s_%s/%s_%s_%d.bam", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(),
                          SampleName[n].c_str(), ChrName[i].c_str(),

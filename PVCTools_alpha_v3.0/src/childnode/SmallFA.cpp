@@ -24,7 +24,7 @@ int SmallFA(int argc, char *argv[])
     string PATH_GATK;
     GetToolsPath(argv[0], PATH_GATK, "-gatk");
     string PATH_GATKCSD;
-    GetToolsPath(argv[0], PATH_GATK, "-gatkcsd");
+    GetToolsPath(argv[0], PATH_GATKCSD, "-gatkcsd");
     string PATH_FREEBAYES;
     GetToolsPath(argv[0], PATH_FREEBAYES, "-freebayes");
 

@@ -25,7 +25,7 @@ int Submit(int argc, char *argv[])
     string PATH_GATK;
     GetToolsPath(argv[0], PATH_GATK, "-gatk");
     string PATH_GATKCSD;
-    GetToolsPath(argv[0], PATH_GATK, "-gatkcsd");
+    GetToolsPath(argv[0], PATH_GATKCSD, "-gatkcsd");
     string PATH_FREEBAYES;
     GetToolsPath(argv[0], PATH_FREEBAYES, "-freebayes");
 
@@ -184,12 +184,12 @@ int Submit(int argc, char *argv[])
             {
                 snprintf(Command, sizeof(Command), "java -jar %s ", PATH_GATKCSD.c_str());
                 fputs(Command, fp_sh);
-                snprintf(Command, sizeof(Command), "R= %s/fa/%s_%d.fa O= %s/fa/%s_%d.dict\n", PathWork, ChrName[i].c_str(), k, PathWork, ChrName[i].c_str(), k);
+                snprintf(Command, sizeof(Command), "R= %s/fa/%s/%s_%d.fa O= %s/fa/%s/%s_%d.dict\n", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), k, PathWork, ChrName[i].c_str(), ChrName[i].c_str(), k);
                 fputs(Command, fp_sh);
 
                 snprintf(Command, sizeof(Command), "java -jar %s -T HaplotypeCaller %s ", PATH_GATK.c_str(), Parameters.c_str());
                 fputs(Command, fp_sh);
-                snprintf(Command, sizeof(Command), "-R %s/fa/%s.fa -nct 1 ", PathWork, ChrName[i].c_str());
+                snprintf(Command, sizeof(Command), "-R %s/fa/%s/%s_%d.fa -nct 1 ", PathWork, ChrName[i].c_str(), ChrName[i].c_str(), k);
                 fputs(Command, fp_sh);
                 for (int n = 0; n < (int)SampleName.size(); n++)
                 {
