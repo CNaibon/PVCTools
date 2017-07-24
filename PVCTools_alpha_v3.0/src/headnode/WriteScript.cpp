@@ -85,20 +85,16 @@ int main(int argc, char *argv[])
         }
         else if (cmd == "SegmentBAM")
         {
-            std::cout << "\t./PVCTools SegmentBAM <-w WorkPath> <-n SplitNumber> [-R Reserved values] [-T Tools] [-q Queue] [-cpu CPU] [-span Span]" << std::endl;
+            std::cout << "\t./PVCTools SegmentBAM <-w WorkPath> [-R Reserved values] [-T Tools] [-q Queue]" << std::endl;
             std::cout << "\tRequired Parameters:" << std::endl;
             std::cout << "\t\t-w               : Working directory path for using to store the generated files." << std::endl;
-            std::cout << "\t\t-n               : The number of divisions." << std::endl;
             std::cout << "\tOptional Parameters:" << std::endl;
             std::cout << "\t\t-R               : Add the reserved value at the end of the segment FA file (Default queue: 0)." << std::endl;
             std::cout << "\t\t-T               : The tool you want to use to run the task (Default tool: samtools)." << std::endl;
             std::cout << "\t\t                   Optional tools : [samtools] [gatk] [freebayes]." << std::endl;
             std::cout << "\t\t-q               : The queue you want to run the task (Default queue: normal)." << std::endl;
-            std::cout << "\t\t-cpu             : The number of CPUs you want to allocate for running the task (Default value: 1)." << std::endl;
-            std::cout << "\t\t                   Ideal value: The number of samples." << std::endl;
-            std::cout << "\t\t                   BUT considering the CPU resources,this value should be less then the queue CPU maximum." << std::endl;
-            std::cout << "\t\t-span            : The maximum number of the CPU used on each node (Default value: 20)." << std::endl;
             std::cout << "\tTips:" << std::endl;
+            std::cout << "\tDon't use the [-cpu] and [-span] parameters!" << std::endl;
             std::cout << "\tYou may need to customize the FA/BAM file list that you want to import in [falist]." << std::endl;
             std::cout << "\tRunning again will delete the previous data." << std::endl;
             std::cout << std::endl;

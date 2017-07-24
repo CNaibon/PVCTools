@@ -14,12 +14,24 @@
 
 using namespace std;
 
+int getheader(char *work_path, char *file_name, const char *samtools_path)
+{
+    char ShellCommand[CMD_NUM];
+    char TmpName[CMD_NUM];
+    snprintf(TmpName, sizeof(TmpName), "%s/header.bam", work_path);
+    snprintf(ShellCommand, sizeof(ShellCommand), "%s view -H %s > %s", samtools_path, file_name, TmpName);
+    system(ShellCommand);
+    return 0;
+}
+
 int SplitBAM(int argc,char *argv[])
 {
     long StartTime = time((time_t*)NULL);
     printf("start time = %ld\n", StartTime);
 
     vector<string> SampleName;
+    string PATH_SAMTOOLS;
+    GetToolsPath(argv[0], PATH_SAMTOOLS, "-samtools");
     string PATH_BAMUTIL;
     GetToolsPath(argv[0], PATH_BAMUTIL, "-bamUtil");
     char ShellCommand[CMD_NUM];
@@ -112,6 +124,8 @@ int SplitBAM(int argc,char *argv[])
     }
     printf("The sample was split by chromosome resolution.\n");
 
+    snprintf(ShellCommand, sizeof(ShellCommand), "%s/%s.bam", PathBAM, SampleName[0].c_str());
+    getheader(PathWork, ShellCommand, PATH_SAMTOOLS.c_str());
 
     long FinishTime = time((time_t*)NULL);
     printf("finish time = %ld\n", FinishTime);

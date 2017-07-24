@@ -1,1 +1,3 @@
-Environment (MinGW/Cygwin) is not selected
+"C:\Program Files\CMake\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /cygdrive/c/Users/刘佳俊/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0
+CMake Error: The source directory "/cygdrive/c/Users/鍒樹匠淇�/Documents/GitHub/Gene-tools/PVCTools_alpha_v3.0" does not exist.
+Specify --help for usage, or press the help button on the CMake GUI.

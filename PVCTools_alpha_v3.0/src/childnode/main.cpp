@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
     else if (cmd == "SegmentBAM") SegmentBAM(argc, argv);
     else if (cmd == "Submit") Submit(argc, argv);
     else if (cmd == "JudgeVCF") JudgeVCF(argc, argv);
+    else if (cmd == "ParallelBAM") ParallelBAM(argc, argv);
     else if (cmd == "SmallFA") SmallFA(argc, argv);
     else if (cmd == "GetVCF")
     {
