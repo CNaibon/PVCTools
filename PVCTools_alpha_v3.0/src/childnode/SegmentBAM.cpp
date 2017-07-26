@@ -447,7 +447,7 @@ int SegmentBAM(int argc, char *argv[])
             fputs(ModCommand, fp_trans);
             snprintf(ModCommand, sizeof(ModCommand), "#BSUB -n 1\n\n");
             fputs(ModCommand, fp_trans);
-            snprintf(ModCommand, sizeof(ModCommand), "\n%s ParallelBAM -w %s -c %s -b %s -f %d -T %s -r %d\n", argv[0], PathWork, ChrName[i].c_str(), SampleName[n].c_str(), FileNumber[i], Tool.c_str(), Reserved);
+            snprintf(ModCommand, sizeof(ModCommand), "\n%s ParallelBAM -w %s -c %s -b %s -f %d -T %s -R %d\n", argv[0], PathWork, ChrName[i].c_str(), SampleName[n].c_str(), FileNumber[i], Tool.c_str(), Reserved);
             fputs(ModCommand, fp_trans);
             fclose(fp_trans);
             snprintf(ModCommand, sizeof(ModCommand), "bsub < %s/sample/%s/%s_%s/%s_%s.sh", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
