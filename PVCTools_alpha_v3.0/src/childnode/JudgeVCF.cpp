@@ -70,14 +70,14 @@ int VCF_Link(char *tarfile, char *formfile, long add_count)
     return 0;
 }
 
-int TotalVCF(const char *workdir, int judge)
+int TotalVCF(const char *CurrentPath, const char *workdir, int judge)
 {
     char BigFA[CMD_NUM];
     snprintf(BigFA, sizeof(BigFA), "%s/big_success", workdir);
     char SmallFA[CMD_NUM];
     snprintf(SmallFA, sizeof(SmallFA), "%s/small_success", workdir);
 
-    if(access(BigFA,0) == 0 && judge && access(SmallFA,0) == 0)
+    if(access(BigFA,0) == 0 && judge  == 1 && access(SmallFA,0) == 0)
     {
         char ShellCommand[CMD_NUM];
         vector<string> ChrName;
@@ -119,9 +119,9 @@ int TotalVCF(const char *workdir, int judge)
         fp_list.close();
 
         string PATH_SAMTOOLS;
-        GetToolsPath(workdir, PATH_SAMTOOLS, "-samtools");
+        GetToolsPath(CurrentPath, PATH_SAMTOOLS, "-samtools");
         string PATH_BCFTOOLS;
-        GetToolsPath(workdir, PATH_BCFTOOLS, "-bcftools");
+        GetToolsPath(CurrentPath, PATH_BCFTOOLS, "-bcftools");
         snprintf(ShellCommand, sizeof(ShellCommand), "%s mpileup -u -t DP,AD,ADF %s/header.bam | %s call -vmO v -o %s/header.vcf", PATH_SAMTOOLS.c_str(), workdir, PATH_BCFTOOLS.c_str(), workdir);
         system(ShellCommand);
         snprintf(ShellCommand, sizeof(ShellCommand), "%s/header.bam", workdir);
@@ -178,9 +178,9 @@ int TotalVCF(const char *workdir, int judge)
         fp_list.close();
 
         string PATH_SAMTOOLS;
-        GetToolsPath(workdir, PATH_SAMTOOLS, "-samtools");
+        GetToolsPath(CurrentPath, PATH_SAMTOOLS, "-samtools");
         string PATH_BCFTOOLS;
-        GetToolsPath(workdir, PATH_BCFTOOLS, "-bcftools");
+        GetToolsPath(CurrentPath, PATH_BCFTOOLS, "-bcftools");
         snprintf(ShellCommand, sizeof(ShellCommand), "%s mpileup -u -t DP,AD,ADF %s/header.bam | %s call -vmO v -o %s/header.vcf", PATH_SAMTOOLS.c_str(), workdir, PATH_BCFTOOLS.c_str(), workdir);
         system(ShellCommand);
         snprintf(ShellCommand, sizeof(ShellCommand), "%s/header.bam", workdir);
@@ -414,7 +414,7 @@ int JudgeVCF(int argc, char *argv[])
         snprintf(Command, sizeof(Command), "%s/big_success", PathWork);
         fp = fopen(Command, "w");
         fclose(fp);
-        TotalVCF(PathWork, single_judge);
+        TotalVCF(argv[0], PathWork, single_judge);
     }
     else if (atol(Buffer.c_str()) == TotalNumber && Size == "small_Count")
     {
@@ -423,7 +423,7 @@ int JudgeVCF(int argc, char *argv[])
         snprintf(Command, sizeof(Command), "%s/small_success", PathWork);
         fp = fopen(Command, "w");
         fclose(fp);
-        TotalVCF(PathWork, single_judge);
+        TotalVCF(argv[0], PathWork, single_judge);
     }
     return 0;
 }

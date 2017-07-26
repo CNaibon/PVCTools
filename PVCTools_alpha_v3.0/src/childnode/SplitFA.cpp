@@ -61,7 +61,7 @@ void Fa_Chr(char *workpath,char *fa_path)
 int SplitFA(int argc,char *argv[])
 {
     long StartTime = time((time_t*)NULL);
-    printf("start time = %ld\n", StartTime);
+    printf("SplitFA start time = %ld\n", StartTime);
 
     char ShellCommand[CMD_NUM];
 
@@ -91,9 +91,9 @@ int SplitFA(int argc,char *argv[])
     Fa_Chr(PathWork, PathFA);
 
     long FinishTime = time((time_t*)NULL);
-    printf("finish time = %ld\n", FinishTime);
+    printf("SplitFA finish time = %ld\n", FinishTime);
     long RunningTime = FinishTime - StartTime;
-    printf("running time = %ld\n", RunningTime);
+    printf("SplitFA running time = %ld\n", RunningTime);
 
     return 0;
 }

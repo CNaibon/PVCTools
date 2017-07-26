@@ -15,7 +15,7 @@ using namespace std;
 int SmallFA(int argc, char *argv[])
 {
     long StartTime = time((time_t*)NULL);
-    printf("start time = %ld\n", StartTime);
+    printf("SmallFA start time = %ld\n", StartTime);
 
     string  PATH_SAMTOOLS;
     GetToolsPath(argv[0], PATH_SAMTOOLS, "-samtools");
@@ -219,9 +219,9 @@ int SmallFA(int argc, char *argv[])
     }
 
     long FinishTime = time((time_t*)NULL);
-    printf("finish time = %ld\n", FinishTime);
+    printf("SmallFA finish time = %ld\n", FinishTime);
     long RunningTime = FinishTime - StartTime;
-    printf("running time = %ld\n", RunningTime);
+    printf("SmallFA running time = %ld\n", RunningTime);
 
     return 0;
 }

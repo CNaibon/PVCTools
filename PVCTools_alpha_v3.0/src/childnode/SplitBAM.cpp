@@ -27,7 +27,7 @@ int getheader(char *work_path, char *file_name, const char *samtools_path)
 int SplitBAM(int argc,char *argv[])
 {
     long StartTime = time((time_t*)NULL);
-    printf("start time = %ld\n", StartTime);
+    printf("SplitBAM start time = %ld\n", StartTime);
 
     vector<string> SampleName;
     string PATH_SAMTOOLS;
@@ -128,8 +128,8 @@ int SplitBAM(int argc,char *argv[])
     getheader(PathWork, ShellCommand, PATH_SAMTOOLS.c_str());
 
     long FinishTime = time((time_t*)NULL);
-    printf("finish time = %ld\n", FinishTime);
+    printf("SplitBAM finish time = %ld\n", FinishTime);
     long RunningTime = FinishTime - StartTime;
-    printf("running time = %ld\n", RunningTime);
+    printf("SplitBAM running time = %ld\n", RunningTime);
     return 0;
 }

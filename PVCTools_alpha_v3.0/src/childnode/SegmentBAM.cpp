@@ -242,6 +242,9 @@ int ParallelBAM(int argc, char *argv[])
         remove(Command);
 
         //Sam address modified.
+        snprintf(Command, sizeof(Command), "%s/sample/%s/%s_%s/%s_%s_%d.sam", PathWork, bam_name,
+                 bam_name, chr_name,
+                 bam_name, chr_name, k);
         if (k > 0 || Tool == "gatk") Sam_Address_Modify(Command, ReadCount[k] ,chr_name, Tool, LN[k]);
 
         //Change the modified sam file back to bam format.
@@ -299,7 +302,7 @@ int ParallelBAM(int argc, char *argv[])
 int SegmentBAM(int argc, char *argv[])
 {
     long StartTime = time((time_t*)NULL);
-    printf("start time = %ld\n", StartTime);
+    printf("SegmentBAM start time = %ld\n", StartTime);
 
     vector<string> ChrName;
     vector<string> SampleName;
@@ -382,7 +385,6 @@ int SegmentBAM(int argc, char *argv[])
 //    omp_set_nested(1);
 
     //Split BAM according to each chromosome.
-    cerr<<"finish fa and bam count"<<endl;
 //#pragma omp parallel for
     for (int i = 0; i < (int)ChrName.size(); ++i)
     {
@@ -400,15 +402,12 @@ int SegmentBAM(int argc, char *argv[])
         fp_sp.close();
         snprintf(TransCommand, sizeof(TransCommand), "%s/%s_tmp", PathWork, ChrName[i].c_str());
         remove(TransCommand);
-        cerr<<"finish fa line count"<<endl;
         for(int n = 0; n < (int)SampleName.size(); ++n)
         {
             snprintf(TransCommand, sizeof(TransCommand), "%s/sample/%s/%s_%s.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
             if (access(TransCommand,0) == 0)
             {
-                cerr<<SampleName[n].c_str()<<" file found"<<endl;
-                TotalNumber += FileNumber[i];
-                cerr<<"TotalNumber is "<<TotalNumber<<endl;
+                TotalNumber += 1;
             }
         }
     }
@@ -476,8 +475,8 @@ int SegmentBAM(int argc, char *argv[])
     remove(ShellCommand);
 
     long FinishTime = time((time_t*)NULL);
-    printf("finish time = %ld\n", FinishTime);
+    printf("SegmentBAM finish time = %ld\n", FinishTime);
     long RunningTime = FinishTime - StartTime;
-    printf("running time = %ld\n", RunningTime);
+    printf("SegmentBAM running time = %ld\n", RunningTime);
     return 0;
 }

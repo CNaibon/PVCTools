@@ -16,7 +16,7 @@ using namespace std;
 int Submit(int argc, char *argv[])
 {
     long StartTime = time((time_t*)NULL);
-    printf("start time = %ld\n", StartTime);
+    printf("Submit start time = %ld\n", StartTime);
 
     string  PATH_SAMTOOLS;
     GetToolsPath(argv[0], PATH_SAMTOOLS, "-samtools");
@@ -242,9 +242,9 @@ int Submit(int argc, char *argv[])
     printf("Wait for the VCF task to complete the VCF statistics program after all the calculations have been completed.\n");
 
     long FinishTime = time((time_t*)NULL);
-    printf("finish time = %ld\n", FinishTime);
+    printf("Submit finish time = %ld\n", FinishTime);
     long RunningTime = FinishTime - StartTime;
-    printf("running time = %ld\n", RunningTime);
+    printf("Submit running time = %ld\n", RunningTime);
 
     return 0;
 }
