@@ -127,7 +127,7 @@ int TotalVCF(const char *CurrentPath, const char *workdir, int judge)
         snprintf(ShellCommand, sizeof(ShellCommand), "%s/header.bam", workdir);
         remove(ShellCommand);
 
-        snprintf(ShellCommand, sizeof(ShellCommand), "cp -f %s/header.vcf %s/vcf/Final_Result.vcf", workdir, workdir);
+        snprintf(ShellCommand, sizeof(ShellCommand), "mv -f %s/header.vcf %s/vcf/Final_Result.vcf", workdir, workdir);
         system(ShellCommand);
 
         char VCF_File[CMD_NUM];
@@ -135,7 +135,7 @@ int TotalVCF(const char *CurrentPath, const char *workdir, int judge)
 
         ofstream outfile;
         outfile.open(VCF_File, ios::out|ios::app);
-        for (long i = 1; i < long(ChrName.size()); i++)
+        for (long i = 0; i < long(ChrName.size()); i++)
         {
             snprintf(ShellCommand, sizeof(ShellCommand), "%s/vcf/Final_Result/%s.vcf", workdir, ChrName[i].c_str());
             ifstream infile;
@@ -149,8 +149,6 @@ int TotalVCF(const char *CurrentPath, const char *workdir, int judge)
             infile.close();
         }
         outfile.close();
-        snprintf(ShellCommand, sizeof(ShellCommand), "%s/header.vcf", workdir);
-        remove(ShellCommand);
     } else if(access(BigFA,0) == 0 && judge == 0)
     {
         char ShellCommand[CMD_NUM];

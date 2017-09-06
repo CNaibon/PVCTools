@@ -114,6 +114,33 @@ int SmallFA(int argc, char *argv[])
     snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/vcf/Final_Result", PathWork);
     system(ShellCommand);
 
+    if((int)ChrName.size() == 0)
+    {
+        FILE *fp_n;
+        snprintf(ShellCommand, sizeof(ShellCommand), "%s/sub_script/smallFA/NoSmallFA.sh", PathWork);
+        if ((fp_n = fopen(ShellCommand, "w")) == NULL)
+            exit(-1);
+        snprintf(ShellCommand, sizeof(ShellCommand), "#BSUB -q %s\n", Queue);
+        fputs(ShellCommand, fp_n);
+        snprintf(ShellCommand, sizeof(ShellCommand), "#BSUB -J NoSmallFA\n");
+        fputs(ShellCommand, fp_n);
+        snprintf(ShellCommand, sizeof(ShellCommand), "#BSUB -n 1\n");
+        fputs(ShellCommand, fp_n);
+        snprintf(ShellCommand, sizeof(ShellCommand), "\n%s JudgeVCF -w %s -C 1 -N NoSmallFA -S small", argv[0], PathWork);
+        fputs(ShellCommand, fp_n);
+        fclose(fp_n);
+        // Submit.
+        snprintf(ShellCommand, sizeof(ShellCommand), "bsub < %s/sub_script/smallFA/NoSmallFA.sh", PathWork);
+        system(ShellCommand);
+
+        long FinishTime = time((time_t*)NULL);
+        printf("SmallFA finish time = %ld\n", FinishTime);
+        long RunningTime = FinishTime - StartTime;
+        printf("SmallFA running time = %ld\n", RunningTime);
+
+        return 0;
+    }
+
 #pragma omp parallel for
     for (int i = 0; i < (int)ChrName.size(); i++)
     {

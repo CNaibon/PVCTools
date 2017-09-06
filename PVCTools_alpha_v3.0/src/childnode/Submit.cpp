@@ -168,12 +168,6 @@ int Submit(int argc, char *argv[])
                 //Write a number of sample small copies.
                 for (int n = 0; n < (int)SampleName.size(); n++)
                 {
-                    snprintf(Command, sizeof(Command), "mkdir -p %s/sample/%s/%s_%s", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
-                    system(Command);
-
-                    snprintf(Command, sizeof(Command), "touch %s/sample/%s/%s_%s/%s_%s_%d.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str(),k);
-                    system(Command);
-
                     snprintf(Command, sizeof(Command), "%s/sample/%s/%s_%s/%s_%s_%d.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), k);
                     fputs(Command, fp_sh);
                 }
@@ -193,12 +187,6 @@ int Submit(int argc, char *argv[])
                 fputs(Command, fp_sh);
                 for (int n = 0; n < (int)SampleName.size(); n++)
                 {
-                    snprintf(Command, sizeof(Command), "mkdir -p %s/sample/%s/%s_%s", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
-                    system(Command);
-
-                    snprintf(Command, sizeof(Command), "touch %s/sample/%s/%s_%s/%s_%s_%d.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str(),k);
-                    system(Command);
-
                     snprintf(Command, sizeof(Command), "-I %s/sample/%s/%s_%s/%s_%s_%d.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), k);
                     fputs(Command, fp_sh);
                 }
@@ -215,12 +203,6 @@ int Submit(int argc, char *argv[])
                 fputs(Command, fp_sh);
                 for (int n = 0; n < (int)SampleName.size(); n++)
                 {
-                    snprintf(Command, sizeof(Command), "mkdir -p %s/sample/%s/%s_%s", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
-                    system(Command);
-
-                    snprintf(Command, sizeof(Command), "touch %s/sample/%s/%s_%s/%s_%s_%d.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str(),k);
-                    system(Command);
-
                     snprintf(Command, sizeof(Command), "-b %s/sample/%s/%s_%s/%s_%s_%d.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), k);
                     fputs(Command, fp_sh);
                 }

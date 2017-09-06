@@ -180,7 +180,11 @@ int main(int argc, char *argv[])
             for (int i = 0; i < argc; i++)
             {
                 cmd = argv[i];
-                if (cmd == "-w") sprintf(PathWork, "%s", argv[i + 1]);
+                if (cmd == "-w")
+                {
+                    snprintf(PathWork, sizeof(PathWork), "%s", argv[i + 1]);
+                    if (PathWork[strlen(PathWork) - 1] == '/') PathWork[strlen(PathWork) - 1] = '\0';
+                }
                 if (cmd == "-q") sprintf(Queue, "%s", argv[i + 1]);
                 if (cmd == "-cpu") sprintf(Cpu, "%s", argv[i + 1]);
                 if (cmd == "-span") sprintf(Span, "%s", argv[i + 1]);

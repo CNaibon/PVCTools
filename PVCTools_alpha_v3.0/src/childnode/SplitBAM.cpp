@@ -112,6 +112,9 @@ int SplitBAM(int argc,char *argv[])
     }
     fp_bam.close();
 
+    snprintf(ShellCommand, sizeof(ShellCommand), "sort %s/bamlist -o %s/bamlist", PathWork, PathWork);
+    system(ShellCommand);
+
     printf("The sample was split according to the chromosome...\n");
 
 //Parallel Computing

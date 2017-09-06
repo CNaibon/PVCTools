@@ -17,14 +17,17 @@ using namespace std;
 //The FA file is divided into chromosomes and obtained after cutting the chromosome name.
 void Fa_Chr(char *workpath,char *fa_path)
 {
-    ifstream fp;
-    fp.open(fa_path,ios::in);
     string Line;
     char FileName[CMD_NUM];
     char ShellCommand[CMD_NUM];
+
     //Create the FA directory.
     snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/fa", workpath);
     system(ShellCommand);
+
+    ifstream fp;
+    ofstream fp_tmp;
+    fp.open(fa_path,ios::in);
     getline(fp,Line);
     //Extract the sequence of each chromosome
     while (!fp.eof())
@@ -38,22 +41,19 @@ void Fa_Chr(char *workpath,char *fa_path)
                 break;
             }
         }
-        strncat(FileName, ".fa", sizeof(FileName) - strlen(FileName));
+        snprintf(ShellCommand, sizeof(ShellCommand), "%s/fa/%s.fa", workpath, FileName);
+        snprintf(FileName, sizeof(FileName), "%s", ShellCommand);
         snprintf(ShellCommand, sizeof(ShellCommand), "touch %s", FileName);
         system(ShellCommand);
-
-        ofstream fp_tmp;
         fp_tmp.open(FileName, ios::out);
-        fp_tmp<<Line<<std::endl;
+        fp_tmp<<Line<<endl;
         getline(fp,Line);
         while (!fp.eof() && Line.at(0) != '>')
         {
-            fp_tmp<<Line<<std::endl;
+            fp_tmp<<Line<<endl;
             getline(fp,Line);
         }
         fp_tmp.close();
-        snprintf(ShellCommand, sizeof(ShellCommand), "mv %s %s/fa/", FileName, workpath);
-        system(ShellCommand);
     }
     fp.close();
 }
@@ -76,13 +76,10 @@ int SplitFA(int argc,char *argv[])
             snprintf(PathWork, sizeof(PathWork), "%s", argv[i + 1]);
             if (PathWork[strlen(PathWork) - 1] == '/') PathWork[strlen(PathWork) - 1] = '\0';
         }
-        if (cmd == "-fa")
-        {
-            snprintf(PathFA, sizeof(PathFA), "%s", argv[i + 1]);
-            if (PathFA[strlen(PathFA) - 1] == '/') PathFA[strlen(PathFA) - 1] = '\0';
-        }
+        if (cmd == "-fa")  snprintf(PathFA, sizeof(PathFA), "%s", argv[i + 1]);
     }
-
+    snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s", PathWork);
+    system(ShellCommand);
     //Generates an empty [falist] for import.
     snprintf(ShellCommand, sizeof(ShellCommand), "touch %s/falist", PathWork);
     system(ShellCommand);
