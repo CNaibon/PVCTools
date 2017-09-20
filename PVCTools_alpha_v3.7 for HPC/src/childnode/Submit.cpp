@@ -143,21 +143,21 @@ int Submit(int argc, char *argv[])
         for (int k = 0; k < FileNumber[i]; k++)
         {
             FILE *fp_sh;
-            snprintf(Command, sizeof(Command), "%s/sub_script/%s_%d_%s.sh", PathWork, ChrName[i].c_str(), k, Tool.c_str());
+            snprintf(Command, sizeof(Command), "%s/sub_script/%s_%d_%s.pbs", PathWork, ChrName[i].c_str(), k, Tool.c_str());
             if ((fp_sh = fopen(Command, "w")) == NULL)
                 exit(-1);
-            snprintf(Command, sizeof(Command), "#BSUB -q %s\n", Queue);
+            snprintf(Command, sizeof(Command), "#PBS -N %s_%d_%s\n", ChrName[i].c_str(), k, Tool.c_str());
             fputs(Command, fp_sh);
-            snprintf(Command, sizeof(Command), "#BSUB -J %s_%d_%s\n", ChrName[i].c_str(), k, Tool.c_str());
+            snprintf(Command, sizeof(Command), "#PBS -l nodes=1:ppn=1\n\n");
             fputs(Command, fp_sh);
-            snprintf(Command, sizeof(Command), "#BSUB -o %s/out/%s_%d_%s.out\n", PathWork, ChrName[i].c_str(), k, Tool.c_str());
+            snprintf(Command, sizeof(Command), "#PBS -q %s\n", Queue);
             fputs(Command, fp_sh);
-            snprintf(Command, sizeof(Command), "#BSUB -e %s/err/%s_%d_%s.err\n", PathWork, ChrName[i].c_str(), k, Tool.c_str());
+            snprintf(Command, sizeof(Command), "#PBS -o %s/out/%s_%d_%s.out\n", PathWork, ChrName[i].c_str(), k, Tool.c_str());
             fputs(Command, fp_sh);
-            snprintf(Command, sizeof(Command), "#BSUB -n 1\n");
+            snprintf(Command, sizeof(Command), "#PBS -e %s/err/%s_%d_%s.err\n", PathWork, ChrName[i].c_str(), k, Tool.c_str());
             fputs(Command, fp_sh);
-            snprintf(Command, sizeof(Command), "#BSUB -R \"span[ptile=%s]\"\n", Span);
-            fputs(Command, fp_sh);
+//            snprintf(Command, sizeof(Command), "#BSUB -R \"span[ptile=%s]\"\n", Span);
+//            fputs(Command, fp_sh);
 
             if (Tool == "samtools")
             {
@@ -168,6 +168,12 @@ int Submit(int argc, char *argv[])
                 //Write a number of sample small copies.
                 for (int n = 0; n < (int)SampleName.size(); n++)
                 {
+                    snprintf(Command, sizeof(Command), "mkdir -p %s/sample/%s/%s_%s", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+                    system(Command);
+
+                    snprintf(Command, sizeof(Command), "touch %s/sample/%s/%s_%s/%s_%s_%d.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str(),k);
+                    system(Command);
+
                     snprintf(Command, sizeof(Command), "%s/sample/%s/%s_%s/%s_%s_%d.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), k);
                     fputs(Command, fp_sh);
                 }
@@ -187,6 +193,12 @@ int Submit(int argc, char *argv[])
                 fputs(Command, fp_sh);
                 for (int n = 0; n < (int)SampleName.size(); n++)
                 {
+                    snprintf(Command, sizeof(Command), "mkdir -p %s/sample/%s/%s_%s", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+                    system(Command);
+
+                    snprintf(Command, sizeof(Command), "touch %s/sample/%s/%s_%s/%s_%s_%d.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str(),k);
+                    system(Command);
+
                     snprintf(Command, sizeof(Command), "-I %s/sample/%s/%s_%s/%s_%s_%d.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), k);
                     fputs(Command, fp_sh);
                 }
@@ -203,6 +215,12 @@ int Submit(int argc, char *argv[])
                 fputs(Command, fp_sh);
                 for (int n = 0; n < (int)SampleName.size(); n++)
                 {
+                    snprintf(Command, sizeof(Command), "mkdir -p %s/sample/%s/%s_%s", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+                    system(Command);
+
+                    snprintf(Command, sizeof(Command), "touch %s/sample/%s/%s_%s/%s_%s_%d.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str(),k);
+                    system(Command);
+
                     snprintf(Command, sizeof(Command), "-b %s/sample/%s/%s_%s/%s_%s_%d.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), k);
                     fputs(Command, fp_sh);
                 }
@@ -216,7 +234,7 @@ int Submit(int argc, char *argv[])
             fclose(fp_sh);
 
             //Submit.
-            snprintf(Command, sizeof(Command), "bsub < %s/sub_script/%s_%d_%s.sh", PathWork, ChrName[i].c_str(), k, Tool.c_str());
+            snprintf(Command, sizeof(Command), "qsub < %s/sub_script/%s_%d_%s.pbs", PathWork, ChrName[i].c_str(), k, Tool.c_str());
             system(Command);
         }
     }

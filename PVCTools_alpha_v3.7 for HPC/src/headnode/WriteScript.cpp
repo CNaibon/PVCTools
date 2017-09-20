@@ -203,23 +203,24 @@ int main(int argc, char *argv[])
             }
             if (Count < 2) snprintf(CurrentPath, sizeof(CurrentPath), ".");
             FILE *fp_sh;
-            sprintf(ShellCommand, "%s/run.sh", CurrentPath);
+            sprintf(ShellCommand, "%s/run.pbs", CurrentPath);
             if ((fp_sh = fopen(ShellCommand, "w")) == NULL) exit(-1);
             //Write the relevant parameters of the script.
-            sprintf(ShellCommand, "#BSUB -q %s\n", Queue);
+            sprintf(ShellCommand, "#PBS -N %s\n", argv[1]);
             fputs(ShellCommand, fp_sh);
-            sprintf(ShellCommand, "#BSUB -J %s\n", argv[1]);
+            sprintf(ShellCommand, "#PBS -l nodes=1:ppn=%s\n", Cpu);
             fputs(ShellCommand, fp_sh);
-            sprintf(ShellCommand, "#BSUB -o %s/%s.out\n", PathWork, argv[1]);
+            sprintf(ShellCommand, "#PBS -q %s\n", Queue);
             fputs(ShellCommand, fp_sh);
-            sprintf(ShellCommand, "#BSUB -e %s/%s.err\n", PathWork, argv[1]);
+            sprintf(ShellCommand, "#PBS -o %s/%s.out\n", PathWork, argv[1]);
             fputs(ShellCommand, fp_sh);
-            sprintf(ShellCommand, "#BSUB -n %s\n", Cpu);
+            sprintf(ShellCommand, "#PBS -e %s/%s.err\n", PathWork, argv[1]);
             fputs(ShellCommand, fp_sh);
-            sprintf(ShellCommand, "#BSUB -R \"span[ptile=%s]\"\n", Span);
-            fputs(ShellCommand, fp_sh);
-            sprintf(ShellCommand, "#BSUB -a openmpi\n\n\n");
-            fputs(ShellCommand, fp_sh);
+
+//            sprintf(ShellCommand, "#BSUB -R \"span[ptile=%s]\"\n", Span);
+//            fputs(ShellCommand, fp_sh);
+//            sprintf(ShellCommand, "#BSUB -a openmpi\n\n\n");
+//            fputs(ShellCommand, fp_sh);
             //mpirun.lsf
             sprintf(ShellCommand, "%s/bin/./main", CurrentPath);
             char tmp[CMD_NUM];
@@ -231,7 +232,7 @@ int main(int argc, char *argv[])
             fputs(ShellCommand, fp_sh);
             fclose(fp_sh);
             //Submit the script.
-            sprintf(ShellCommand, "bsub < %s/run.sh", CurrentPath);
+            sprintf(ShellCommand, "qsub < %s/run.pbs", CurrentPath);
             system(ShellCommand);
         }
         else if(cmd == "Environment") SetEvmt(argc, argv);

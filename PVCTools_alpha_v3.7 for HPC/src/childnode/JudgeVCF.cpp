@@ -2,7 +2,6 @@
 // Created by liujiajun on 2017/5/21.
 //
 
-#include <cstring>
 #include "JudgeVCF.h"
 #include "Environment.h"
 
@@ -78,21 +77,10 @@ int TotalVCF(const char *CurrentPath, const char *workdir, int judge)
     char SmallFA[CMD_NUM];
     snprintf(SmallFA, sizeof(SmallFA), "%s/small_success", workdir);
 
-    int flag = 0;
-
     if(access(BigFA,0) == 0 && judge  == 1 && access(SmallFA,0) == 0)
-    {
-        flag = 1;
-    } else if(access(BigFA,0) == 0 && judge == 0)
-    {
-        flag = 1;
-    }
-
-    if(flag == 1)
     {
         char ShellCommand[CMD_NUM];
         vector<string> ChrName;
-        vector<string> SampleName;
         string Buffer;
         string strbuff;
         ifstream fp_list;
@@ -115,7 +103,7 @@ int TotalVCF(const char *CurrentPath, const char *workdir, int judge)
         }
         fp_list.close();
 
-        snprintf(ShellCommand, sizeof(ShellCommand), "%s/bamlist", workdir);
+        snprintf(ShellCommand, sizeof(ShellCommand), "%s/smalllist", workdir);
         fp_list.open(ShellCommand,ios::in);
         getline(fp_list, Buffer);
         while (!fp_list.eof())
@@ -124,29 +112,11 @@ int TotalVCF(const char *CurrentPath, const char *workdir, int judge)
             {
                 int i = Buffer.rfind('.');
                 strbuff = Buffer.substr(0,i);
-                SampleName.push_back(strbuff.c_str());
+                ChrName.push_back(strbuff.c_str());
             }
             getline(fp_list, Buffer);
         }
         fp_list.close();
-
-        if(judge == 1)
-        {
-            snprintf(ShellCommand, sizeof(ShellCommand), "%s/smalllist", workdir);
-            fp_list.open(ShellCommand,ios::in);
-            getline(fp_list, Buffer);
-            while (!fp_list.eof())
-            {
-                if (Buffer.size() != 0)
-                {
-                    int i = Buffer.rfind('.');
-                    strbuff = Buffer.substr(0,i);
-                    ChrName.push_back(strbuff.c_str());
-                }
-                getline(fp_list, Buffer);
-            }
-            fp_list.close();
-        }
 
         string PATH_SAMTOOLS;
         GetToolsPath(CurrentPath, PATH_SAMTOOLS, "-samtools");
@@ -163,45 +133,8 @@ int TotalVCF(const char *CurrentPath, const char *workdir, int judge)
         char VCF_File[CMD_NUM];
         snprintf(VCF_File, sizeof(VCF_File), "%s/vcf/Final_Result.vcf", workdir);
 
-        ifstream fp_old;
-        ofstream fp_new;
-        fp_old.open(VCF_File,ios::in);
-        char TmpName[CMD_NUM];
-        snprintf(TmpName, sizeof(TmpName), "%s-%d", VCF_File, (int)getpid());
-        fp_new.open(TmpName, ios::out);
-        getline(fp_old,Buffer);
-        while (!fp_old.eof())
-        {
-            if(Buffer.find("#CHROM\t") != string::npos)
-            {
-                int count = 0;
-                for (int i = 0; i < (int)Buffer.size(); i++)
-                {
-                    if (Buffer[i] == '\t') count++;
-                    if (count == 9)
-                    {
-                        char Front[FILE_LINE];
-                        char Rear[FILE_LINE];
-                        snprintf(Front, (size_t)(i + 2), "%s", Buffer.c_str());
-                        for (int n = 0; n < (int)SampleName.size(); n++)
-                        {
-                            snprintf(Rear, sizeof(Rear), "\t%s", SampleName[n].c_str());
-                            strncat(Front, Rear, sizeof(Front) - strlen(Rear));
-                        }
-                        Buffer = Front;
-                        break;
-                    }
-                }
-            }
-            fp_new<<Buffer<<endl;
-            getline(fp_old,Buffer);
-        }
-        fp_old.close();
-        fp_new.close();
-        remove(VCF_File);
-        rename(TmpName, VCF_File);
-
-        fp_new.open(VCF_File, ios::out|ios::app);
+        ofstream outfile;
+        outfile.open(VCF_File, ios::out|ios::app);
         for (long i = 0; i < long(ChrName.size()); i++)
         {
             snprintf(ShellCommand, sizeof(ShellCommand), "%s/vcf/Final_Result/%s.vcf", workdir, ChrName[i].c_str());
@@ -210,16 +143,71 @@ int TotalVCF(const char *CurrentPath, const char *workdir, int judge)
             getline(infile,Buffer);
             while (!infile.eof())
             {
-                if(Buffer.at(0) != '#') fp_new<<Buffer<<endl;
+                if(Buffer.at(0) != '#') outfile<<Buffer<<endl;
                 getline(infile,Buffer);
             }
             infile.close();
         }
-        fp_new.close();
+        outfile.close();
+    } else if(access(BigFA,0) == 0 && judge == 0)
+    {
+        char ShellCommand[CMD_NUM];
+        vector<string> ChrName;
+        string Buffer;
+        string strbuff;
+        ifstream fp_list;
+
+        remove(BigFA);
+        remove(SmallFA);
+
+        snprintf(ShellCommand, sizeof(ShellCommand), "%s/falist", workdir);
+        fp_list.open(ShellCommand,ios::in);
+        getline(fp_list, Buffer);
+        while (!fp_list.eof())
+        {
+            if (Buffer.size() != 0)
+            {
+                int i = Buffer.rfind('.');
+                strbuff = Buffer.substr(0,i);
+                ChrName.push_back(strbuff.c_str());
+            }
+            getline(fp_list, Buffer);
+        }
+        fp_list.close();
+
+        string PATH_SAMTOOLS;
+        GetToolsPath(CurrentPath, PATH_SAMTOOLS, "-samtools");
+        string PATH_BCFTOOLS;
+        GetToolsPath(CurrentPath, PATH_BCFTOOLS, "-bcftools");
+        snprintf(ShellCommand, sizeof(ShellCommand), "%s mpileup -u -t DP,AD,ADF %s/header.bam | %s call -vmO v -o %s/header.vcf", PATH_SAMTOOLS.c_str(), workdir, PATH_BCFTOOLS.c_str(), workdir);
+        system(ShellCommand);
+        snprintf(ShellCommand, sizeof(ShellCommand), "%s/header.bam", workdir);
+        remove(ShellCommand);
+        snprintf(ShellCommand, sizeof(ShellCommand), "cp -f %s/header.vcf %s/vcf/Final_Result.vcf", workdir, workdir);
+        system(ShellCommand);
+
+        char VCF_File[CMD_NUM];
+        snprintf(VCF_File, sizeof(VCF_File), "%s/vcf/Final_Result.vcf", workdir);
+
+        ofstream outfile;
+        outfile.open(VCF_File, ios::out|ios::app);
+        for (long i = 1; i < long(ChrName.size()); i++)
+        {
+            snprintf(ShellCommand, sizeof(ShellCommand), "%s/vcf/Final_Result/%s.vcf", workdir, ChrName[i].c_str());
+            ifstream infile;
+            infile.open(ShellCommand,ios::in);
+            getline(infile,Buffer);
+            while (!infile.eof())
+            {
+                if(Buffer.at(0) != '#') outfile<<Buffer<<endl;
+                getline(infile,Buffer);
+            }
+            infile.close();
+        }
+        outfile.close();
         snprintf(ShellCommand, sizeof(ShellCommand), "%s/header.vcf", workdir);
         remove(ShellCommand);
     }
-
     return 0;
 }
 

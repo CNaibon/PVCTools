@@ -15,9 +15,7 @@ using namespace std;
 
 int Modify(string &buffer, long addresses_number, const char *chr_name, long LN)
 {
-    char Command[CMD_NUM];
-    snprintf(Command, sizeof(Command), "\tSN:%s\t", chr_name);
-    if(buffer.find("@SQ\t") != string::npos && buffer.find(Command) != string::npos)
+    if(buffer.find("@SQ") != string::npos && buffer.find(chr_name) != string::npos)
     {
         int count = 0;
         for (int i = 0; i < (int)buffer.size(); i++)
@@ -25,17 +23,23 @@ int Modify(string &buffer, long addresses_number, const char *chr_name, long LN)
             if (buffer[i] == '\t') count++;
             if (count == 2)
             {
-                char Front[FILE_LINE];
-                char Number_New[CMD_NUM];
+                char *p = &buffer[i + 4];
+                char Front[FILE_LINE], Rear[FILE_LINE];
+                char Number_Old[CMD_NUM], Number_New[CMD_NUM];
+                long Num_Old = atol(p);
+                snprintf(Number_Old, sizeof(Number_Old), "%ld", Num_Old);
+                int Length_Old = (int)strlen(Number_Old);
                 snprintf(Number_New, sizeof(Number_New), "%ld", LN);
                 snprintf(Front, (size_t)(i + 5), "%s", buffer.c_str());
+                snprintf(Rear, sizeof(Rear), "%s", &buffer[i + 4 + Length_Old]);
                 strncat(Front, Number_New, sizeof(Front) - strlen(Front));
+                strncat(Front, Rear, sizeof(Front) - strlen(Front));
                 buffer = Front;
                 return 0;
             }
         }
     }
-    else if (buffer.find("@SQ\t") != string::npos) return -1;
+    else if (buffer.find("@SQ") != string::npos) return -1;
     else
     {
         if (buffer[0] == '@') return 0;
@@ -97,7 +101,6 @@ int Sam_Address_Modify(char *file_name, long address_count, const char *chr_name
 
 int ParallelBAM(int argc, char *argv[])
 {
-
     char chr_name[CMD_NUM];
     char bam_name[CMD_NUM];
     char Command[CMD_NUM];
@@ -108,6 +111,8 @@ int ParallelBAM(int argc, char *argv[])
     string Tool = "samtools";
     GetToolsPath(argv[0], PATH_SAMTOOLS, "-samtools");
     double Reserved = 0;
+
+    char BAM_PATH[CMD_NUM] = "fatnode";
 
     for (int i = 0; i < argc; i++)
     {
@@ -170,7 +175,7 @@ int ParallelBAM(int argc, char *argv[])
     snprintf(Command, sizeof(Command), "mkdir -p %s/sample/%s/%s_%s_TemporarySort", PathWork, bam_name, bam_name, chr_name);
     system(Command);
 
-    snprintf(Command, sizeof(Command), "%s sort -T %s/sample/%s/%s_%s_TemporarySort %s/sample/%s/%s_%s.bam > %s/sample/%s/%s_%s_sorted.bam ", PATH_SAMTOOLS.c_str(), PathWork, bam_name, bam_name, chr_name, PathWork, bam_name, bam_name, chr_name, PathWork, bam_name, bam_name, chr_name);
+    snprintf(Command, sizeof(Command), "%s sort -T %s/sample/%s/%s_%s_TemporarySort %s/%s_%s.bam > %s/sample/%s/%s_%s_sorted.bam ", PATH_SAMTOOLS.c_str(), PathWork, bam_name, bam_name, chr_name, BAM_PATH, bam_name, bam_name, chr_name, PathWork, bam_name, bam_name, chr_name);
     system(Command);
 
     snprintf(Command, sizeof(Command), "%s index %s/sample/%s/%s_%s_sorted.bam ", PATH_SAMTOOLS.c_str(), PathWork, bam_name, bam_name, chr_name);
@@ -192,37 +197,52 @@ int ParallelBAM(int argc, char *argv[])
 
         //The split BAM file into SAM format.
         snprintf(Command, sizeof(Command), "%s view -h %s/sample/%s/%s_%s/%s_%s_%d.bam > %s/sample/%s/%s_%s/%s_%s_%d.sam", PATH_SAMTOOLS.c_str(), PathWork, bam_name,
-                 bam_name, chr_name, bam_name, chr_name, k, PathWork, bam_name, bam_name, chr_name, bam_name, chr_name, k);
+                 bam_name, chr_name,
+                 bam_name, chr_name, k, PathWork, bam_name,
+                 bam_name, chr_name,
+                 bam_name, chr_name, k);
         system(Command);
         snprintf(Command, sizeof(Command), "%s/sample/%s/%s_%s/%s_%s_%d.bam", PathWork, bam_name,
-                 bam_name, chr_name, bam_name, chr_name, k);
+                 bam_name, chr_name,
+                 bam_name, chr_name, k);
         remove(Command);
 
         //Sam address modified.
         snprintf(Command, sizeof(Command), "%s/sample/%s/%s_%s/%s_%s_%d.sam", PathWork, bam_name,
-                 bam_name, chr_name, bam_name, chr_name, k);
+                 bam_name, chr_name,
+                 bam_name, chr_name, k);
         if (k > 0 || Tool == "gatk") Sam_Address_Modify(Command, ReadCount[k] ,chr_name, LN[k]);
 
         //Change the modified sam file back to bam format.
         snprintf(Command, sizeof(Command), "%s view -b %s/sample/%s/%s_%s/%s_%s_%d.sam > %s/sample/%s/%s_%s/%s_%s_%d.bam", PATH_SAMTOOLS.c_str(), PathWork, bam_name,
-                 bam_name, chr_name, bam_name, chr_name, k, PathWork, bam_name, bam_name, chr_name, bam_name, chr_name, k);
+                 bam_name, chr_name,
+                 bam_name, chr_name, k, PathWork, bam_name,
+                 bam_name, chr_name,
+                 bam_name, chr_name, k);
         system(Command);
         snprintf(Command, sizeof(Command), "%s/sample/%s/%s_%s/%s_%s_%d.sam", PathWork, bam_name,
-                 bam_name, chr_name, bam_name, chr_name, k);
+                 bam_name, chr_name,
+                 bam_name, chr_name, k);
         remove(Command);
-
-        snprintf(Command, sizeof(Command), "%s sort %s/sample/%s/%s_%s/%s_%s_%d.bam > %s/sample/%s/%s_%s/%s_%s_%d_tmp.bam", PATH_SAMTOOLS.c_str(), PathWork, bam_name,
-                 bam_name, chr_name, bam_name, chr_name, k, PathWork, bam_name,bam_name, chr_name,bam_name, chr_name, k);
-        system(Command);
-        snprintf(Command, sizeof(Command), "%s/sample/%s/%s_%s/%s_%s_%d.bam", PathWork, bam_name, bam_name, chr_name, bam_name, chr_name, k);
-        remove(Command);
-        snprintf(Command, sizeof(Command), "mv %s/sample/%s/%s_%s/%s_%s_%d_tmp.bam %s/sample/%s/%s_%s/%s_%s_%d.bam", PathWork, bam_name,
-                 bam_name, chr_name, bam_name, chr_name, k, PathWork, bam_name,bam_name, chr_name,bam_name, chr_name, k);
-        system(Command);
-        snprintf(Command, sizeof(Command), "%s index %s/sample/%s/%s_%s/%s_%s_%d.bam", PATH_SAMTOOLS.c_str(), PathWork, bam_name,
-                 bam_name, chr_name, bam_name, chr_name, k);
-        system(Command);
-
+        if(Tool == "gatk")
+        {
+            snprintf(Command, sizeof(Command), "%s sort %s/sample/%s/%s_%s/%s_%s_%d.bam > %s/sample/%s/%s_%s/%s_%s_%d_tmp.bam", PATH_SAMTOOLS.c_str(), PathWork, bam_name,
+                     bam_name, chr_name,
+                     bam_name, chr_name, k, PathWork, bam_name,bam_name, chr_name,bam_name, chr_name, k);
+            system(Command);
+            snprintf(Command, sizeof(Command), "%s/sample/%s/%s_%s/%s_%s_%d.bam", PathWork, bam_name,
+                     bam_name, chr_name,
+                     bam_name, chr_name, k);
+            remove(Command);
+            snprintf(Command, sizeof(Command), "mv %s/sample/%s/%s_%s/%s_%s_%d_tmp.bam %s/sample/%s/%s_%s/%s_%s_%d.bam", PathWork, bam_name,
+                     bam_name, chr_name,
+                     bam_name, chr_name, k, PathWork, bam_name,bam_name, chr_name,bam_name, chr_name, k);
+            system(Command);
+            snprintf(Command, sizeof(Command), "%s index %s/sample/%s/%s_%s/%s_%s_%d.bam", PATH_SAMTOOLS.c_str(), PathWork, bam_name,
+                     bam_name, chr_name,
+                     bam_name, chr_name, k);
+            system(Command);
+        }
     }
     snprintf(Command, sizeof(Command), "%s/sample/%s/%s_%s_sorted.bam", PathWork, bam_name, bam_name, chr_name);
     remove(Command);
@@ -262,7 +282,9 @@ int SegmentBAM(int argc, char *argv[])
     string Tool = "samtools";
     int Reserved = 0;
     long TotalNumber = 0;
-    
+
+    char BAM_PATH[CMD_NUM] = "fatnode";
+
     for (int i = 0; i < argc; i++)
     {
         string cmd = argv[i];
@@ -350,7 +372,7 @@ int SegmentBAM(int argc, char *argv[])
         remove(TransCommand);
         for(int n = 0; n < (int)SampleName.size(); ++n)
         {
-            snprintf(TransCommand, sizeof(TransCommand), "%s/sample/%s/%s_%s.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+            snprintf(TransCommand, sizeof(TransCommand), "%s/%s_%s.bam", BAM_PATH, SampleName[n].c_str(), ChrName[i].c_str());
             if (access(TransCommand,0) == 0)
             {
                 TotalNumber += 1;
@@ -369,55 +391,41 @@ int SegmentBAM(int argc, char *argv[])
         for (int n = 0; n < (int)SampleName.size(); ++n)
         {
             char ModCommand[CMD_NUM];
+            FILE *fp_trans;
             //If the chromosome is not present in the sample, it is skipped.
-            snprintf(ModCommand, sizeof(ModCommand), "%s/sample/%s/%s_%s.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
-            if (access(ModCommand,0) != 0)
-            {
-                snprintf(ModCommand, sizeof(ModCommand), "mkdir -p %s/sample/%s/%s_%s", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
-                system(ModCommand);
-                for (int k = 0; k < FileNumber[i]; k++)
-                {
-                    snprintf(ModCommand, sizeof(ModCommand), "touch %s/sample/%s/%s_%s/%s_%s_%d.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str(),k);
-                    system(ModCommand);
-                    snprintf(ModCommand, sizeof(ModCommand), "%s index %s/sample/%s/%s_%s/%s_%s_%d.bam", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(),
-                             SampleName[n].c_str(), ChrName[i].c_str(),
-                             SampleName[n].c_str(), ChrName[i].c_str(), k);
-                    system(ModCommand);
-                }
-            }
-            else
-            {
-                //Already exists before the chromosome processing data is deleted from the original data to prepare to write new data.
-                snprintf(ModCommand, sizeof(ModCommand), "%s/sample/%s/%s_%s", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
-                DIR * bam_dir;
-                bam_dir = opendir(ModCommand);
-                if (bam_dir != NULL)
-                {
-                    closedir(bam_dir);
-                    snprintf(ModCommand, sizeof(ModCommand), "rm -rf %s/sample/%s/%s_%s", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
-                    system(ModCommand);
-                }
-                snprintf(ModCommand, sizeof(ModCommand), "mkdir -p %s/sample/%s/%s_%s", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
-                system(ModCommand);
-                //printf("BAM file to extract...\n");
-                snprintf(ModCommand, sizeof(ModCommand), "%s/sample/%s/%s_%s/%s_%s.sh", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
-                FILE *fp_trans;
-                if ((fp_trans = fopen(ModCommand, "w")) == NULL)
-                    exit(-1);
-                snprintf(ModCommand, sizeof(ModCommand), "#BSUB -q %s\n", Queue);
-                fputs(ModCommand, fp_trans);
-                snprintf(ModCommand, sizeof(ModCommand), "#BSUB -J %s_%s_sort\n", SampleName[n].c_str(), ChrName[i].c_str());
-                fputs(ModCommand, fp_trans);
-                snprintf(ModCommand, sizeof(ModCommand), "#BSUB -n 1\n\n");
-                fputs(ModCommand, fp_trans);
-                snprintf(ModCommand, sizeof(ModCommand), "\n%s ParallelBAM -w %s -c %s -b %s -f %d -T %s -R %d\n", argv[0], PathWork, ChrName[i].c_str(), SampleName[n].c_str(), FileNumber[i], Tool.c_str(), Reserved);
-                fputs(ModCommand, fp_trans);
-                fclose(fp_trans);
-                snprintf(ModCommand, sizeof(ModCommand), "bsub < %s/sample/%s/%s_%s/%s_%s.sh", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
-                system(ModCommand);
-                snprintf(ModCommand, sizeof(ModCommand), "%s/sample/%s/%s_%s/%s_%s.sh", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
-                remove(ModCommand);
-            }
+            snprintf(ModCommand, sizeof(ModCommand), "%s/%s_%s.bam", BAM_PATH, SampleName[n].c_str(), ChrName[i].c_str());
+            if ((fp_trans = fopen(ModCommand, "r")) == NULL) continue;
+            fclose(fp_trans);
+            //Already exists before the chromosome processing data is deleted from the original data to prepare to write new data.
+//            snprintf(ModCommand, sizeof(ModCommand), "%s/%s_%s", BAM_PATH, SampleName[n].c_str(), ChrName[i].c_str());
+//            DIR * bam_dir;
+//            bam_dir = opendir(ModCommand);
+//            if (bam_dir != NULL)
+//            {
+//                closedir(bam_dir);
+//                snprintf(ModCommand, sizeof(ModCommand), "rm -rf %s/sample/%s/%s_%s", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+//                system(ModCommand);
+//            }
+            snprintf(ModCommand, sizeof(ModCommand), "mkdir -p %s/sample/%s/%s_%s", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+            system(ModCommand);
+            //printf("BAM file to extract...\n");
+            snprintf(ModCommand, sizeof(ModCommand), "%s/sample/%s/%s_%s/%s_%s.pbs", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+            if ((fp_trans = fopen(ModCommand, "w")) == NULL)
+                exit(-1);
+            snprintf(ModCommand, sizeof(ModCommand), "#PBS -N %s_%s_sort\n", SampleName[n].c_str(), ChrName[i].c_str());
+            fputs(ModCommand, fp_trans);
+            snprintf(ModCommand, sizeof(ModCommand), "#PBS -l nodes=1:ppn=1\n");
+            fputs(ModCommand, fp_trans);
+            snprintf(ModCommand, sizeof(ModCommand), "#PBS -q %s\n\n", Queue);
+            fputs(ModCommand, fp_trans);
+
+            snprintf(ModCommand, sizeof(ModCommand), "\n%s ParallelBAM -w %s -c %s -b %s -f %d -T %s -R %d\n", argv[0], PathWork, ChrName[i].c_str(), SampleName[n].c_str(), FileNumber[i], Tool.c_str(), Reserved);
+            fputs(ModCommand, fp_trans);
+            fclose(fp_trans);
+            snprintf(ModCommand, sizeof(ModCommand), "qsub < %s/sample/%s/%s_%s/%s_%s.pbs", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+            system(ModCommand);
+            snprintf(ModCommand, sizeof(ModCommand), "%s/sample/%s/%s_%s/%s_%s.pbs", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+            remove(ModCommand);
         }
     }
 

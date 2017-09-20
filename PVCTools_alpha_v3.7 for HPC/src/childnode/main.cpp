@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     {
         SplitFA(argc, argv);
         SegmentFA(argc, argv);
-        SplitBAM(argc, argv);
+        //SplitBAM(argc, argv);
         SegmentBAM(argc, argv);
         Submit(argc, argv);
         SmallFA(argc, argv);

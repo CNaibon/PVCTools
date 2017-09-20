@@ -12,32 +12,6 @@
 
 using namespace std;
 
-int SmallFA_HeaderModify(char *file_name, const char *chr_name)
-{
-    ifstream fp_old;
-    ofstream fp_new;
-    fp_old.open(file_name,ios::in);
-    char Command[CMD_NUM];
-    char TmpName[CMD_NUM];
-    snprintf(TmpName, sizeof(TmpName), "%s-%d", file_name, (int)getpid());
-    snprintf(Command, sizeof(Command), "\tSN:%s\t", chr_name);
-    fp_new.open(TmpName, ios::out);
-    string Buffer;
-    getline(fp_old,Buffer);
-    while (!fp_old.eof())
-    {
-        if(Buffer.find("@SQ\t") != string::npos && Buffer.find(Command) == string::npos) ;//Do nothing and pass.
-        else fp_new<<Buffer<<endl;
-        getline(fp_old,Buffer);
-    }
-    fp_old.close();
-    fp_new.close();
-
-    remove(file_name);
-    rename(TmpName, file_name);
-    return 0;
-}
-
 int SmallFA(int argc, char *argv[])
 {
     long StartTime = time((time_t*)NULL);
@@ -123,11 +97,19 @@ int SmallFA(int argc, char *argv[])
     fp_small.close();
 
     //Create the relevant directory.
+    snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/out", PathWork);
+    system(ShellCommand);
     snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/out/smallFA", PathWork);
+    system(ShellCommand);
+    snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/err", PathWork);
     system(ShellCommand);
     snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/err/smallFA", PathWork);
     system(ShellCommand);
+    snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/sub_script", PathWork);
+    system(ShellCommand);
     snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/sub_script/smallFA", PathWork);
+    system(ShellCommand);
+    snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/vcf", PathWork);
     system(ShellCommand);
     snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/vcf/Final_Result", PathWork);
     system(ShellCommand);
@@ -135,20 +117,20 @@ int SmallFA(int argc, char *argv[])
     if((int)ChrName.size() == 0)
     {
         FILE *fp_n;
-        snprintf(ShellCommand, sizeof(ShellCommand), "%s/sub_script/smallFA/NoSmallFA.sh", PathWork);
+        snprintf(ShellCommand, sizeof(ShellCommand), "%s/sub_script/smallFA/NoSmallFA.pbs", PathWork);
         if ((fp_n = fopen(ShellCommand, "w")) == NULL)
             exit(-1);
-        snprintf(ShellCommand, sizeof(ShellCommand), "#BSUB -q %s\n", Queue);
+        snprintf(ShellCommand, sizeof(ShellCommand), "#PBS -N NoSmallFA\n");
         fputs(ShellCommand, fp_n);
-        snprintf(ShellCommand, sizeof(ShellCommand), "#BSUB -J NoSmallFA\n");
+        snprintf(ShellCommand, sizeof(ShellCommand), "#PBS -l nodes=1:ppn=1\n");
         fputs(ShellCommand, fp_n);
-        snprintf(ShellCommand, sizeof(ShellCommand), "#BSUB -n 1\n");
+        snprintf(ShellCommand, sizeof(ShellCommand), "#PBS -q %s\n\n", Queue);
         fputs(ShellCommand, fp_n);
         snprintf(ShellCommand, sizeof(ShellCommand), "\n%s JudgeVCF -w %s -C 1 -N NoSmallFA -S small", argv[0], PathWork);
         fputs(ShellCommand, fp_n);
         fclose(fp_n);
         // Submit.
-        snprintf(ShellCommand, sizeof(ShellCommand), "bsub < %s/sub_script/smallFA/NoSmallFA.sh", PathWork);
+        snprintf(ShellCommand, sizeof(ShellCommand), "qsub < %s/sub_script/smallFA/NoSmallFA.pbs", PathWork);
         system(ShellCommand);
 
         long FinishTime = time((time_t*)NULL);
@@ -163,23 +145,20 @@ int SmallFA(int argc, char *argv[])
     for (int i = 0; i < (int)ChrName.size(); i++)
     {
         char Command[CMD_NUM];
-        char filename[CMD_NUM];
         //Write the commit script.
         FILE *fp_sh;
-        snprintf(filename, sizeof(filename), "%s/sub_script/smallFA/%s_%s.sh", PathWork, ChrName[i].c_str(), Tool.c_str());
-        if ((fp_sh = fopen(filename, "w")) == NULL)
+        snprintf(Command, sizeof(Command), "%s/sub_script/smallFA/%s_%s.pbs", PathWork, ChrName[i].c_str(), Tool.c_str());
+        if ((fp_sh = fopen(Command, "w")) == NULL)
             exit(-1);
-        snprintf(Command, sizeof(Command), "#BSUB -q %s\n", Queue);
+        snprintf(Command, sizeof(Command), "#PBS -N %s_%s\n", ChrName[i].c_str(), Tool.c_str());
         fputs(Command, fp_sh);
-        snprintf(Command, sizeof(Command), "#BSUB -J %s_%s\n", ChrName[i].c_str(), Tool.c_str());
+        snprintf(Command, sizeof(Command), "#PBS -l nodes=1:ppn=1\n");
         fputs(Command, fp_sh);
-        snprintf(Command, sizeof(Command), "#BSUB -o %s/out/smallFA/%s_%s.out\n", PathWork, ChrName[i].c_str(), Tool.c_str());
+        snprintf(Command, sizeof(Command), "#PBS -q %s\n", Queue);
         fputs(Command, fp_sh);
-        snprintf(Command, sizeof(Command), "#BSUB -e %s/err/smallFA/%s_%s.err\n", PathWork, ChrName[i].c_str(), Tool.c_str());
+        snprintf(Command, sizeof(Command), "#PBS -o %s/out/smallFA/%s_%s.out\n", PathWork, ChrName[i].c_str(), Tool.c_str());
         fputs(Command, fp_sh);
-        snprintf(Command, sizeof(Command), "#BSUB -n 1\n");
-        fputs(Command, fp_sh);
-        snprintf(Command, sizeof(Command), "#BSUB -R \"span[ptile=%s]\"\n", Span);
+        snprintf(Command, sizeof(Command), "#PBS -e %s/err/smallFA/%s_%s.err\n", PathWork, ChrName[i].c_str(), Tool.c_str());
         fputs(Command, fp_sh);
 
         if (Tool == "samtools")
@@ -194,8 +173,8 @@ int SmallFA(int argc, char *argv[])
                 snprintf(Command, sizeof(Command), "touch %s/sample/%s/%s_%s.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
                 system(Command);
 
-                snprintf(filename, sizeof(filename), "%s/sample/%s/%s_%s.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
-                fputs(filename, fp_sh);
+                snprintf(Command, sizeof(Command), "%s/sample/%s/%s_%s.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+                fputs(Command, fp_sh);
             }
             snprintf(Command, sizeof(Command), "| %s call -vmO v -o %s/vcf/Final_Result/%s.vcf", PATH_BCFTOOLS.c_str(), PathWork, ChrName[i].c_str());
             fputs(Command, fp_sh);
@@ -220,29 +199,8 @@ int SmallFA(int argc, char *argv[])
                 snprintf(Command, sizeof(Command), "touch %s/sample/%s/%s_%s.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
                 system(Command);
 
-                snprintf(Command, sizeof(Command), "%s view -h %s/sample/%s/%s_%s.bam > %s/sample/%s/%s_%.sam", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(),
-                         PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
-                system(Command);
-                snprintf(filename, sizeof(filename), "%s/sample/%s/%s_%s.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
-                remove(filename);
-
-                snprintf(filename, sizeof(filename), "%s/sample/%s/%s_%s.sam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
-                SmallFA_HeaderModify(filename, ChrName[i].c_str());
-
-                snprintf(Command, sizeof(Command), "%s view -b %s/sample/%s/%s_%s.sam > %s/sample/%s/%s_%s.bam", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(),
-                         PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
-                system(Command);
-                remove(filename);
-
-                snprintf(Command, sizeof(Command), "%s sort %s/sample/%s/%s_%s.bam > %s/sample/%s/%s_%s_tmp.bam", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(),
-                         PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
-                system(Command);
-                snprintf(filename, sizeof(filename), "%s/sample/%s/%s_%s.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
-                remove(filename);
-                snprintf(Command, sizeof(Command), "mv %s/sample/%s/%s_%s_tmp.bam %s/sample/%s/%s_%s.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(),
-                         PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
-                system(Command);
-                snprintf(Command, sizeof(Command), "%s index %s/sample/%s/%s_%s.bam", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+                snprintf(Command, sizeof(Command), "%s index %s/sample/%s/%s_%s.bam", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(),
+                         SampleName[n].c_str(), ChrName[i].c_str());
                 system(Command);
 
                 snprintf(Command, sizeof(Command), "-I %s/sample/%s/%s_%s.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
@@ -281,7 +239,7 @@ int SmallFA(int argc, char *argv[])
         fputs(Command, fp_sh);
         fclose(fp_sh);
         // Submit.
-        snprintf(Command, sizeof(Command), "bsub < %s/sub_script/smallFA/%s_%s.sh", PathWork, ChrName[i].c_str(), Tool.c_str());
+        snprintf(Command, sizeof(Command), "qsub < %s/sub_script/smallFA/%s_%s.pbs", PathWork, ChrName[i].c_str(), Tool.c_str());
         system(Command);
     }
 
