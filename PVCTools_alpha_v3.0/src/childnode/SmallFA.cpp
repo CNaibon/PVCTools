@@ -12,6 +12,32 @@
 
 using namespace std;
 
+int SmallFA_HeaderModify(char *file_name, const char *chr_name)
+{
+    ifstream fp_old;
+    ofstream fp_new;
+    fp_old.open(file_name,ios::in);
+    char Command[CMD_NUM];
+    char TmpName[CMD_NUM];
+    snprintf(TmpName, sizeof(TmpName), "%s-%d", file_name, (int)getpid());
+    snprintf(Command, sizeof(Command), "\tSN:%s\t", chr_name);
+    fp_new.open(TmpName, ios::out);
+    string Buffer;
+    getline(fp_old,Buffer);
+    while (!fp_old.eof())
+    {
+        if(Buffer.find("@SQ\t") != string::npos && Buffer.find(Command) == string::npos) ;//Do nothing and pass.
+        else fp_new<<Buffer<<endl;
+        getline(fp_old,Buffer);
+    }
+    fp_old.close();
+    fp_new.close();
+
+    remove(file_name);
+    rename(TmpName, file_name);
+    return 0;
+}
+
 int SmallFA(int argc, char *argv[])
 {
     long StartTime = time((time_t*)NULL);
@@ -97,19 +123,11 @@ int SmallFA(int argc, char *argv[])
     fp_small.close();
 
     //Create the relevant directory.
-    snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/out", PathWork);
-    system(ShellCommand);
     snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/out/smallFA", PathWork);
-    system(ShellCommand);
-    snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/err", PathWork);
     system(ShellCommand);
     snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/err/smallFA", PathWork);
     system(ShellCommand);
-    snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/sub_script", PathWork);
-    system(ShellCommand);
     snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/sub_script/smallFA", PathWork);
-    system(ShellCommand);
-    snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/vcf", PathWork);
     system(ShellCommand);
     snprintf(ShellCommand, sizeof(ShellCommand), "mkdir -p %s/vcf/Final_Result", PathWork);
     system(ShellCommand);
@@ -145,10 +163,11 @@ int SmallFA(int argc, char *argv[])
     for (int i = 0; i < (int)ChrName.size(); i++)
     {
         char Command[CMD_NUM];
+        char filename[CMD_NUM];
         //Write the commit script.
         FILE *fp_sh;
-        snprintf(Command, sizeof(Command), "%s/sub_script/smallFA/%s_%s.sh", PathWork, ChrName[i].c_str(), Tool.c_str());
-        if ((fp_sh = fopen(Command, "w")) == NULL)
+        snprintf(filename, sizeof(filename), "%s/sub_script/smallFA/%s_%s.sh", PathWork, ChrName[i].c_str(), Tool.c_str());
+        if ((fp_sh = fopen(filename, "w")) == NULL)
             exit(-1);
         snprintf(Command, sizeof(Command), "#BSUB -q %s\n", Queue);
         fputs(Command, fp_sh);
@@ -175,8 +194,8 @@ int SmallFA(int argc, char *argv[])
                 snprintf(Command, sizeof(Command), "touch %s/sample/%s/%s_%s.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
                 system(Command);
 
-                snprintf(Command, sizeof(Command), "%s/sample/%s/%s_%s.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
-                fputs(Command, fp_sh);
+                snprintf(filename, sizeof(filename), "%s/sample/%s/%s_%s.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+                fputs(filename, fp_sh);
             }
             snprintf(Command, sizeof(Command), "| %s call -vmO v -o %s/vcf/Final_Result/%s.vcf", PATH_BCFTOOLS.c_str(), PathWork, ChrName[i].c_str());
             fputs(Command, fp_sh);
@@ -201,8 +220,29 @@ int SmallFA(int argc, char *argv[])
                 snprintf(Command, sizeof(Command), "touch %s/sample/%s/%s_%s.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
                 system(Command);
 
-                snprintf(Command, sizeof(Command), "%s index %s/sample/%s/%s_%s.bam", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(),
-                         SampleName[n].c_str(), ChrName[i].c_str());
+                snprintf(Command, sizeof(Command), "%s view -h %s/sample/%s/%s_%s.bam > %s/sample/%s/%s_%.sam", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(),
+                         PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+                system(Command);
+                snprintf(filename, sizeof(filename), "%s/sample/%s/%s_%s.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+                remove(filename);
+
+                snprintf(filename, sizeof(filename), "%s/sample/%s/%s_%s.sam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+                SmallFA_HeaderModify(filename, ChrName[i].c_str());
+
+                snprintf(Command, sizeof(Command), "%s view -b %s/sample/%s/%s_%s.sam > %s/sample/%s/%s_%s.bam", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(),
+                         PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+                system(Command);
+                remove(filename);
+
+                snprintf(Command, sizeof(Command), "%s sort %s/sample/%s/%s_%s.bam > %s/sample/%s/%s_%s_tmp.bam", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(),
+                         PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+                system(Command);
+                snprintf(filename, sizeof(filename), "%s/sample/%s/%s_%s.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+                remove(filename);
+                snprintf(Command, sizeof(Command), "mv %s/sample/%s/%s_%s_tmp.bam %s/sample/%s/%s_%s.bam", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str(),
+                         PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
+                system(Command);
+                snprintf(Command, sizeof(Command), "%s index %s/sample/%s/%s_%s.bam", PATH_SAMTOOLS.c_str(), PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());
                 system(Command);
 
                 snprintf(Command, sizeof(Command), "-I %s/sample/%s/%s_%s.bam ", PathWork, SampleName[n].c_str(), SampleName[n].c_str(), ChrName[i].c_str());

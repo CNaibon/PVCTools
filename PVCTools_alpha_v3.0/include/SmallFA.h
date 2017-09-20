@@ -14,6 +14,7 @@
 #include <time.h>
 #include "main.h"
 
+int SmallFA_HeaderModify(char *file_name, const char *chr_name);
 int SmallFA(int argc, char *argv[]);
 
 #endif //PVCTOOLS_ALPHA_V2_0_SMALLFA_H
