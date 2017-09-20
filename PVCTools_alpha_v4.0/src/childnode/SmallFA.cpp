@@ -20,12 +20,12 @@ int SmallFA_HeaderModify(char *file_name, const char *chr_name)
     char Command[CMD_NUM];
     char TmpName[CMD_NUM];
     snprintf(TmpName, sizeof(TmpName), "%s-%d", file_name, (int)getpid());
-    snprintf(Command, sizeof(Command), "\tSN:%s\t", chr_name);
     fp_new.open(TmpName, ios::out);
     string Buffer;
     getline(fp_old,Buffer);
     while (!fp_old.eof())
     {
+        snprintf(Command, sizeof(Command), "\tSN:%s\t", chr_name);
         if(Buffer.find("@SQ\t") != string::npos && Buffer.find(Command) == string::npos) ;//Do nothing and pass.
         else fp_new<<Buffer<<endl;
         getline(fp_old,Buffer);
