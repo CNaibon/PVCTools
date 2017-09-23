@@ -1,0 +1,4 @@
+C:\Users\liujiajun\.CLion2017.1\system\cygwin_cmake\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /cygdrive/c/Users/liujiajun/Documents/GitHub/Gene-tools/PVCTools_alpha_v2.5/cmake-build-debug
