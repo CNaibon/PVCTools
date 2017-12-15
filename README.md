@@ -11,10 +11,15 @@ Now, we have tested on LSF system.
 Prerequisites
 
   Samtools: http://www.htslib.org/doc/samtools.html
+  
   GATK: https://software.broadinstitute.org/gatk/
+  
   Picard tools: http://broadinstitute.github.io/picard/
+  
   bamUtil: http://genome.sph.umich.edu/wiki/BamUtil
+  
   bcftools: https://samtools.github.io/bcftools/bcftools.html
+  
   freebayes: https://github.com/ekg/freebayes
 
 
