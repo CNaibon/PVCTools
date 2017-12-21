@@ -1,3 +1,0 @@
-C:\Users\liujiajun\.CLion2017.2\system\cygwin_cmake\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" "\"C:/Users/liujiajun/Desktop/PCVTools/PCVTools版本/PVCTools_alpha_v3.7 -HPC\""
-CMake Error: The source directory "/cygdrive/c/Users/liujiajun/Desktop/PCVTools/PCVTools鐗堟湰/PVCTools_alpha_v3.7 -HPC/cmake-build-debug/"/"C:/Users/liujiajun/Desktop/PCVTools/PCVTools鐗堟湰/PVCTools_alpha_v3.7 -HPC/""" does not exist.
-Specify --help for usage, or press the help button on the CMake GUI.

@@ -1,6 +1,0 @@
-#PBS -N GetVCF
-#PBS -l nodes=1:ppn=1
-#PBS -q low
-#PBS -o /public/home/huds/gene_PVCTools_HPC/test/GetVCF.out
-#PBS -e /public/home/huds/gene_PVCTools_HPC/test/GetVCF.err
-./bin/./main GetVCF -w /public/home/huds/gene_PVCTools_HPC/test -fa /public/home/huds/Gene/HPC_test/data/fa/testgenome.fa -n 10 -bam /public/home/huds/Gene/HPC_test/data/bam/ -q low
